@@ -20,39 +20,43 @@ app.post("/webhook", function (req, res) {
     // Message data, must be stringified
     const dataString = JSON.stringify({
       replyToken: req.body.events[0].replyToken,
-      "type": "template",
-      "altText": "This is a buttons template",
-      "template": {
-        "type": "buttons",
-        "thumbnailImageUrl": "https://example.com/bot/images/image.jpg",
-        "imageAspectRatio": "rectangle",
-        "imageSize": "cover",
-        "imageBackgroundColor": "#FFFFFF",
-        "title": "Menu",
-        "text": "Please select",
-        "defaultAction": {
-          "type": "uri",
-          "label": "View detail",
-          "uri": "http://example.com/page/123"
-        },
-        "actions": [
-          {
-            "type": "postback",
-            "label": "Buy",
-            "data": "action=buy&itemid=123"
-          },
-          {
-            "type": "postback",
-            "label": "Add to cart",
-            "data": "action=add&itemid=123"
-          },
-          {
-            "type": "uri",
-            "label": "View detail",
-            "uri": "http://example.com/page/123"
+      messages: [
+        {
+          "type": "template",
+          "altText": "This is a buttons template",
+          "template": {
+            "type": "buttons",
+            "thumbnailImageUrl": "https://picsum.photos/200/300",
+            "imageAspectRatio": "rectangle",
+            "imageSize": "cover",
+            "imageBackgroundColor": "#FFFFFF",
+            "title": "Menu",
+            "text": "Please select",
+            "defaultAction": {
+              "type": "uri",
+              "label": "View detail",
+              "uri": "https://picsum.photos/200/300"
+            },
+            "actions": [
+              {
+                "type": "postback",
+                "label": "Buy",
+                "data": "action=buy&itemid=123"
+              },
+              {
+                "type": "postback",
+                "label": "Add to cart",
+                "data": "action=add&itemid=123"
+              },
+              {
+                "type": "uri",
+                "label": "View detail",
+                "uri": "https://picsum.photos/200/300"
+              }
+            ]
           }
-        ]
-      }
+        }
+      ]
     })
 
     // Request header
@@ -67,15 +71,7 @@ app.post("/webhook", function (req, res) {
       "path": "/v2/bot/message/reply",
       "method": "POST",
       "headers": headers,
-      "body": {
-        "replyToken": req.body.events[0].replyToken,
-        "messages": [
-          {
-            "type": "text",
-            "text": "12345646"
-          }
-        ]
-      }
+      "body": dataString
     }
 
     // Define request
