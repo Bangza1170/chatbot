@@ -17,7 +17,7 @@ app.post("/webhook", async function(req, res) {
   
     res.send("HTTP POST request sent to the webhook URL!")
   // If the user sends a message to your bot, send a reply message
-  if (req.body.events[0].type === "message"&&req.body.events[0].message.text ==="ตาราง") {
+  if (req.body.events[0].type === "message") {
     // Message data, must be stringified
 
     // const response = await axios.post(
