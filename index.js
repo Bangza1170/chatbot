@@ -71,6 +71,7 @@ app.post("/webhook", function (req, res) {
         "replyToken": req.body.events[0].replyToken,
         "messages": [
           {
+            "type": "text",
             "text": "12345646"
           }
         ]
