@@ -68,6 +68,7 @@ app.post("/webhook", function (req, res) {
       "method": "POST",
       "headers": headers,
       "body": {
+        "replyToken": req.body.events[0].replyToken,
         "type": "template",
         "altText": "This is a buttons template",
         "template": {
