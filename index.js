@@ -21,8 +21,8 @@ app.post("/webhook", function (req, res) {
   // If the user sends a message to your bot, send a reply message
   console.log(req.body.events[0]);
   if (
-    req.body.events[0].type === "message" &&
-    req.body.events[0].text === "ตาราง"
+    req.body.events[0].message.type === "message" &&
+    req.body.events[0].message.text === "ตาราง"
   ) {
     // Message data, must be stringified
     const dataString = JSON.stringify({
