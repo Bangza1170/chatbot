@@ -188,7 +188,7 @@ app.post("/webhook", function (req, res) {
 
     // Options to pass into the request
     const webhookOptions = {
-      hostname: "api.line.me",
+      hostname: "https://api.line.me",
       path: "/v2/bot/message/reply",
       method: "POST",
       headers: headers,
