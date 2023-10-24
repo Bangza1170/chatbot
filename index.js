@@ -18,7 +18,6 @@ app.get("/", (req, res) => {
 
 app.post("/webhook", function (req, res) {
   res.send("HTTP POST request sent to the webhook URL!");
-  console.log(req.body.events[0].replyToken);
   // If the user sends a message to your bot, send a reply message
   if (
     req.body.events[0].type === "message" &&
@@ -29,35 +28,154 @@ app.post("/webhook", function (req, res) {
       replyToken: req.body.events[0].replyToken,
       messages: [
         {
-          type: "buttons",
-          thumbnailImageUrl: "https://picsum.photos/200/300",
-          imageAspectRatio: "rectangle",
-          imageSize: "cover",
-          imageBackgroundColor: "#FFFFFF",
-          title: "Menu",
-          text: "Please select",
-          defaultAction: {
-            type: "uri",
-            label: "View detail",
-            uri: "https://picsum.photos/200/300",
+          type: "flex",
+          altText: "this is a flex message",
+          contents: {
+            type: "bubble",
+            body: {
+              type: "box",
+              layout: "vertical",
+              contents: [
+                {
+                  type: "box",
+                  layout: "vertical",
+                  margin: "lg",
+                  spacing: "sm",
+                  contents: [
+                    {
+                      type: "box",
+                      layout: "baseline",
+                      contents: [
+                        {
+                          type: "text",
+                          text: "Pos.",
+                          size: "xxs",
+                          weight: "bold",
+                          flex: 2,
+                        },
+                        {
+                          type: "text",
+                          text: "Team",
+                          flex: 3,
+                          size: "xxs",
+                          weight: "bold",
+                          margin: "md",
+                        },
+                        {
+                          type: "text",
+                          text: "P",
+                          flex: 1,
+                          size: "xxs",
+                          weight: "bold",
+                        },
+                        {
+                          type: "text",
+                          text: "W",
+                          flex: 1,
+                          size: "xxs",
+                          weight: "bold",
+                        },
+                        {
+                          type: "text",
+                          text: "D",
+                          flex: 1,
+                          size: "xxs",
+                          weight: "bold",
+                        },
+                        {
+                          type: "text",
+                          text: "L",
+                          flex: 1,
+                          size: "xxs",
+                          weight: "bold",
+                        },
+                        {
+                          type: "text",
+                          text: "+/-",
+                          size: "xxs",
+                          weight: "bold",
+                          flex: 1,
+                        },
+                        {
+                          type: "text",
+                          text: "Pt",
+                          size: "xxs",
+                          weight: "bold",
+                          flex: 1,
+                        },
+                      ],
+                    },
+                    {
+                      type: "box",
+                      layout: "baseline",
+                      spacing: "sm",
+                      contents: [
+                        {
+                          type: "text",
+                          text: "1",
+                          color: "#000000",
+                          size: "xxs",
+                          flex: 2,
+                        },
+                        {
+                          type: "text",
+                          text: "ท็อตแน่ม ฮ็อทสเปอร์",
+                          wrap: true,
+                          color: "#666666",
+                          size: "xxs",
+                          flex: 3,
+                        },
+                        {
+                          type: "text",
+                          text: "7",
+                          flex: 1,
+                          size: "xxs",
+                          margin: "xl",
+                        },
+                        {
+                          type: "text",
+                          text: "2",
+                          flex: 1,
+                          size: "xxs",
+                          color: "#01B54C",
+                        },
+                        {
+                          type: "text",
+                          text: "0",
+                          flex: 1,
+                          size: "xxs",
+                          color: "#929684",
+                          margin: "none",
+                        },
+                        {
+                          type: "text",
+                          text: "+12",
+                          flex: 1,
+                          size: "xxs",
+                          color: "#FA1001",
+                          margin: "none",
+                        },
+                        {
+                          type: "text",
+                          text: "23",
+                          flex: 1,
+                          size: "xxs",
+                          color: "#000000",
+                        },
+                        {
+                          type: "text",
+                          text: "23",
+                          flex: 1,
+                          size: "xxs",
+                          color: "#000000",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
           },
-          actions: [
-            {
-              type: "postback",
-              label: "Buy",
-              data: "action=buy&itemid=123",
-            },
-            {
-              type: "postback",
-              label: "Add to cart",
-              data: "action=add&itemid=123",
-            },
-            {
-              type: "uri",
-              label: "View detail",
-              uri: "https://picsum.photos/200/300",
-            },
-          ],
         },
       ],
     });
