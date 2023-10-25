@@ -119,6 +119,10 @@ app.post("/webhook", function (req, res) {
                           flex: 2,
                         },
                         {
+                          type: "icon",
+                          url: "https://cms.dmpcdn.com/sportteam/2018/08/07/1a075904-192f-42d7-b46c-cbd9a0ef51a1.png",
+                        },
+                        {
                           type: "text",
                           text: "ท็อตแน่ม ฮ็อทสเปอร์",
                           wrap: true,
