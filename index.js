@@ -213,9 +213,7 @@ app.post("/webhook", async function (req, res) {
     // Request header
     const headers = {
       "Content-Type": "application/json",
-      // Authorization: "Bearer " + TOKEN,
-      Authorization:
-        "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
+      Authorization: "Bearer " + TOKEN,
     };
 
     // Options to pass into the request
