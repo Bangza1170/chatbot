@@ -181,13 +181,27 @@ app.post("/webhook", function (req, res) {
                           size: "xxs",
                           flex: 2,
                         },
+                      ],
+                    },
+                    {
+                      type: "box",
+                      layout: "baseline",
+                      spacing: "sm",
+                      contents: [
+                        {
+                          type: "text",
+                          text: "1",
+                          color: "#000000",
+                          size: "xxs",
+                          flex: 2,
+                        },
                         // {
                         //   type: "icon",
                         //   url: "https://cms.dmpcdn.com/sportteam/2018/08/07/1a075904-192f-42d7-b46c-cbd9a0ef51a1.png",
                         // },
                         {
                           type: "text",
-                          text: "แมนซิตี้",
+                          text: "ท็อตแน่ม ฮ็อทสเปอร์",
                           wrap: true,
                           color: "#666666",
                           size: "xxs",
@@ -236,6 +250,13 @@ app.post("/webhook", function (req, res) {
                           flex: 1,
                           size: "xxs",
                           color: "#000000",
+                        },
+                        {
+                          type: "text",
+                          text: "2",
+                          color: "#000000",
+                          size: "xxs",
+                          flex: 2,
                         },
                       ],
                     },
