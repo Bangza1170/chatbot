@@ -27,7 +27,7 @@ app.post("/webhook", async function (req, res) {
     req.body.events[0].message.text === "ตาราง"
   ) {
     try {
-      var listdata = await axios.get("http://localhost:1412/");
+      var listdata = await axios.get("https://cfgn3khv-1412.asse.devtunnels.ms");
     } catch (error) {
       console.log("axios error: ", error)
     }
