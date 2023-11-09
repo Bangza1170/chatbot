@@ -26,7 +26,11 @@ app.post("/webhook", async function (req, res) {
     req.body.events[0].message.type === "text" &&
     req.body.events[0].message.text === "ตาราง"
   ) {
-    const listdata = await axios.get("http://localhost:1412/");
+    try {
+      var listdata = await axios.get("http://localhost:1412/");
+    } catch (error) {
+      console.log("axios error: ", error)
+    }
     console.log(listdata.data.data);
     const newDataScore = [
       {
