@@ -1,6 +1,7 @@
 const https = require("https");
 const express = require("express");
 const { log } = require("console");
+const { default: axios } = require("axios");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
@@ -16,14 +17,168 @@ app.get("/", (req, res) => {
   res.sendStatus(200);
 });
 
-app.post("/webhook", function (req, res) {
+app.post("/webhook", async function (req, res) {
   res.send("HTTP POST request sent to the webhook URL!");
   // If the user sends a message to your bot, send a reply message
+  console.log(TOKEN);
   console.log(req.body.events[0]);
   if (
     req.body.events[0].message.type === "text" &&
     req.body.events[0].message.text === "ตาราง"
   ) {
+    const listdata = await axios.get("http://localhost:1412/");
+    console.log(listdata.data.data);
+    const newDataScore = [
+      {
+        type: "box",
+        layout: "baseline",
+        contents: [
+          {
+            type: "text",
+            text: "Pos.",
+            size: "xxs",
+            weight: "bold",
+            flex: 2,
+          },
+          {
+            type: "text",
+            text: "L",
+            flex: 1,
+            size: "xxs",
+            weight: "bold",
+          },
+          {
+            type: "text",
+            text: "Team",
+            flex: 3,
+            size: "xxs",
+            weight: "bold",
+            margin: "md",
+          },
+          {
+            type: "text",
+            text: "P",
+            flex: 2,
+            size: "xxs",
+            weight: "bold",
+            align: "center"
+          },
+          {
+            type: "text",
+            text: "W",
+            flex: 1,
+            size: "xxs",
+            weight: "bold",
+          },
+          {
+            type: "text",
+            text: "D",
+            flex: 1,
+            size: "xxs",
+            weight: "bold",
+          },
+          {
+            type: "text",
+            text: "L",
+            flex: 1,
+            size: "xxs",
+            weight: "bold",
+          },
+          {
+            type: "text",
+            text: "+/-",
+            size: "xxs",
+            weight: "bold",
+            flex: 2,
+          },
+          {
+            type: "text",
+            text: "Pt",
+            size: "xxs",
+            weight: "bold",
+            flex: 1,
+          },
+        ],
+      },
+    ];
+    const data = listdata.data.data;
+    for (let i = 0; i < data.length; i++) {
+      console.log(data[i].pi);
+      number = i+1
+      let dataScore = {
+        type: "box",
+        layout: "baseline",
+        spacing: "sm",
+        contents: [
+          {
+            type: "text",
+            text: `${number}`,
+            color: "#000000",
+            size: "xxs",
+            flex: 2,
+          },
+          {
+            type: "icon",
+            url: data[i].icon,
+            size: "xxs",
+          },
+          {
+            type: "text",
+            text: data[i].team,
+            wrap: true,
+            color: "#666666",
+            size: "xxs",
+            flex: 3,
+          },
+          {
+            type: "text",
+            text: data[i].pi,
+            flex: 2,
+            size: "xxs",
+            margin: "xl",
+            align: "center"
+          },
+          {
+            type: "text",
+            text: data[i].w,
+            flex: 1,
+            size: "xxs",
+            color: "#01B54C",
+          },
+          {
+            type: "text",
+            text: data[i].d,
+            flex: 1,
+            size: "xxs",
+            color: "#929684",
+            margin: "none",
+          },
+          {
+            type: "text",
+            text: data[i].l,
+            flex: 1,
+            size: "xxs",
+            color: "#FA1001",
+            margin: "none",
+          },
+          {
+            type: "text",
+            text: data[i].gd,
+            flex: 2,
+            size: "xxs",
+            color: "#000000",
+          },
+          {
+            type: "text",
+            text: data[i].pts,
+            flex: 1,
+            size: "xxs",
+            color: "#000000",
+          },
+        ],
+      };
+      newDataScore.push(dataScore)
+    }
     // Message data, must be stringified
     const dataString = JSON.stringify({
       replyToken: req.body.events[0].replyToken,
@@ -36,243 +191,31 @@ app.post("/webhook", function (req, res) {
             body: {
               type: "box",
               layout: "vertical",
-              contents: [
+              contents:[
                 {
                   type: "box",
                   layout: "vertical",
                   margin: "lg",
                   spacing: "sm",
-                  contents: [
-                    {
-                      type: "box",
-                      layout: "baseline",
-                      contents: [
-                        {
-                          type: "text",
-                          text: "Pos.",
-                          size: "xxs",
-                          weight: "bold",
-                          flex: 2,
-                        },
-                        {
-                          type: "text",
-                          text: "Team",
-                          flex: 3,
-                          size: "xxs",
-                          weight: "bold",
-                          margin: "md",
-                        },
-                        {
-                          type: "text",
-                          text: "P",
-                          flex: 1,
-                          size: "xxs",
-                          weight: "bold",
-                        },
-                        {
-                          type: "text",
-                          text: "W",
-                          flex: 1,
-                          size: "xxs",
-                          weight: "bold",
-                        },
-                        {
-                          type: "text",
-                          text: "D",
-                          flex: 1,
-                          size: "xxs",
-                          weight: "bold",
-                        },
-                        {
-                          type: "text",
-                          text: "L",
-                          flex: 1,
-                          size: "xxs",
-                          weight: "bold",
-                        },
-                        {
-                          type: "text",
-                          text: "+/-",
-                          size: "xxs",
-                          weight: "bold",
-                          flex: 1,
-                        },
-                        {
-                          type: "text",
-                          text: "Pt",
-                          size: "xxs",
-                          weight: "bold",
-                          flex: 1,
-                        },
-                      ],
-                    },
-                    {
-                      type: "box",
-                      layout: "baseline",
-                      spacing: "sm",
-                      contents: [
-                        {
-                          type: "text",
-                          text: "1",
-                          color: "#000000",
-                          size: "xxs",
-                          flex: 2,
-                        },
-                        // {
-                        //   type: "icon",
-                        //   url: "https://cms.dmpcdn.com/sportteam/2018/08/07/1a075904-192f-42d7-b46c-cbd9a0ef51a1.png",
-                        // },
-                        {
-                          type: "text",
-                          text: "ท็อตแน่ม ฮ็อทสเปอร์",
-                          wrap: true,
-                          color: "#666666",
-                          size: "xxs",
-                          flex: 3,
-                        },
-                        {
-                          type: "text",
-                          text: "7",
-                          flex: 1,
-                          size: "xxs",
-                          margin: "xl",
-                        },
-                        {
-                          type: "text",
-                          text: "2",
-                          flex: 1,
-                          size: "xxs",
-                          color: "#01B54C",
-                        },
-                        {
-                          type: "text",
-                          text: "0",
-                          flex: 1,
-                          size: "xxs",
-                          color: "#929684",
-                          margin: "none",
-                        },
-                        {
-                          type: "text",
-                          text: "+12",
-                          flex: 1,
-                          size: "xxs",
-                          color: "#FA1001",
-                          margin: "none",
-                        },
-                        {
-                          type: "text",
-                          text: "23",
-                          flex: 1,
-                          size: "xxs",
-                          color: "#000000",
-                        },
-                        {
-                          type: "text",
-                          text: "23",
-                          flex: 1,
-                          size: "xxs",
-                          color: "#000000",
-                        },
-                        {
-                          type: "text",
-                          text: "2",
-                          color: "#000000",
-                          size: "xxs",
-                          flex: 2,
-                        },
-                      ],
-                    },
-                    {
-                      type: "box",
-                      layout: "baseline",
-                      spacing: "sm",
-                      contents: [
-                        {
-                          type: "text",
-                          text: "1",
-                          color: "#000000",
-                          size: "xxs",
-                          flex: 2,
-                        },
-                        // {
-                        //   type: "icon",
-                        //   url: "https://cms.dmpcdn.com/sportteam/2018/08/07/1a075904-192f-42d7-b46c-cbd9a0ef51a1.png",
-                        // },
-                        {
-                          type: "text",
-                          text: "ท็อตแน่ม ฮ็อทสเปอร์",
-                          wrap: true,
-                          color: "#666666",
-                          size: "xxs",
-                          flex: 3,
-                        },
-                        {
-                          type: "text",
-                          text: "7",
-                          flex: 1,
-                          size: "xxs",
-                          margin: "xl",
-                        },
-                        {
-                          type: "text",
-                          text: "2",
-                          flex: 1,
-                          size: "xxs",
-                          color: "#01B54C",
-                        },
-                        {
-                          type: "text",
-                          text: "0",
-                          flex: 1,
-                          size: "xxs",
-                          color: "#929684",
-                          margin: "none",
-                        },
-                        {
-                          type: "text",
-                          text: "+12",
-                          flex: 1,
-                          size: "xxs",
-                          color: "#FA1001",
-                          margin: "none",
-                        },
-                        {
-                          type: "text",
-                          text: "23",
-                          flex: 1,
-                          size: "xxs",
-                          color: "#000000",
-                        },
-                        {
-                          type: "text",
-                          text: "23",
-                          flex: 1,
-                          size: "xxs",
-                          color: "#000000",
-                        },
-                        {
-                          type: "text",
-                          text: "2",
-                          color: "#000000",
-                          size: "xxs",
-                          flex: 2,
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
+                  contents: newDataScore
+                }
+              ] 
+              
+              // newDataScore
             },
           },
         },
       ],
     });
 
+    console.log("show data_string: ", dataString)
+
     // Request header
     const headers = {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + TOKEN,
+      // Authorization: "Bearer " + TOKEN,
+      Authorization:
+        "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
     };
 
     // Options to pass into the request
