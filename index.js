@@ -189,9 +189,21 @@ app.post("/webhook", async function (req, res) {
       messages: [
         {
           type: "flex",
-          altText: "this is a flex message",
+          altText: "ตารางพรีเมียร์ลีค",
           contents: {
             type: "bubble",
+            "hero": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "image",
+                  "url": "https://ga.lnwfile.com/_/ga/_raw/e2/zk/v9.png",
+                  "size": "full",
+                  "aspectRatio": "15:10"
+                }
+              ]
+            },
             body: {
               type: "box",
               layout: "vertical",
@@ -203,6 +215,24 @@ app.post("/webhook", async function (req, res) {
                   spacing: "sm",
                   contents: newDataScore
                 }
+              ]
+            },
+              
+            footer: {
+                  "type": "box",
+                  "layout": "vertical",
+                  "contents": [
+                    {
+                      "type": "button",
+                      "action": {
+                        "type": "uri",
+                        "label": "ตารางคะแนนอื่นๆ",
+                        "uri": "https://footballline.000webhostapp.com/point.html"
+                      },
+                      "color": "#6600FF",
+                      "gravity": "center",
+                      "style": "primary"
+                  }
               ] 
               
               // newDataScore
