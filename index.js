@@ -24,7 +24,7 @@ app.post("/webhook", async function (req, res) {
   console.log(req.body.events[0]);
   if (
     req.body.events[0].message.type === "text" &&
-    req.body.events[0].message.text === "ตารางคะแนนพรีเมียร์ลีค"
+    req.body.events[0].message.text === "ตารางคะแนนพรีเมียร์ลีคปัจจุบัน"
   ) {
     try {
       var listdata = await axios.get("https://cfgn3khv-1412.asse.devtunnels.ms");
