@@ -106,7 +106,7 @@ app.post("/webhook", async function (req, res) {
     req.body.events[0].message.text === "ตารางคะแนน"
   ) {
     try {
-      var listdata = await axios.get("https://cfgn3khv-1412.asse.devtunnels.ms");
+      var listdata = await axios.get("https://cfgn3khv-1412.asse.devtunnels.ms/");
       // var listdata = await axios.get("https://nongfootball.onrender.com");
     } catch (error) {
       console.log("axios error: ", error)
