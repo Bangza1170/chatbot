@@ -27,9 +27,10 @@ app.post("/webhook", async function (req, res) {
   var dataString = {}
   if (message.split(" ")[0] === "คำถาม") {
     const axios = require('axios');
+    console.log(message.split(" ")[1])
     let data = JSON.stringify({
       "prompt": {
-        "text": message.split(" ")[1]
+        "text": `${message.split(" ")[1]}`
       }
     });
     
