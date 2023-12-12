@@ -26,20 +26,10 @@ app.post("/webhook", async function (req, res) {
   console.log("สูตรกระเพรา", message.split(" "))
   var dataString = {}
   if (message.split(" ")[0] === "คำถาม") {
-    console.log("สูตรกระเพรา", message.split(" ")[1])
-    // const url = 'https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=AIzaSyC2pHjqBIZHbfqjAEVB4uhgWqcTWUvd3_A';
-
-    // // Make the request
-    // https.get(url, (response) => {
-    //   let data = {
-    //     "prompt": {
-    //     "text": "Chicken fried rice recipe"
-    // }
-    // };
     const axios = require('axios');
     let data = JSON.stringify({
       "prompt": {
-        "text": "Chicken fried rice recipe"
+        "text": message.split(" ")[1]
       }
     });
     
