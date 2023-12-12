@@ -22,7 +22,10 @@ app.post("/webhook", async function (req, res) {
   // If the user sends a message to your bot, send a reply message
   console.log(TOKEN);
   console.log(req.body.events[0]);
-  if (
+  const message = req.body.events[0].message.text
+  if (message.split(" ") === "คำถาม") {
+    console.log("สูตรกระเพรา", message.split(" "))
+  } else if (
     req.body.events[0].message.type === "text" &&
     req.body.events[0].message.text === "ตารางคะแนน"
   ) {
