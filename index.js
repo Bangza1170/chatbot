@@ -6,6 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
 
+
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -20,11 +21,86 @@ app.get("/", (req, res) => {
 app.post("/webhook", async function (req, res) {
   res.send("HTTP POST request sent to the webhook URL!");
   // If the user sends a message to your bot, send a reply message
-  console.log(TOKEN);
   console.log(req.body.events[0]);
   const message = req.body.events[0].message.text
-  if (message.split(" ") === "คำถาม") {
-    console.log("สูตรกระเพรา", message.split(" "))
+  console.log("สูตรกระเพรา", message.split(" "))
+  var dataString = {}
+  if (message.split(" ")[0] === "คำถาม") {
+    console.log("สูตรกระเพรา", message.split(" ")[1])
+    // const url = 'https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=AIzaSyC2pHjqBIZHbfqjAEVB4uhgWqcTWUvd3_A';
+
+    // // Make the request
+    // https.get(url, (response) => {
+    //   let data = {
+    //     "prompt": {
+    //     "text": "Chicken fried rice recipe"
+    // }
+    // };
+    const axios = require('axios');
+    let data = JSON.stringify({
+      "prompt": {
+        "text": "Chicken fried rice recipe"
+      }
+    });
+    
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: 'https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=AIzaSyC2pHjqBIZHbfqjAEVB4uhgWqcTWUvd3_A',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    
+    try {
+      const response = await axios.request(config)
+      // const data_json = JSON.parse(response)
+      console.log("result axios")
+      const test_result = response.data.candidates[0].output
+      dataString = JSON.stringify({
+        "replyToken": req.body.events[0].replyToken,
+        "messages":[
+            {
+                "type":"text",
+                "text":test_result
+            }
+        ]
+      })
+      // console.log("token: ", TOKEN)
+      const headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
+      };
+  
+      // Options to pass into the request
+      const webhookOptions = {
+        hostname: "api.line.me",
+        path: "/v2/bot/message/reply",
+        method: "POST",
+        headers: headers,
+        body: dataString,
+      };
+  
+      // Define request
+      const request = https.request(webhookOptions, (res) => {
+        res.on("data", (d) => {
+          process.stdout.write(d);
+        });
+      });
+  
+      // Handle error
+      request.on("error", (err) => {
+        console.error(err);
+      });
+  
+      // Send data
+      request.write(dataString);
+      request.end();
+    } catch (error) {
+      console.log("axios error: ", error)
+    }
+
   } else if (
     req.body.events[0].message.type === "text" &&
     req.body.events[0].message.text === "ตารางคะแนน"
