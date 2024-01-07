@@ -6,7 +6,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
 
-
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -20,92 +19,96 @@ app.get("/", (req, res) => {
 
 app.post("/webhook", async function (req, res) {
   res.send("HTTP POST request sent to the webhook URL!");
-  // If the user sends a message to your bot, send a reply message
-  console.log(req.body.events[0]);
-  const message = req.body.events[0].message.text
-  console.log("สูตรกระเพรา", message.split(" "))
-  var dataString = {}
-  if (message.split(" ")[0] === "คำถาม") {
-    const axios = require('axios');
-    console.log(req.body.events[0].message.type)
-    var result_message = message.split(" ")[1]
-    var resultString = result_message.toString()
-    let data = JSON.stringify({
-      "prompt": {
-        "text": resultString
-      }
-    });
-    
-    let config = {
-      method: 'post',
-      url: 'https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=AIzaSyC2pHjqBIZHbfqjAEVB4uhgWqcTWUvd3_A',
-      headers: { 
-        'Content-Type': 'application/json'
-      },
-      data : data
-    };
-    
+  const message = req.body.events[0].message.text;
+  var dataString = {};
+  if (message.includes("คำถาม")) {
     try {
-      const response = await axios.request(config)
-      // const data_json = JSON.parse(response)
-      console.log("result axios")
-      const test_result = response.data.candidates[0].output
-      dataString = JSON.stringify({
-        "replyToken": req.body.events[0].replyToken,
-        "messages":[
-            {
-                "type":"text",
-                "text":test_result
-            }
-        ]
-      })
-      // console.log("token: ", TOKEN)
-     try {
-      const headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
-      };
-  
-      // Options to pass into the request
-      const webhookOptions = {
-        hostname: "api.line.me",
-        path: "/v2/bot/message/reply",
-        method: "POST",
-        headers: headers,
-        body: dataString,
-      };
-  
-      // Define request
-      const request = https.request(webhookOptions, (res) => {
-        res.on("data", (d) => {
-          process.stdout.write(d);
-        });
+      // const result = GoogleBardAI("");
+      const axios = require("axios");
+      let data = JSON.stringify({
+        prompt: {
+          text: message,
+          // "text": question
+        },
       });
-  
-      // Handle error
-      request.on("error", (err) => {
-        console.error(err);
-      });
-  
-      // Send data
-      request.write(dataString);
-      request.end();
-     } catch (error) {
-      console.log("error reply: ", error)
-     }
-    } catch (error) {
-      console.log("axios error: ", error)
-    }
 
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=AIzaSyC2pHjqBIZHbfqjAEVB4uhgWqcTWUvd3_A",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+      var result = "";
+      axios
+        .request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+          result = JSON.stringify(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      dataString = JSON.stringify({
+        replyToken: req.body.events[0].replyToken,
+        messages: [
+          {
+            type: "text",
+            text: result,
+          },
+        ],
+      });
+      // console.log("token: ", TOKEN)
+      try {
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization:
+            "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
+        };
+
+        // Options to pass into the request
+        const webhookOptions = {
+          hostname: "api.line.me",
+          path: "/v2/bot/message/reply",
+          method: "POST",
+          headers: headers,
+          body: dataString,
+        };
+
+        // Define request
+        const request = https.request(webhookOptions, (res) => {
+          res.on("data", (d) => {
+            process.stdout.write(d);
+          });
+        });
+
+        // Handle error
+        request.on("error", (err) => {
+          console.error(err);
+        });
+
+        // Send data
+        request.write(dataString);
+        request.end();
+      } catch (error) {
+        console.log("error reply: ", error);
+      }
+    } catch (error) {
+      console.log("axios error: ", error);
+    }
   } else if (
     req.body.events[0].message.type === "text" &&
     req.body.events[0].message.text === "ตารางคะแนน"
   ) {
     try {
-      var listdata = await axios.get("https://wv-lamps-brochure-customs.trycloudflare.com");
+      var listdata = await axios.get(
+        "https://wv-lamps-brochure-customs.trycloudflare.com"
+      );
       // var listdata = await axios.get("https://nongfootball.onrender.com");
     } catch (error) {
-      console.log("axios error: ", error)
+      console.log("axios error: ", error);
     }
     console.log(listdata.data.data);
     const newDataScore = [
@@ -141,7 +144,7 @@ app.post("/webhook", async function (req, res) {
             flex: 2,
             size: "xxs",
             weight: "bold",
-            align: "center"
+            align: "center",
           },
           {
             type: "text",
@@ -184,7 +187,7 @@ app.post("/webhook", async function (req, res) {
     const data = listdata.data.data;
     for (let i = 0; i < data.length; i++) {
       console.log(data[i].pi);
-      number = i+1
+      number = i + 1;
       let dataScore = {
         type: "box",
         layout: "baseline",
@@ -216,7 +219,7 @@ app.post("/webhook", async function (req, res) {
             flex: 2,
             size: "xxs",
             margin: "xl",
-            align: "center"
+            align: "center",
           },
           {
             type: "text",
@@ -257,7 +260,7 @@ app.post("/webhook", async function (req, res) {
           },
         ],
       };
-      newDataScore.push(dataScore)
+      newDataScore.push(dataScore);
     }
     // Message data, must be stringified
     const dataString = JSON.stringify({
@@ -268,49 +271,49 @@ app.post("/webhook", async function (req, res) {
           altText: "ตารางคะแนนพรีเมียร์ลีคปัจจุบัน",
           contents: {
             type: "bubble",
-            "hero": {
-              "type": "box",
-              "layout": "vertical",
-              "contents": [
+            hero: {
+              type: "box",
+              layout: "vertical",
+              contents: [
                 {
-                  "type": "image",
-                  "url": "https://ga.lnwfile.com/_/ga/_raw/e2/zk/v9.png",
-                  "size": "full",
-                  "aspectRatio": "15:10"
-                }
-              ]
+                  type: "image",
+                  url: "https://ga.lnwfile.com/_/ga/_raw/e2/zk/v9.png",
+                  size: "full",
+                  aspectRatio: "15:10",
+                },
+              ],
             },
             body: {
               type: "box",
               layout: "vertical",
-              contents:[
+              contents: [
                 {
                   type: "box",
                   layout: "vertical",
                   margin: "lg",
                   spacing: "sm",
-                  contents: newDataScore
-                }
-              ]
+                  contents: newDataScore,
+                },
+              ],
             },
-              
+
             footer: {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "button",
-                      "action": {
-                        "type": "uri",
-                        "label": "ตารางคะแนนลีคอื่นๆ",
-                        "uri": "https://footballline.000webhostapp.com/point.html"
-                      },
-                      "color": "#6600FF",
-                      "gravity": "center",
-                      "style": "primary"
-                  }
-              ] 
-              
+              type: "box",
+              layout: "vertical",
+              contents: [
+                {
+                  type: "button",
+                  action: {
+                    type: "uri",
+                    label: "ตารางคะแนนลีคอื่นๆ",
+                    uri: "https://footballline.000webhostapp.com/point.html",
+                  },
+                  color: "#6600FF",
+                  gravity: "center",
+                  style: "primary",
+                },
+              ],
+
               // newDataScore
             },
           },
@@ -318,7 +321,7 @@ app.post("/webhook", async function (req, res) {
       ],
     });
 
-    console.log("show data_string: ", dataString)
+    console.log("show data_string: ", dataString);
 
     // Request header
     const headers = {
