@@ -27,16 +27,17 @@ app.post("/webhook", async function (req, res) {
   var dataString = {}
   if (message.split(" ")[0] === "คำถาม") {
     const axios = require('axios');
-    console.log(message.split(" ")[1])
+    console.log(req.body.events[0].message.type)
+    var result_message = message.split(" ")[1]
+    var resultString = result_message.toString()
     let data = JSON.stringify({
       "prompt": {
-        "text": `${message.split(" ")[1]}`
+        "text": resultString
       }
     });
     
     let config = {
       method: 'post',
-      maxBodyLength: Infinity,
       url: 'https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=AIzaSyC2pHjqBIZHbfqjAEVB4uhgWqcTWUvd3_A',
       headers: { 
         'Content-Type': 'application/json'
@@ -59,6 +60,7 @@ app.post("/webhook", async function (req, res) {
         ]
       })
       // console.log("token: ", TOKEN)
+     try {
       const headers = {
         "Content-Type": "application/json",
         "Authorization": "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
@@ -88,6 +90,9 @@ app.post("/webhook", async function (req, res) {
       // Send data
       request.write(dataString);
       request.end();
+     } catch (error) {
+      console.log("error reply: ", error)
+     }
     } catch (error) {
       console.log("axios error: ", error)
     }
@@ -97,7 +102,7 @@ app.post("/webhook", async function (req, res) {
     req.body.events[0].message.text === "ตารางคะแนน"
   ) {
     try {
-      var listdata = await axios.get("https://cfgn3khv-1412.asse.devtunnels.ms/");
+      var listdata = await axios.get("https://wv-lamps-brochure-customs.trycloudflare.com");
       // var listdata = await axios.get("https://nongfootball.onrender.com");
     } catch (error) {
       console.log("axios error: ", error)
