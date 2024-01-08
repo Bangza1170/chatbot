@@ -1,7 +1,8 @@
 const TOKENBARD = process.env.POST_GENERAT_KEY_BARD;
 const { default: axios } = require("axios");
 
-
+import axios from "axios";
+import https from "https";
 
 async function generateBardAIResponse(question) {
   try {
