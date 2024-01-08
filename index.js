@@ -5,6 +5,8 @@ const { default: axios } = require("axios");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
+const TOKENBARD = process.env.GENERAT_KEY_BARD;
+
 
 app.use(express.json());
 app.use(
@@ -21,14 +23,14 @@ app.get("/test", (req, res) => {
   const axios = require("axios");
   let data = JSON.stringify({
     prompt: {
-      text: "how to install flutter",
+      text: "history",
     },
   });
 
   let config = {
     method: "post",
     maxBodyLength: Infinity,
-    url: "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=AIzaSyC2pHjqBIZHbfqjAEVB4uhgWqcTWUvd3_A",
+    url: `https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=${TOKENBARD}`,
     headers: {
       "Content-Type": "application/json",
     },
@@ -50,12 +52,12 @@ app.post("/webhook", async function (req, res) {
   res.send("HTTP POST request sent to the webhook URL!");
   const message = req.body.events[0].message.text;
   var dataString = {};
-  if (message.includes("คำถาม")) {
+  if (message.includes("How To")) {
     try {
       const axios = require("axios");
       let data = JSON.stringify({
         prompt: {
-          text: "how to install flutter",
+          text:  message,
         },
       });
 
