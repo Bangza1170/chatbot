@@ -46,7 +46,7 @@ app.post("/webhook", async function (req, res) {
         .request(config)
         .then((response) => {
           console.log(JSON.stringify(response.data));
-          result = JSON.stringify(response.data);
+          result = response.data.candidates[0].output;
         })
         .catch((error) => {
           console.log(error);
