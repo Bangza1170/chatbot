@@ -109,7 +109,7 @@ async function sendLineMessage(dataString) {
   }
 }
 
- async function postGoogleBardAI(question) {
+ async function postGoogleBardAI(req, res,question) {
   if (question.includes('How To')) {
     const responseText = await generateGoogleBardAIResponse(question);
     
