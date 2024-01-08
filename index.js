@@ -17,18 +17,45 @@ app.get("/", (req, res) => {
   res.sendStatus(200);
 });
 
+app.get("/test", (req, res) => {
+  const axios = require("axios");
+  let data = JSON.stringify({
+    prompt: {
+      text: "how to install flutter",
+    },
+  });
+
+  let config = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=AIzaSyC2pHjqBIZHbfqjAEVB4uhgWqcTWUvd3_A",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: data,
+  };
+  axios
+    .request(config)
+    .then((response) => {
+      const result = response.data.candidates[0].output;
+      return res.status(200).send(result);
+    })
+    .catch((error) => {
+      console.log(error);
+      return res.status(400).json(error);
+    });
+});
+
 app.post("/webhook", async function (req, res) {
   res.send("HTTP POST request sent to the webhook URL!");
   const message = req.body.events[0].message.text;
   var dataString = {};
   if (message.includes("คำถาม")) {
     try {
-      // const result = GoogleBardAI("");
       const axios = require("axios");
       let data = JSON.stringify({
         prompt: {
-          text: message,
-          // "text": question
+          text: "how to install flutter",
         },
       });
 
@@ -41,60 +68,58 @@ app.post("/webhook", async function (req, res) {
         },
         data: data,
       };
-      var result = "";
+
       axios
         .request(config)
         .then((response) => {
-          console.log(JSON.stringify(response.data));
-          result = response.data.candidates[0].output;
+          dataString = JSON.stringify({
+            replyToken: req.body.events[0].replyToken,
+            messages: [
+              {
+                type: "text",
+                text: response.data.candidates[0].output,
+              },
+            ],
+          });
+
+          try {
+            const headers = {
+              "Content-Type": "application/json",
+              Authorization:
+                "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
+            };
+
+            // Options to pass into the request
+            const webhookOptions = {
+              hostname: "api.line.me",
+              path: "/v2/bot/message/reply",
+              method: "POST",
+              headers: headers,
+              body: dataString,
+            };
+
+            // Define request
+            const request = https.request(webhookOptions, (res) => {
+              res.on("data", (d) => {
+                process.stdout.write(d);
+              });
+            });
+
+            // Handle error
+            request.on("error", (err) => {
+              console.error(err);
+            });
+
+            // Send data
+            request.write(dataString);
+            request.end();
+          } catch (error) {
+            console.log("error reply: ", error);
+          }
         })
         .catch((error) => {
           console.log(error);
         });
-      dataString = JSON.stringify({
-        replyToken: req.body.events[0].replyToken,
-        messages: [
-          {
-            type: "text",
-            text: result,
-          },
-        ],
-      });
-      // console.log("token: ", TOKEN)
-      try {
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization:
-            "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
-        };
-
-        // Options to pass into the request
-        const webhookOptions = {
-          hostname: "api.line.me",
-          path: "/v2/bot/message/reply",
-          method: "POST",
-          headers: headers,
-          body: dataString,
-        };
-
-        // Define request
-        const request = https.request(webhookOptions, (res) => {
-          res.on("data", (d) => {
-            process.stdout.write(d);
-          });
-        });
-
-        // Handle error
-        request.on("error", (err) => {
-          console.error(err);
-        });
-
-        // Send data
-        request.write(dataString);
-        request.end();
-      } catch (error) {
-        console.log("error reply: ", error);
-      }
     } catch (error) {
       console.log("axios error: ", error);
     }
@@ -103,14 +128,13 @@ app.post("/webhook", async function (req, res) {
     req.body.events[0].message.text === "ตารางคะแนน"
   ) {
     try {
-      var listdata = await axios.get(
-        "https://guarantee-oak-affordable-divisions.trycloudflare.com"
+      var listData = await axios.get(
+        "https://gaps-side-approaches-cuba.trycloudflare.com"
       );
-      // var listdata = await axios.get("https://nongfootball.onrender.com");
     } catch (error) {
       console.log("axios error: ", error);
     }
-    console.log(listdata.data.data);
+    console.log(listData.data.data);
     const newDataScore = [
       {
         type: "box",
@@ -184,9 +208,9 @@ app.post("/webhook", async function (req, res) {
         ],
       },
     ];
-    const data = listdata.data.data;
+    const data = listData.data.data;
+
     for (let i = 0; i < data.length; i++) {
-      console.log(data[i].pi);
       number = i + 1;
       let dataScore = {
         type: "box",
