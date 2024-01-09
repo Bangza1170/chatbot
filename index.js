@@ -1,13 +1,22 @@
 const https = require("https");
 const express = require("express");
-const axios = require("axios");
-
+const { log } = require("console");
+const { default: axios } = require("axios");
 const app = express();
 const PORT = process.env.PORT || 3000;
-const TOKENBARD = process.env.GENERAT_KEY_BARD;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
+const TOKENBARD = process.env.GENERAT_KEY_BARD;
 
 app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+app.get("/", (req, res) => {
+  res.sendStatus(200);
+});
 
 // Function to handle "How To" message
 async function handleHowToMessage(req, res, message) {
@@ -228,6 +237,9 @@ function createNewDataScore(data) {
 
 // Function to send Line message
 function sendLineMessage(dataString) {
+
+  
+
   const headers = {
     "Content-Type": "application/json",
     Authorization: "Bearer " + TOKEN,
@@ -257,6 +269,7 @@ function sendLineMessage(dataString) {
 
 // Handle POST request
 app.post("/webhook", async function (req, res) {
+  res.send("HTTP POST request sent to the webhook URL!");
   const message = req.body.events[0].message.text;
 
   if (message.includes("How To")) {
