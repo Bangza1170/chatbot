@@ -238,6 +238,7 @@ function sendLineMessage(dataString) {
     path: "/v2/bot/message/reply",
     method: "POST",
     headers: headers,
+    body: dataString,
   };
 
   const request = https.request(webhookOptions, (res) => {
