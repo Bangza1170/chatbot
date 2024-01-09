@@ -7,7 +7,6 @@ const PORT = process.env.PORT || 3000;
 const TOKENBARD = process.env.POST_GENERAT_KEY_BARD;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
 
-
 app.use(express.json());
 
 // Function to handle "How To" message
@@ -269,4 +268,7 @@ app.post("/webhook", async function (req, res) {
   }
 
   res.sendStatus(200);
+});
+app.listen(PORT, () => {
+  console.log(`Server is running on port http://localhost:${PORT}`);
 });
