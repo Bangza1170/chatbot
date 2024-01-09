@@ -4,7 +4,7 @@ const axios = require("axios");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const TOKENBARD = process.env.POST_GENERAT_KEY_BARD;
+const TOKENBARD = process.env.GENERAT_KEY_BARD;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
 
 app.use(express.json());
