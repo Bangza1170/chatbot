@@ -19,15 +19,17 @@ app.get("/", (req, res) => {
 });
 
 // Function to handle "How To" message
-async function handleHowToMessage(req, res, message) {
+async function handleHowToMessage(req, message) {
   try {
-    const data = JSON.stringify({
+    const axios = require("axios");
+    var dataString = {};
+    let data = JSON.stringify({
       prompt: {
         text: message,
       },
     });
 
-    const config = {
+    let config = {
       method: "post",
       url: `https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=${TOKENBARD}`,
       headers: {
@@ -36,24 +38,23 @@ async function handleHowToMessage(req, res, message) {
       data: data,
     };
 
-    const response = await axios(config);
-
-    const dataString = JSON.stringify({
-      replyToken: req.body.events[0].replyToken,
-      messages: [
-        {
-          type: "text",
-          text: response.data.candidates[0].output,
-        },
-      ],
+    // const response = await axios(config);
+    axios.request(config).then((response) => {
+      dataString = JSON.stringify({
+        replyToken: req.body.events[0].replyToken,
+        messages: [
+          {
+            type: "text",
+            text: response.data.candidates[0].output,
+          },
+        ],
+      });
+      sendLineMessage(dataString);
     });
-
-    sendLineMessage(dataString);
   } catch (error) {
     console.log("Error handling How To message: ", error);
   }
 }
-
 // Function to handle "ตารางคะแนน" message
 async function handleScoreTableMessage(req) {
   try {
