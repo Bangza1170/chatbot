@@ -25,11 +25,11 @@ app.post("/webhook", async function (req, res) {
   const message = req.body.events[0].message.text;
   var dataString = {};
   if (message.includes("How To")) {
-    handleHowToMessage();
+    handleHowToMessage(req, message,dataString);
   }
 });
 
-async function handleHowToMessage() {
+async function handleHowToMessage(req,message,dataString) {
   try {
     let data = JSON.stringify({
       prompt: {
