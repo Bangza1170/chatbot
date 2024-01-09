@@ -1,5 +1,3 @@
-
-
 const https = require("https");
 const express = require("express");
 const { log } = require("console");
@@ -8,7 +6,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
 const TOKENBARD = process.env.GENERAT_KEY_BARD;
-
 
 app.use(express.json());
 app.use(
@@ -21,85 +18,13 @@ app.get("/", (req, res) => {
   res.sendStatus(200);
 });
 
-
 app.post("/webhook", async function (req, res) {
   res.send("HTTP POST request sent to the webhook URL!");
   const message = req.body.events[0].message.text;
   var dataString = {};
   if (message.includes("How To")) {
-    try {
-      const axios = require("axios");
-      let data = JSON.stringify({
-        prompt: {
-          text:  message,
-        },
-      });
-
-      let config = {
-        method: "post",
-        maxBodyLength: Infinity,
-        url: "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=AIzaSyC2pHjqBIZHbfqjAEVB4uhgWqcTWUvd3_A",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: data,
-      };
-
-      axios
-        .request(config)
-        .then((response) => {
-          dataString = JSON.stringify({
-            replyToken: req.body.events[0].replyToken,
-            messages: [
-              {
-                type: "text",
-                text: response.data.candidates[0].output,
-              },
-            ],
-          });
-
-          try {
-            const headers = {
-              "Content-Type": "application/json",
-              Authorization:
-                "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
-            };
-
-            // Options to pass into the request
-            const webhookOptions = {
-              hostname: "api.line.me",
-              path: "/v2/bot/message/reply",
-              method: "POST",
-              headers: headers,
-              body: dataString,
-            };
-
-            // Define request
-            const request = https.request(webhookOptions, (res) => {
-              res.on("data", (d) => {
-                process.stdout.write(d);
-              });
-            });
-
-            // Handle error
-            request.on("error", (err) => {
-              console.error(err);
-            });
-
-            // Send data
-            request.write(dataString);
-            request.end();
-          } catch (error) {
-            console.log("error reply: ", error);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error) {
-      console.log("axios error: ", error);
-    }
-  } 
+    handelHowToMessage(req, res,message,dataString);
+  }
   // else if (
   //   req.body.events[0].message.type === "text" &&
   //   req.body.events[0].message.text === "ตารางคะแนน"
@@ -356,6 +281,81 @@ app.post("/webhook", async function (req, res) {
   //   request.end();
   // }
 });
+
+async function handelHowToMessage(req, res,message,dataString) {
+  try {
+    // const axios = require("axios");
+    let data = JSON.stringify({
+      prompt: {
+        text: message,
+      },
+    });
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=AIzaSyC2pHjqBIZHbfqjAEVB4uhgWqcTWUvd3_A",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        dataString = JSON.stringify({
+          replyToken: req.body.events[0].replyToken,
+          messages: [
+            {
+              type: "text",
+              text: response.data.candidates[0].output,
+            },
+          ],
+        });
+
+        try {
+          const headers = {
+            "Content-Type": "application/json",
+            Authorization:
+              "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
+          };
+
+          // Options to pass into the request
+          const webhookOptions = {
+            hostname: "api.line.me",
+            path: "/v2/bot/message/reply",
+            method: "POST",
+            headers: headers,
+            body: dataString,
+          };
+
+          // Define request
+          const request = https.request(webhookOptions, (res) => {
+            res.on("data", (d) => {
+              process.stdout.write(d);
+            });
+          });
+
+          // Handle error
+          request.on("error", (err) => {
+            console.error(err);
+          });
+
+          // Send data
+          request.write(dataString);
+          request.end();
+        } catch (error) {
+          console.log("error reply: ", error);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } catch (error) {
+    console.log("axios error: ", error);
+  }
+}
 
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);
