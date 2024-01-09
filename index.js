@@ -1,11 +1,20 @@
 const https = require("https");
 const express = require("express");
 const axios = require("axios");
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 const TOKENBARD = process.env.POST_GENERAT_KEY_BARD;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
+
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+app.get("/", (req, res) => {
+  res.sendStatus(200);
+});
 
 app.use(express.json());
 
