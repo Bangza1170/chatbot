@@ -239,33 +239,40 @@ function createNewDataScore(data) {
 // Function to send Line message
 function sendLineMessage(dataString) {
 
-  
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization:
+        "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
+    };
 
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: "Bearer " + TOKEN,
-  };
+    // Options to pass into the request
+    const webhookOptions = {
+      hostname: "api.line.me",
+      path: "/v2/bot/message/reply",
+      method: "POST",
+      headers: headers,
+      body: dataString,
+    };
 
-  const webhookOptions = {
-    hostname: "api.line.me",
-    path: "/v2/bot/message/reply",
-    method: "POST",
-    headers: headers,
-    body: dataString,
-  };
-
-  const request = https.request(webhookOptions, (res) => {
-    res.on("data", (d) => {
-      process.stdout.write(d);
+    // Define request
+    const request = https.request(webhookOptions, (res) => {
+      res.on("data", (d) => {
+        process.stdout.write(d);
+      });
     });
-  });
 
-  request.on("error", (err) => {
-    console.error(err);
-  });
+    // Handle error
+    request.on("error", (err) => {
+      console.error(err);
+    });
 
-  request.write(dataString);
-  request.end();
+    // Send data
+    request.write(dataString);
+    request.end();
+  } catch (error) {
+    console.log("error reply: ", error);
+  }
 }
 
 // Handle POST request
@@ -275,12 +282,15 @@ app.post("/webhook", async function (req, res) {
 
   if (message.includes("How To")) {
     handleHowToMessage(req, res, message);
-  } else if (
-    req.body.events[0].message.type === "text" &&
-    req.body.events[0].message.text === "ตารางคะแนน"
-  ) {
-    handleScoreTableMessage(req);
-  }
+  } 
+  
+  
+  // else if (
+  //   req.body.events[0].message.type === "text" &&
+  //   req.body.events[0].message.text === "ตารางคะแนน"
+  // ) {
+  //   handleScoreTableMessage(req);
+  // }
 
   res.sendStatus(200);
 });
