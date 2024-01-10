@@ -147,8 +147,63 @@ app.post("/webhook", async function (req, res) {
       newDataScore.push(dataScore);
     }
     // Message data, must be stringified
-      messageData(newDataScore);
-   
+    const dataString = JSON.stringify({
+      replyToken: req.body.events[0].replyToken,
+      messages: [
+        {
+          type: "flex",
+          altText: "ตารางคะแนนพรีเมียร์ลีคปัจจุบัน",
+          contents: {
+            type: "bubble",
+            hero: {
+              type: "box",
+              layout: "vertical",
+              contents: [
+                {
+                  type: "image",
+                  url: "https://ga.lnwfile.com/_/ga/_raw/e2/zk/v9.png",
+                  size: "full",
+                  aspectRatio: "15:10",
+                },
+              ],
+            },
+            body: {
+              type: "box",
+              layout: "vertical",
+              contents: [
+                {
+                  type: "box",
+                  layout: "vertical",
+                  margin: "lg",
+                  spacing: "sm",
+                  contents: newDataScore,
+                },
+              ],
+            },
+
+            footer: {
+              type: "box",
+              layout: "vertical",
+              contents: [
+                {
+                  type: "button",
+                  action: {
+                    type: "uri",
+                    label: "ตารางคะแนนลีคอื่นๆ",
+                    uri: "https://footballline.000webhostapp.com/point.html",
+                  },
+                  color: "#6600FF",
+                  gravity: "center",
+                  style: "primary",
+                },
+              ],
+            },
+          },
+        },
+      ],
+    });
+    console.log("show data_string: ", dataString);
+    authoriZation(dataString);
   }
 });
 
@@ -307,64 +362,8 @@ async function createNewDataScore() {
   return newDataScore;
 }
 
-async function messageData(newDataScore){
-  const dataString = JSON.stringify({
-    replyToken: req.body.events[0].replyToken,
-    messages: [
-      {
-        type: "flex",
-        altText: "ตารางคะแนนพรีเมียร์ลีคปัจจุบัน",
-        contents: {
-          type: "bubble",
-          hero: {
-            type: "box",
-            layout: "vertical",
-            contents: [
-              {
-                type: "image",
-                url: "https://ga.lnwfile.com/_/ga/_raw/e2/zk/v9.png",
-                size: "full",
-                aspectRatio: "15:10",
-              },
-            ],
-          },
-          body: {
-            type: "box",
-            layout: "vertical",
-            contents: [
-              {
-                type: "box",
-                layout: "vertical",
-                margin: "lg",
-                spacing: "sm",
-                contents: newDataScore,
-              },
-            ],
-          },
-
-          footer: {
-            type: "box",
-            layout: "vertical",
-            contents: [
-              {
-                type: "button",
-                action: {
-                  type: "uri",
-                  label: "ตารางคะแนนลีคอื่นๆ",
-                  uri: "https://footballline.000webhostapp.com/point.html",
-                },
-                color: "#6600FF",
-                gravity: "center",
-                style: "primary",
-              },
-            ],
-          },
-        },
-      },
-    ],
-  });
-  console.log("show data_string: ", dataString);
-  authoriZation(dataString);
+async function messageData(){
+  
 }
 
 
