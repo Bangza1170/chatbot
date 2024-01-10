@@ -37,13 +37,41 @@ app.post("/webhook", async function (req, res) {
     }
     console.log(listData.data.data);
 
-    const newDataScore = createNewDataScore();
-
+    const newDataScore = [
+      {
+        type: "box",
+        layout: "baseline",
+        contents: [
+          { type: "text", text: "Pos.", size: "xxs", weight: "bold", flex: 2 },
+          { type: "text", text: "L", flex: 1, size: "xxs", weight: "bold" },
+          {
+            type: "text",
+            text: "Team",
+            flex: 3,
+            size: "xxs",
+            weight: "bold",
+            margin: "md",
+          },
+          {
+            type: "text",
+            text: "P",
+            flex: 2,
+            size: "xxs",
+            weight: "bold",
+            align: "center",
+          },
+          { type: "text", text: "W", flex: 1, size: "xxs", weight: "bold" },
+          { type: "text", text: "D", flex: 1, size: "xxs", weight: "bold" },
+          { type: "text", text: "L", flex: 1, size: "xxs", weight: "bold" },
+          { type: "text", text: "+/-", size: "xxs", weight: "bold", flex: 2 },
+          { type: "text", text: "Pt", size: "xxs", weight: "bold", flex: 1 },
+        ],
+      },
+    ];
     const data = listData.data.data;
 
     for (let i = 0; i < data.length; i++) {
-   let   number = i + 1;
-
+      let number = i + 1;
       let dataScore = {
         type: "box",
         layout: "baseline",
