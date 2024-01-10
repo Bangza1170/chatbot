@@ -23,9 +23,8 @@ app.post("/webhook", async function (req, res) {
   const message = req.body.events[0].message.text;
   var dataString = {};
   if (message.includes("How To")) {
-    handelHowToMessage(req, res,message,dataString);
-  }
-  else if (
+    handelHowToMessage(req, res, message, dataString);
+  } else if (
     req.body.events[0].message.type === "text" &&
     req.body.events[0].message.text === "ตารางคะแนน"
   ) {
@@ -37,16 +36,12 @@ app.post("/webhook", async function (req, res) {
       console.log("axios error: ", error);
     }
     console.log(listData.data.data);
-     
-    
-   var newDataScore = createNewDataScore()
 
-
-
+    let newDataScore = createNewDataScore();
 
     const data = listData.data.data;
 
-   
+   let loobNewDataScore = loobDataScore(data, newDataScore);
     // Message data, must be stringified
     const dataString = JSON.stringify({
       replyToken: req.body.events[0].replyToken,
@@ -77,7 +72,7 @@ app.post("/webhook", async function (req, res) {
                   layout: "vertical",
                   margin: "lg",
                   spacing: "sm",
-                  contents: newDataScore,
+                  contents: loobNewDataScore,
                 },
               ],
             },
@@ -98,8 +93,6 @@ app.post("/webhook", async function (req, res) {
                   style: "primary",
                 },
               ],
-
-
             },
           },
         },
@@ -111,7 +104,8 @@ app.post("/webhook", async function (req, res) {
     // Request header
     const headers = {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + TOKEN,
+      Authorization:
+      "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
     };
 
     // Options to pass into the request
@@ -141,9 +135,8 @@ app.post("/webhook", async function (req, res) {
   }
 });
 
-async function handelHowToMessage(req, res,message,dataString) {
+async function handelHowToMessage(req, res, message, dataString) {
   try {
-
     let data = JSON.stringify({
       prompt: {
         text: message,
@@ -182,7 +175,7 @@ async function handelHowToMessage(req, res,message,dataString) {
     console.log("axios error: ", error);
   }
 }
-async function authoriZation(dataString){
+async function authoriZation(dataString) {
   try {
     const headers = {
       "Content-Type": "application/json",
@@ -219,7 +212,7 @@ async function authoriZation(dataString){
   }
 }
 
-async function createNewDataScore(){
+async function createNewDataScore() {
   const newDataScore = [
     {
       type: "box",
@@ -296,7 +289,7 @@ async function createNewDataScore(){
   return newDataScore;
 }
 
-async function loobDataScore(data, newDataScore){
+async function loobDataScore(data, newDataScore) {
   let score;
   for (let i = 0; i < data.length; i++) {
     number = i + 1;
@@ -372,11 +365,10 @@ async function loobDataScore(data, newDataScore){
         },
       ],
     };
-    score =   newDataScore.push(dataScore);
+    score = newDataScore.push(dataScore);
   }
   return score;
 }
-
 
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);
