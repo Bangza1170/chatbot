@@ -147,9 +147,8 @@ app.post("/webhook", async function (req, res) {
       newDataScore.push(dataScore);
     }
     // Message data, must be stringified
-    var dataString =  messageData(newDataScore);
-    console.log("show data_string: ", dataString);
-    authoriZation(dataString);
+      messageData(newDataScore);
+   
   }
 });
 
@@ -364,7 +363,8 @@ async function messageData(newDataScore){
       },
     ],
   });
-return dataString;
+  console.log("show data_string: ", dataString);
+  authoriZation(dataString);
 }
 
 
