@@ -37,116 +37,7 @@ app.post("/webhook", async function (req, res) {
     }
     console.log(listData.data.data);
 
-    const newDataScore = [
-      {
-        type: "box",
-        layout: "baseline",
-        contents: [
-          { type: "text", text: "Pos.", size: "xxs", weight: "bold", flex: 2 },
-          { type: "text", text: "L", flex: 1, size: "xxs", weight: "bold" },
-          {
-            type: "text",
-            text: "Team",
-            flex: 3,
-            size: "xxs",
-            weight: "bold",
-            margin: "md",
-          },
-          {
-            type: "text",
-            text: "P",
-            flex: 2,
-            size: "xxs",
-            weight: "bold",
-            align: "center",
-          },
-          { type: "text", text: "W", flex: 1, size: "xxs", weight: "bold" },
-          { type: "text", text: "D", flex: 1, size: "xxs", weight: "bold" },
-          { type: "text", text: "L", flex: 1, size: "xxs", weight: "bold" },
-          { type: "text", text: "+/-", size: "xxs", weight: "bold", flex: 2 },
-          { type: "text", text: "Pt", size: "xxs", weight: "bold", flex: 1 },
-        ],
-      },
-    ];
-    const data = listData.data.data;
-
-    for (let i = 0; i < data.length; i++) {
-      let number = i + 1;
-      let dataScore = {
-        type: "box",
-        layout: "baseline",
-        spacing: "sm",
-        contents: [
-          {
-            type: "text",
-            text: `${number}`,
-            color: "#000000",
-            size: "xxs",
-            flex: 2,
-          },
-          {
-            type: "icon",
-            url: data[i].icon,
-            size: "xxs",
-          },
-          {
-            type: "text",
-            text: data[i].team,
-            wrap: true,
-            color: "#666666",
-            size: "xxs",
-            flex: 3,
-          },
-          {
-            type: "text",
-            text: data[i].pi,
-            flex: 2,
-            size: "xxs",
-            margin: "xl",
-            align: "center",
-          },
-          {
-            type: "text",
-            text: data[i].w,
-            flex: 1,
-            size: "xxs",
-            color: "#01B54C",
-          },
-          {
-            type: "text",
-            text: data[i].d,
-            flex: 1,
-            size: "xxs",
-            color: "#929684",
-            margin: "none",
-          },
-          {
-            type: "text",
-            text: data[i].l,
-            flex: 1,
-            size: "xxs",
-            color: "#FA1001",
-            margin: "none",
-          },
-          {
-            type: "text",
-            text: data[i].gd,
-            flex: 2,
-            size: "xxs",
-            color: "#000000",
-          },
-          {
-            type: "text",
-            text: data[i].pts,
-            flex: 1,
-            size: "xxs",
-            color: "#000000",
-          },
-        ],
-      };
-
-      newDataScore.push(dataScore);
-    }
+  const newDataScore=  createNewDataScore(listData);
     // Message data, must be stringified
     const dataString = JSON.stringify({
       replyToken: req.body.events[0].replyToken,
@@ -286,26 +177,14 @@ async function authoriZation(dataString) {
   }
 }
 
-async function createNewDataScore() {
+async function createNewDataScore(listData) {
   const newDataScore = [
     {
       type: "box",
       layout: "baseline",
       contents: [
-        {
-          type: "text",
-          text: "Pos.",
-          size: "xxs",
-          weight: "bold",
-          flex: 2,
-        },
-        {
-          type: "text",
-          text: "L",
-          flex: 1,
-          size: "xxs",
-          weight: "bold",
-        },
+        { type: "text", text: "Pos.", size: "xxs", weight: "bold", flex: 2 },
+        { type: "text", text: "L", flex: 1, size: "xxs", weight: "bold" },
         {
           type: "text",
           text: "Team",
@@ -322,45 +201,93 @@ async function createNewDataScore() {
           weight: "bold",
           align: "center",
         },
-        {
-          type: "text",
-          text: "W",
-          flex: 1,
-          size: "xxs",
-          weight: "bold",
-        },
-        {
-          type: "text",
-          text: "D",
-          flex: 1,
-          size: "xxs",
-          weight: "bold",
-        },
-        {
-          type: "text",
-          text: "L",
-          flex: 1,
-          size: "xxs",
-          weight: "bold",
-        },
-        {
-          type: "text",
-          text: "+/-",
-          size: "xxs",
-          weight: "bold",
-          flex: 2,
-        },
-        {
-          type: "text",
-          text: "Pt",
-          size: "xxs",
-          weight: "bold",
-          flex: 1,
-        },
+        { type: "text", text: "W", flex: 1, size: "xxs", weight: "bold" },
+        { type: "text", text: "D", flex: 1, size: "xxs", weight: "bold" },
+        { type: "text", text: "L", flex: 1, size: "xxs", weight: "bold" },
+        { type: "text", text: "+/-", size: "xxs", weight: "bold", flex: 2 },
+        { type: "text", text: "Pt", size: "xxs", weight: "bold", flex: 1 },
       ],
     },
   ];
+  const data = listData.data.data;
 
+  for (let i = 0; i < data.length; i++) {
+    const number = i + 1;
+    const dataScore = {
+      type: "box",
+      layout: "baseline",
+      spacing: "sm",
+      contents: [
+        {
+          type: "text",
+          text: `${number}`,
+          color: "#000000",
+          size: "xxs",
+          flex: 2,
+        },
+        {
+          type: "icon",
+          url: data[i].icon,
+          size: "xxs",
+        },
+        {
+          type: "text",
+          text: data[i].team,
+          wrap: true,
+          color: "#666666",
+          size: "xxs",
+          flex: 3,
+        },
+        {
+          type: "text",
+          text: data[i].pi,
+          flex: 2,
+          size: "xxs",
+          margin: "xl",
+          align: "center",
+        },
+        {
+          type: "text",
+          text: data[i].w,
+          flex: 1,
+          size: "xxs",
+          color: "#01B54C",
+        },
+        {
+          type: "text",
+          text: data[i].d,
+          flex: 1,
+          size: "xxs",
+          color: "#929684",
+          margin: "none",
+        },
+        {
+          type: "text",
+          text: data[i].l,
+          flex: 1,
+          size: "xxs",
+          color: "#FA1001",
+          margin: "none",
+        },
+        {
+          type: "text",
+          text: data[i].gd,
+          flex: 2,
+          size: "xxs",
+          color: "#000000",
+        },
+        {
+          type: "text",
+          text: data[i].pts,
+          flex: 1,
+          size: "xxs",
+          color: "#000000",
+        },
+      ],
+    };
+
+    newDataScore.push(dataScore);
+  }
   return newDataScore;
 }
 
