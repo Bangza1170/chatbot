@@ -99,42 +99,42 @@ app.post("/webhook", async function (req, res) {
     });
 
     console.log("show data_string: ", dataString);
-
+    authoriZation(dataString);
     // Request header
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + TOKEN,
-    };
+  //   const headers = {
+  //     "Content-Type": "application/json",
+  //     Authorization: "Bearer " + TOKEN,
+  //   };
 
-   // console.log("show headers: ", headers);
+  //  // console.log("show headers: ", headers);
 
-    // Options to pass into the request
-    const webhookOptions = {
-      hostname: "api.line.me",
-      path: "/v2/bot/message/reply",
-      method: "POST",
-      headers: headers,
-      body: dataString,
-    };
+  //   // Options to pass into the request
+  //   const webhookOptions = {
+  //     hostname: "api.line.me",
+  //     path: "/v2/bot/message/reply",
+  //     method: "POST",
+  //     headers: headers,
+  //     body: dataString,
+  //   };
 
-   // console.log("show webhookOptions: ", webhookOptions);
-    // Define request
-    const request = https.request(webhookOptions, (res) => {
-      res.on("data", (d) => {
-        process.stdout.write(d);
-      });
-    });
-   // console.log("show request: ", request);
+  //  // console.log("show webhookOptions: ", webhookOptions);
+  //   // Define request
+  //   const request = https.request(webhookOptions, (res) => {
+  //     res.on("data", (d) => {
+  //       process.stdout.write(d);
+  //     });
+  //   });
+  //  // console.log("show request: ", request);
 
-    // Handle error
-    request.on("error", (err) => {
-      console.error(err);
-    });
+  //   // Handle error
+  //   request.on("error", (err) => {
+  //     console.error(err);
+  //   });
 
-    // Send data
-    request.write(dataString);
-    console.log("show  request.write(dataString): ",  request.write(dataString));
-    request.end();
+  //   // Send data
+  //   request.write(dataString);
+  //   console.log("show  request.write(dataString): ",  request.write(dataString));
+  //   request.end();
   }
 });
 
