@@ -37,8 +37,88 @@ app.post("/webhook", async function (req, res) {
     }
     console.log(listData.data.data);
 
-    const newDataScore = createNewDataScore(listData);
+    const newDataScore = createNewDataScore();
 
+    const data = listData.data.data;
+
+    for (let i = 0; i < data.length; i++) {
+   let   number = i + 1;
+
+      let dataScore = {
+        type: "box",
+        layout: "baseline",
+        spacing: "sm",
+        contents: [
+          {
+            type: "text",
+            text: `${number}`,
+            color: "#000000",
+            size: "xxs",
+            flex: 2,
+          },
+          {
+            type: "icon",
+            url: data[i].icon,
+            size: "xxs",
+          },
+          {
+            type: "text",
+            text: data[i].team,
+            wrap: true,
+            color: "#666666",
+            size: "xxs",
+            flex: 3,
+          },
+          {
+            type: "text",
+            text: data[i].pi,
+            flex: 2,
+            size: "xxs",
+            margin: "xl",
+            align: "center",
+          },
+          {
+            type: "text",
+            text: data[i].w,
+            flex: 1,
+            size: "xxs",
+            color: "#01B54C",
+          },
+          {
+            type: "text",
+            text: data[i].d,
+            flex: 1,
+            size: "xxs",
+            color: "#929684",
+            margin: "none",
+          },
+          {
+            type: "text",
+            text: data[i].l,
+            flex: 1,
+            size: "xxs",
+            color: "#FA1001",
+            margin: "none",
+          },
+          {
+            type: "text",
+            text: data[i].gd,
+            flex: 2,
+            size: "xxs",
+            color: "#000000",
+          },
+          {
+            type: "text",
+            text: data[i].pts,
+            flex: 1,
+            size: "xxs",
+            color: "#000000",
+          },
+        ],
+      };
+
+      newDataScore.push(dataScore);
+    }
     // Message data, must be stringified
     const dataString = JSON.stringify({
       replyToken: req.body.events[0].replyToken,
@@ -178,7 +258,7 @@ async function authoriZation(dataString) {
   }
 }
 
-async function createNewDataScore(listData) {
+async function createNewDataScore() {
   const newDataScore = [
     {
       type: "box",
@@ -252,86 +332,7 @@ async function createNewDataScore(listData) {
       ],
     },
   ];
-  const data = listData.data.data;
 
-  for (let i = 0; i < data.length; i++) {
-    number = i + 1;
-
-    let dataScore = {
-      type: "box",
-      layout: "baseline",
-      spacing: "sm",
-      contents: [
-        {
-          type: "text",
-          text: `${number}`,
-          color: "#000000",
-          size: "xxs",
-          flex: 2,
-        },
-        {
-          type: "icon",
-          url: data[i].icon,
-          size: "xxs",
-        },
-        {
-          type: "text",
-          text: data[i].team,
-          wrap: true,
-          color: "#666666",
-          size: "xxs",
-          flex: 3,
-        },
-        {
-          type: "text",
-          text: data[i].pi,
-          flex: 2,
-          size: "xxs",
-          margin: "xl",
-          align: "center",
-        },
-        {
-          type: "text",
-          text: data[i].w,
-          flex: 1,
-          size: "xxs",
-          color: "#01B54C",
-        },
-        {
-          type: "text",
-          text: data[i].d,
-          flex: 1,
-          size: "xxs",
-          color: "#929684",
-          margin: "none",
-        },
-        {
-          type: "text",
-          text: data[i].l,
-          flex: 1,
-          size: "xxs",
-          color: "#FA1001",
-          margin: "none",
-        },
-        {
-          type: "text",
-          text: data[i].gd,
-          flex: 2,
-          size: "xxs",
-          color: "#000000",
-        },
-        {
-          type: "text",
-          text: data[i].pts,
-          flex: 1,
-          size: "xxs",
-          color: "#000000",
-        },
-      ],
-    };
-
-    newDataScore.push(dataScore);
-  }
   return newDataScore;
 }
 
