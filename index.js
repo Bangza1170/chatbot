@@ -30,7 +30,7 @@ app.post("/webhook", async function (req, res) {
   ) {
     try {
       var listData = await axios.get(
-        " https://dutch-collection-relations-safer.trycloudflare.com"
+        "https://dutch-collection-relations-safer.trycloudflare.com"
       );
     } catch (error) {
       console.log("axios error: ", error);
