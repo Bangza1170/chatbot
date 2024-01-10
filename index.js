@@ -109,6 +109,8 @@ app.post("/webhook", async function (req, res) {
         "Bearer "+ TOKEN,
     };
 
+console.log("show headers: ", headers);
+
     // Options to pass into the request
     const webhookOptions = {
       hostname: "api.line.me",
@@ -118,12 +120,14 @@ app.post("/webhook", async function (req, res) {
       body: dataString,
     };
 
+    console.log("show webhookOptions: ", webhookOptions);
     // Define request
     const request = https.request(webhookOptions, (res) => {
       res.on("data", (d) => {
         process.stdout.write(d);
       });
     });
+    console.log("show request: ", request);
 
     // Handle error
     request.on("error", (err) => {
