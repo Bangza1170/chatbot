@@ -330,8 +330,9 @@ async function createNewDataScore(listData) {
       ],
     };
 
-    return newDataScore.push(dataScore);
+    newDataScore.push(dataScore);
   }
+  return newDataScore;
 }
 
 app.listen(PORT, () => {
