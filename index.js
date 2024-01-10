@@ -291,7 +291,6 @@ async function createNewDataScore() {
 }
 
 async function loobDataScore(data, newDataScore) {
-  let score = "";
   for (let i = 0; i < data.length; i++) {
     number = i + 1;
     let dataScore = {
@@ -366,9 +365,9 @@ async function loobDataScore(data, newDataScore) {
         },
       ],
     };
-    score = newDataScore.push(dataScore);
+
+    return newDataScore.push(dataScore);
   }
-  return score;
 }
 
 app.listen(PORT, () => {
