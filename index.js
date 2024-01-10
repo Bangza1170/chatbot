@@ -31,7 +31,7 @@ app.post("/webhook", async function (req, res) {
   ) {
     try {
       var listData = await axios.get(
-        "https://gaps-side-approaches-cuba.trycloudflare.com"
+        "https://bowling-reached-feedback-sounds.trycloudflare.com"
       );
     } catch (error) {
       console.log("axios error: ", error);
