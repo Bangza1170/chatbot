@@ -39,8 +39,6 @@ app.post("/webhook", async function (req, res) {
 
     const newDataScore = createNewDataScore(listData);
 
-   
-
     // const loobNewDataScore = loobDataScore(data, newDataScore);
 
     // Message data, must be stringified
@@ -105,11 +103,10 @@ app.post("/webhook", async function (req, res) {
     // Request header
     const headers = {
       "Content-Type": "application/json",
-      Authorization:
-        "Bearer "+ TOKEN,
+      Authorization: "Bearer " + TOKEN,
     };
 
-console.log("show headers: ", headers);
+   // console.log("show headers: ", headers);
 
     // Options to pass into the request
     const webhookOptions = {
@@ -120,14 +117,14 @@ console.log("show headers: ", headers);
       body: dataString,
     };
 
-    console.log("show webhookOptions: ", webhookOptions);
+   // console.log("show webhookOptions: ", webhookOptions);
     // Define request
     const request = https.request(webhookOptions, (res) => {
       res.on("data", (d) => {
         process.stdout.write(d);
       });
     });
-    console.log("show request: ", request);
+   // console.log("show request: ", request);
 
     // Handle error
     request.on("error", (err) => {
@@ -136,6 +133,7 @@ console.log("show headers: ", headers);
 
     // Send data
     request.write(dataString);
+    console.log("show  request.write(dataString): ",  request.write(dataString));
     request.end();
   }
 });
