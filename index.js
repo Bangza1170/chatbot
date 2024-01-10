@@ -37,13 +37,11 @@ app.post("/webhook", async function (req, res) {
     }
     console.log(listData.data.data);
 
-   let newDataScore = createNewDataScore();
-
+    let newDataScore = createNewDataScore();
 
     const data = listData.data.data;
 
-   let loobNewDataScore = loobDataScore(data, newDataScore);
-
+    let loobNewDataScore = loobDataScore(data, newDataScore);
 
     // Message data, must be stringified
     const dataString = JSON.stringify({
@@ -108,7 +106,7 @@ app.post("/webhook", async function (req, res) {
     const headers = {
       "Content-Type": "application/json",
       Authorization:
-      "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
+        "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
     };
 
     // Options to pass into the request
@@ -293,7 +291,7 @@ async function createNewDataScore() {
 }
 
 async function loobDataScore(data, newDataScore) {
-  let score = '';
+  let score = "";
   for (let i = 0; i < data.length; i++) {
     number = i + 1;
     let dataScore = {
@@ -368,7 +366,7 @@ async function loobDataScore(data, newDataScore) {
         },
       ],
     };
-     newDataScore.push(dataScore);
+    score = newDataScore.push(dataScore);
   }
   return score;
 }
