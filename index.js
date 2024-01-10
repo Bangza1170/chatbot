@@ -106,7 +106,7 @@ app.post("/webhook", async function (req, res) {
     const headers = {
       "Content-Type": "application/json",
       Authorization:
-        "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
+        "Bearer "+ TOKEN,
     };
 
     // Options to pass into the request
@@ -367,87 +367,87 @@ async function createNewDataScore(listData) {
   return newDataScore;
 }
 
-async function loobDataScore(data, newDataScore) {
-  for (let i = 0; i < data.length; i++) {
-    number = i + 1;
-    let dataScore = {
-      type: "box",
-      layout: "baseline",
-      spacing: "sm",
-      contents: [
-        {
-          type: "text",
-          text: `${number}`,
-          color: "#000000",
-          size: "xxs",
-          flex: 2,
-        },
-        {
-          type: "icon",
-          url: data[i].icon,
-          size: "xxs",
-        },
-        {
-          type: "text",
-          text: data[i].team,
-          wrap: true,
-          color: "#666666",
-          size: "xxs",
-          flex: 3,
-        },
-        {
-          type: "text",
-          text: data[i].pi,
-          flex: 2,
-          size: "xxs",
-          margin: "xl",
-          align: "center",
-        },
-        {
-          type: "text",
-          text: data[i].w,
-          flex: 1,
-          size: "xxs",
-          color: "#01B54C",
-        },
-        {
-          type: "text",
-          text: data[i].d,
-          flex: 1,
-          size: "xxs",
-          color: "#929684",
-          margin: "none",
-        },
-        {
-          type: "text",
-          text: data[i].l,
-          flex: 1,
-          size: "xxs",
-          color: "#FA1001",
-          margin: "none",
-        },
-        {
-          type: "text",
-          text: data[i].gd,
-          flex: 2,
-          size: "xxs",
-          color: "#000000",
-        },
-        {
-          type: "text",
-          text: data[i].pts,
-          flex: 1,
-          size: "xxs",
-          color: "#000000",
-        },
-      ],
-    };
+// async function loobDataScore(data, newDataScore) {
+//   for (let i = 0; i < data.length; i++) {
+//     number = i + 1;
+//     let dataScore = {
+//       type: "box",
+//       layout: "baseline",
+//       spacing: "sm",
+//       contents: [
+//         {
+//           type: "text",
+//           text: `${number}`,
+//           color: "#000000",
+//           size: "xxs",
+//           flex: 2,
+//         },
+//         {
+//           type: "icon",
+//           url: data[i].icon,
+//           size: "xxs",
+//         },
+//         {
+//           type: "text",
+//           text: data[i].team,
+//           wrap: true,
+//           color: "#666666",
+//           size: "xxs",
+//           flex: 3,
+//         },
+//         {
+//           type: "text",
+//           text: data[i].pi,
+//           flex: 2,
+//           size: "xxs",
+//           margin: "xl",
+//           align: "center",
+//         },
+//         {
+//           type: "text",
+//           text: data[i].w,
+//           flex: 1,
+//           size: "xxs",
+//           color: "#01B54C",
+//         },
+//         {
+//           type: "text",
+//           text: data[i].d,
+//           flex: 1,
+//           size: "xxs",
+//           color: "#929684",
+//           margin: "none",
+//         },
+//         {
+//           type: "text",
+//           text: data[i].l,
+//           flex: 1,
+//           size: "xxs",
+//           color: "#FA1001",
+//           margin: "none",
+//         },
+//         {
+//           type: "text",
+//           text: data[i].gd,
+//           flex: 2,
+//           size: "xxs",
+//           color: "#000000",
+//         },
+//         {
+//           type: "text",
+//           text: data[i].pts,
+//           flex: 1,
+//           size: "xxs",
+//           color: "#000000",
+//         },
+//       ],
+//     };
 
-    score = newDataScore.push(dataScore);
-    console.log("scoreeeeeeeeeeeeeeeeeeeeee" + score);
-  }
-  return score;
-}
+//     score = newDataScore.push(dataScore);
+//     console.log("scoreeeeeeeeeeeeeeeeeeeeee" + score);
+//   }
+//   return score;
+// }
 
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);
