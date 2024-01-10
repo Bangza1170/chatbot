@@ -37,11 +37,11 @@ app.post("/webhook", async function (req, res) {
     }
     console.log(listData.data.data);
 
-    let newDataScore = createNewDataScore();
+    const newDataScore = createNewDataScore();
 
     const data = listData.data.data;
 
-    let loobNewDataScore = loobDataScore(data, newDataScore);
+    const loobNewDataScore = loobDataScore(data, newDataScore);
 
     // Message data, must be stringified
     const dataString = JSON.stringify({
@@ -291,6 +291,7 @@ async function createNewDataScore() {
 }
 
 async function loobDataScore(data, newDataScore) {
+  const score = [];
   for (let i = 0; i < data.length; i++) {
     number = i + 1;
     let dataScore = {
@@ -366,8 +367,10 @@ async function loobDataScore(data, newDataScore) {
       ],
     };
 
-    return newDataScore.push(dataScore);
+    score =  newDataScore.push(dataScore);
+    console.log('scoreeeeeeeeeeeeeeeeeeeeee'+ score);
   }
+  return score;
 }
 
 app.listen(PORT, () => {
