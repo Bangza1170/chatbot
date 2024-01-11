@@ -33,9 +33,10 @@ app.post("/webhook", async function (req, res) {
 
         console.log("Error message" + translatedMessage);
 
-        //  if (translatedMessage.toLowerCase().includes("How To")) {
-        //    handelHowToMessage(req, res, translatedMessage, dataString);
-        //  }
+         if (translatedMessage.toLowerCase().includes(/[ก-๙]/)) {
+          console.log("Error translatedMessage.toLowerCase().then" + translatedMessage.toLowerCase());
+           handelHowToMessage(req, res, translatedMessage, dataString);
+         }
       })
       .catch((error) => {
         console.log("Error translate message" + error);
