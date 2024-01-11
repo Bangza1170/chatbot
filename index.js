@@ -23,14 +23,23 @@ app.post("/webhook", async function (req, res) {
   res.send("HTTP POST request sent to the webhook URL!");
   const message = req.body.events[0].message.text;
   const isThaiText = /[ก-๙]/.test(message);
+  console.log("Error isThaiText" + isThaiText);
   var dataString = {};
   if (isThaiText) {
-    translate(message, { from: "th", to: "en" });
-  }
+    translate(message, { from: "th", to: "en" })
+      .then(function (translated) {
+        console.log("Error translated.then" + translated);
+        const translatedMessage = translated.text;
 
- 
-  if (message.includes("How To")) {
-    handelHowToMessage(req, res, message, dataString);
+        console.log("Error message" + translatedMessage);
+
+        //  if (translatedMessage.toLowerCase().includes("How To")) {
+        //    handelHowToMessage(req, res, translatedMessage, dataString);
+        //  }
+      })
+      .catch((error) => {
+        console.log("Error translate message" + error);
+      });
   }
 });
 
@@ -68,7 +77,7 @@ async function handelHowToMessage(req, res, message, dataString) {
         authoriZation(dataString);
       })
       .catch((error) => {
-        console.log(error);
+        console.log("Error authoriZation"+error);
       });
   } catch (error) {
     console.log("axios error: ", error);
