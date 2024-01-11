@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
 const TOKENBARD = process.env.GENERAT_KEY_BARD;
 const translate = require("google-translate-api");
+const wordcut = require("wordcut");
 
 app.use(express.json());
 app.use(
@@ -22,26 +23,27 @@ app.get("/", (req, res) => {
 app.post("/webhook", async function (req, res) {
   res.send("HTTP POST request sent to the webhook URL!");
   const message = req.body.events[0].message.text;
-  const isThaiText = /[ก-๙]/.test(message);
-  console.log("Error isThaiText" + isThaiText);
+  const thaiText = 'สวัสดี';
+  const segmentedText = wordcut.cut(thaiText);
+  console.log("Error ThaiText" + segmentedText);
   var dataString = {};
-  if (isThaiText) {
-    translate(message, { from: "th", to: "en" })
-      .then(function (translated) {
-        console.log("Error translated.then" + translated);
-        const translatedMessage = translated.text;
+  // if (thaiText) {
+  //   translate(message, { from: "th", to: "en" })
+  //     .then(function (translated) {
+  //       console.log("Error translated.then" + translated);
+  //       const translatedMessage = translated.text;
 
-        console.log("Error message" + translatedMessage);
+  //       console.log("Error message" + translatedMessage);
 
-         if (translatedMessage.toLowerCase().includes(/[ก-๙]/)) {
-          console.log("Error translatedMessage.toLowerCase().then" + translatedMessage.toLowerCase());
-           handelHowToMessage(req, res, translatedMessage, dataString);
-         }
-      })
-      .catch((error) => {
-        console.log("Error translate message" + error);
-      });
-  }
+  //        if (translatedMessage.toLowerCase().includes(/[ก-๙]/)) {
+  //         console.log("Error translatedMessage.toLowerCase().then" + translatedMessage.toLowerCase());
+  //          handelHowToMessage(req, res, translatedMessage, dataString);
+  //        }
+  //     })
+  //     .catch((error) => {
+  //       console.log("Error translate message" + error);
+  //     });
+  // }
 });
 
 async function handelHowToMessage(req, res, message, dataString) {
