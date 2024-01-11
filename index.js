@@ -27,23 +27,23 @@ app.post("/webhook", async function (req, res) {
   const segmentedText = wordcut.cut(thaiText);
   console.log("Error ThaiText" + segmentedText);
   var dataString = {};
-  // if (thaiText) {
-  //   translate(message, { from: "th", to: "en" })
-  //     .then(function (translated) {
-  //       console.log("Error translated.then" + translated);
-  //       const translatedMessage = translated.text;
+  if (thaiText) {
+    translate(message, { from: "th", to: "en" })
+      .then(function (translated) {
+        console.log("Error translated.then" + translated);
+        const translatedMessage = translated.text;
 
-  //       console.log("Error message" + translatedMessage);
+        console.log("Error message" + translatedMessage);
 
-  //        if (translatedMessage.toLowerCase().includes(/[ก-๙]/)) {
-  //         console.log("Error translatedMessage.toLowerCase().then" + translatedMessage.toLowerCase());
-  //          handelHowToMessage(req, res, translatedMessage, dataString);
-  //        }
-  //     })
-  //     .catch((error) => {
-  //       console.log("Error translate message" + error);
-  //     });
-  // }
+         if (translatedMessage.toLowerCase().includes(/[ก-๙]/)) {
+          console.log("Error translatedMessage.toLowerCase().then" + translatedMessage.toLowerCase());
+           handelHowToMessage(req, res, translatedMessage, dataString);
+         }
+      })
+      .catch((error) => {
+        console.log("Error translate message" + error);
+      });
+  }
 });
 
 async function handelHowToMessage(req, res, message, dataString) {
