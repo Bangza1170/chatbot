@@ -189,7 +189,7 @@ async function translateString(res, message) {
     };
 
     const response = await axios.request(options);
-    console.log("response.data" + response.data[0].translations[0].text);
+    console.log("response.data: " + response.data[0].translations[0].text);
     return res.status(200).send(response.data[0].translations[0].text);
   } catch (e) {
     console.log(e);
