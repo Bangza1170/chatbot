@@ -59,7 +59,7 @@ app.post("/webhook", async function (req, res) {
   let response = await translateString(res, message);
 
   console.log("response:output" + response);
-  const jsonString = JSON.stringify(response.data[0]);
+  const jsonString = JSON.stringify(response);
 
   console.log("jsonString:output : " + jsonString);
   // const responseText = response.translations[0].text;
