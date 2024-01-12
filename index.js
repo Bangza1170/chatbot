@@ -60,12 +60,13 @@ app.post("/webhook", async function (req, res) {
   // const textmessage = "คำถาม: อยากรู้ว่ากะเพราทำยังไง";
 
   var dataString = {};
-  const response = await translateString(res, message);
-  console.log("response:output" + response);
+  let response = await translateString(res, message);
+  console.log("response:output" + response[0].translations[0].text);
   // const responseText = response.translations[0].text;
-  if (response.includes("ตำถาม")) {
+  let responseText =response[0].translations[0].text;
+  if (responseText.includes("ตำถาม")) {
 
-     handelHowToMessage(req, res, response, dataString);
+     handelHowToMessage(req, res, responseText, dataString);
   }
 
   // else if (
@@ -193,7 +194,7 @@ async function translateString(res, message) {
 
     const response = await axios.request(options);
     console.log("response.data: " + response.data[0].translations[0].text);
-    return res.status(200).send(response.data[0].translations[0].text);
+    return res.status(200).send(response.data);
   } catch (e) {
     console.log(e);
   }
