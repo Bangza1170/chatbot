@@ -53,18 +53,15 @@ app.post("/test", async (req, res) => {
 });
 
 app.post("/webhook", async function (req, res) {
-  // const message = req.body.events[0].message.text;
+  const message = req.body.events[0].message.text;
 
+  // const message = "คำถาม: รถอะไรแรงที่สุดในโลก";
 
-  const message = "คำถาม: รถอะไรแรงที่สุดในโลก";
-  
-  
-  
   var dataString = {};
   let response = await translateString(res, message);
 
   console.log("response:output " + response);
-  // const jsonString = JSON.stringify(objA); 
+  // const jsonString = JSON.stringify(objA);
 
   // console.log("jsonString:output : " + jsonString);
   // const responseText = response.translations[0].text;
@@ -121,9 +118,10 @@ async function handelHowToMessage(req, res, message, dataString) {
     axios
       .request(config)
       .then(async function (response) {
-        console.log('response line : ' +response.data.candidates[0].output);
+        console.log("response line : " + response.data.candidates[0].output);
         const message = response.data.candidates[0].output;
         let responseText = await translateString(res, message);
+
         dataString = JSON.stringify({
           replyToken: req.body.events[0].replyToken,
           messages: [
@@ -134,7 +132,7 @@ async function handelHowToMessage(req, res, message, dataString) {
           ],
         });
 
-        authoriZation(dataString);
+        await authoriZation(dataString);
       })
       .catch((error) => {
         console.log("Error authoriZation" + error);
