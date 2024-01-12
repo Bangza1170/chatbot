@@ -18,54 +18,53 @@ app.get("/", (req, res) => {
   res.sendStatus(200);
 });
 
-app.get("/test", async (req, res) => {
+app.post("/test", async (req, res) => {
   const textmessage = "คำถาม: อยากรู้ว่ากะเพราทำยังไง";
+  //  const message = req.body.events[0].message.text;
   var dataString = {};
   const response = await translateString(res, textmessage);
-  if (response.includes("คำถาม")) {
-    handelHowToMessage(req, res, translatedMessage, dataString);
-  } else if (
-    req.body.events[0].message.type === "text" &&
-    req.body.events[0].message.text === "ตารางคะแนน"
-  ) {
-    try {
-      var listData = await axios.get(
-        "https://rally-finances-proceeds-recreational.trycloudflare.com"
-      );
-    } catch (error) {
-      console.log("axios error: ", error);
-    }
-    console.log(listData.data.data);
+  // if (response.includes("คำถาม")) {
+  //   handelHowToMessage(req, res, translatedMessage, dataString);
+  // } else if (
+  //   req.body.events[0].message.type === "text" &&
+  //   req.body.events[0].message.text === "ตารางคะแนน"
+  // ) {
+  //   try {
+  //     var listData = await axios.get(
+  //       "https://rally-finances-proceeds-recreational.trycloudflare.com"
+  //     );
+  //   } catch (error) {
+  //     console.log("axios error: ", error);
+  //   }
+  //   console.log(listData.data.data);
 
-    const newDataScore = createNewDataScore();
-    const data = listData.data.data;
-    for (let i = 0; i < data.length; i++) {
-      const number = i + 1;
-      const dataScoreItem = createDataScoreItem(number, data[i]);
-      newDataScore.push(dataScoreItem);
-    }
-    const dataString = await dataString(newDataScore);
+  //   const newDataScore = createNewDataScore();
+  //   const data = listData.data.data;
+  //   for (let i = 0; i < data.length; i++) {
+  //     const number = i + 1;
+  //     const dataScoreItem = createDataScoreItem(number, data[i]);
+  //     newDataScore.push(dataScoreItem);
+  //   }
+  //   const dataString = await dataString(newDataScore);
 
-    console.log("show data_string: ", dataString);
-    authoriZation(dataString);
-  }
+  //   console.log("show data_string: ", dataString);
+  //   authoriZation(dataString);
+  // }
 });
 
 app.post("/webhook", async function (req, res) {
-  
   res.send("HTTP POST request sent to the webhook URL!");
   const message = req.body.events[0].message.text;
+  // const message = "คำถาม";
+  console.log("message" + message);
   // const textmessage = "คำถาม: อยากรู้ว่ากะเพราทำยังไง";
-  
+
   var dataString = {};
   const response = await translateString(res, message);
-  const responseText = response.translations[0].text;
-  console.log('responseText'+responseText);
+  if (response.includes("ตำถาม")) {
+    await handelHowToMessage(req, res, response, dataString);
+  }
 
-  if (responseText.includes("ตำถาม")) {
-  await  handelHowToMessage(req, res, responseText, dataString);
-  } 
-  
   // else if (
   //   req.body.events[0].message.type === "text" &&
   //   req.body.events[0].message.text === "ตารางคะแนน"
@@ -169,7 +168,7 @@ async function authoriZation(dataString) {
     console.log("error reply: ", error);
   }
 }
-async function translateString(res, textmessage) {
+async function translateString(res, message) {
   try {
     const options = {
       method: "POST",
@@ -183,14 +182,15 @@ async function translateString(res, textmessage) {
       },
       headers: {
         "content-type": "application/json",
-        "X-RapidAPI-Key": "3869ac740fmsh5c1de103ef19a6ap149d92jsna8ba63ae66c2",
+        "X-RapidAPI-Key": "e0a38da895msh20013849f02baacp165b04jsnd2f7724b6a3f",
         "X-RapidAPI-Host": "microsoft-translator-text.p.rapidapi.com",
       },
-      data: [{ Text: textmessage }],
+      data: [{ Text: message }],
     };
+
     const response = await axios.request(options);
-    console.log(response.data);
-    return res.status(200).send(response.data);
+    console.log("response.data" + response.data[0].translations[0].text);
+    return res.status(200).send(response.data[0].translations[0].text);
   } catch (e) {
     console.log(e);
   }
