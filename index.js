@@ -6,9 +6,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
 const TOKENBARD = process.env.GENERAT_KEY_BARD;
-const translate = require("google-translate-api");
-const wordcut = require("wordcut");
-const ThaiCutSlim = require("thai-cut-slim");
 
 app.use(express.json());
 app.use(
@@ -21,40 +18,76 @@ app.get("/", (req, res) => {
   res.sendStatus(200);
 });
 
-app.post("/webhook", async function (req, res) {
-  try {
-    res.send("HTTP POST request sent to the webhook URL!");
-    const message = req.body.events[0].message.text;
-    const thaiText = "สวัสดี";
-    // const cutter = new ThaiCutSlim();
-    const isThaiText = message.match(/[ก-๙]/);
-    // const segmentedText = wordcut.cut(thaiText);
-    console.log("Error ThaiText" + isThaiText);
-    var dataString = {};
-    if (isThaiText) {
-      translate(message, { from: "th", to: "en" })
-        .then(function (translated) {
-          console.log("Error translated.then" + translated);
-          const translatedMessage = translated.text;
-
-          console.log("Error message" + translatedMessage);
-
-          if (translatedMessage.toLowerCase().includes(/[ก-๙]/)) {
-            console.log(
-              "Error translatedMessage.toLowerCase().then" +
-                translatedMessage.toLowerCase()
-            );
-            handelHowToMessage(req, res, translatedMessage, dataString);
-          }
-        })
-        .catch((error) => {
-          console.log("Error translate message" + error);
-        });
+app.get("/test", async (req, res) => {
+  const textmessage = "คำถาม: อยากรู้ว่ากะเพราทำยังไง";
+  var dataString = {};
+  const response = await translateString(res, textmessage);
+  if (response.includes("คำถาม")) {
+    handelHowToMessage(req, res, translatedMessage, dataString);
+  } else if (
+    req.body.events[0].message.type === "text" &&
+    req.body.events[0].message.text === "ตารางคะแนน"
+  ) {
+    try {
+      var listData = await axios.get(
+        "https://rally-finances-proceeds-recreational.trycloudflare.com"
+      );
+    } catch (error) {
+      console.log("axios error: ", error);
     }
-  } catch (error) {
-    console.log("Error in webhook processing: " + error);
-    res.status(500).send("Internal Server Error");
+    console.log(listData.data.data);
+
+    const newDataScore = createNewDataScore();
+    const data = listData.data.data;
+    for (let i = 0; i < data.length; i++) {
+      const number = i + 1;
+      const dataScoreItem = createDataScoreItem(number, data[i]);
+      newDataScore.push(dataScoreItem);
+    }
+    const dataString = await dataString(newDataScore);
+
+    console.log("show data_string: ", dataString);
+    authoriZation(dataString);
   }
+});
+
+app.post("/webhook", async function (req, res) {
+  
+  res.send("HTTP POST request sent to the webhook URL!");
+  const message = req.body.events[0].message.text;
+  // const textmessage = "คำถาม: อยากรู้ว่ากะเพราทำยังไง";
+  var dataString = {};
+  const response = await translateString(res, message);
+
+  if (response.includes("คำถาม")) {
+    handelHowToMessage(req, res, response, dataString);
+  } 
+  
+  // else if (
+  //   req.body.events[0].message.type === "text" &&
+  //   req.body.events[0].message.text === "ตารางคะแนน"
+  // ) {
+  //   try {
+  //     var listData = await axios.get(
+  //       "https://rally-finances-proceeds-recreational.trycloudflare.com"
+  //     );
+  //   } catch (error) {
+  //     console.log("axios error: ", error);
+  //   }
+  //   console.log(listData.data.data);
+
+  //   const newDataScore = createNewDataScore();
+  //   const data = listData.data.data;
+  //   for (let i = 0; i < data.length; i++) {
+  //     const number = i + 1;
+  //     const dataScoreItem = createDataScoreItem(number, data[i]);
+  //     newDataScore.push(dataScoreItem);
+  //   }
+  //   const newDataStrings = await newDataString(newDataScore);
+
+  //   console.log("show data_string: ", newDataStrings);
+  //   authoriZation(dataString);
+  // }
 });
 
 async function handelHowToMessage(req, res, message, dataString) {
@@ -133,27 +166,41 @@ async function authoriZation(dataString) {
     console.log("error reply: ", error);
   }
 }
+async function translateString(res, textmessage) {
+  try {
+    const options = {
+      method: "POST",
+      url: "https://microsoft-translator-text.p.rapidapi.com/translate",
+      params: {
+        "to[0]": "en",
+        "api-version": "3.0",
+        from: "th",
+        profanityAction: "NoAction",
+        textType: "plain",
+      },
+      headers: {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": "3869ac740fmsh5c1de103ef19a6ap149d92jsna8ba63ae66c2",
+        "X-RapidAPI-Host": "microsoft-translator-text.p.rapidapi.com",
+      },
+      data: [{ Text: textmessage }],
+    };
+    const response = await axios.request(options);
+    console.log(response.data);
+    return res.status(200).send(response.data);
+  } catch (e) {
+    console.log(e);
+  }
+}
 
-async function createNewDataScore() {
-  const newDataScore = [
+function createNewDataScore() {
+  return [
     {
       type: "box",
       layout: "baseline",
       contents: [
-        {
-          type: "text",
-          text: "Pos.",
-          size: "xxs",
-          weight: "bold",
-          flex: 2,
-        },
-        {
-          type: "text",
-          text: "L",
-          flex: 1,
-          size: "xxs",
-          weight: "bold",
-        },
+        { type: "text", text: "Pos.", size: "xxs", weight: "bold", flex: 2 },
+        { type: "text", text: "L", flex: 1, size: "xxs", weight: "bold" },
         {
           type: "text",
           text: "Team",
@@ -170,232 +217,127 @@ async function createNewDataScore() {
           weight: "bold",
           align: "center",
         },
-        {
-          type: "text",
-          text: "W",
-          flex: 1,
-          size: "xxs",
-          weight: "bold",
-        },
-        {
-          type: "text",
-          text: "D",
-          flex: 1,
-          size: "xxs",
-          weight: "bold",
-        },
-        {
-          type: "text",
-          text: "L",
-          flex: 1,
-          size: "xxs",
-          weight: "bold",
-        },
-        {
-          type: "text",
-          text: "+/-",
-          size: "xxs",
-          weight: "bold",
-          flex: 2,
-        },
-        {
-          type: "text",
-          text: "Pt",
-          size: "xxs",
-          weight: "bold",
-          flex: 1,
-        },
+        { type: "text", text: "W", flex: 1, size: "xxs", weight: "bold" },
+        { type: "text", text: "D", flex: 1, size: "xxs", weight: "bold" },
+        { type: "text", text: "L", flex: 1, size: "xxs", weight: "bold" },
+        { type: "text", text: "+/-", size: "xxs", weight: "bold", flex: 2 },
+        { type: "text", text: "Pt", size: "xxs", weight: "bold", flex: 1 },
       ],
     },
   ];
-
-  return newDataScore;
 }
 
-async function messageData() {}
+function createDataScoreItem(number, item) {
+  return {
+    type: "box",
+    layout: "baseline",
+    spacing: "sm",
+    contents: [
+      {
+        type: "text",
+        text: `${number}`,
+        color: "#000000",
+        size: "xxs",
+        flex: 2,
+      },
+      { type: "icon", url: item.icon, size: "xxs" },
+      {
+        type: "text",
+        text: item.team,
+        wrap: true,
+        color: "#666666",
+        size: "xxs",
+        flex: 3,
+      },
+      {
+        type: "text",
+        text: item.pi,
+        flex: 2,
+        size: "xxs",
+        margin: "xl",
+        align: "center",
+      },
+      { type: "text", text: item.w, flex: 1, size: "xxs", color: "#01B54C" },
+      {
+        type: "text",
+        text: item.d,
+        flex: 1,
+        size: "xxs",
+        color: "#929684",
+        margin: "none",
+      },
+      {
+        type: "text",
+        text: item.l,
+        flex: 1,
+        size: "xxs",
+        color: "#FA1001",
+        margin: "none",
+      },
+      { type: "text", text: item.gd, flex: 2, size: "xxs", color: "#000000" },
+      { type: "text", text: item.pts, flex: 1, size: "xxs", color: "#000000" },
+    ],
+  };
+}
+async function newDataString(newDataScore) {
+  const dataString = JSON.stringify({
+    replyToken: req.body.events[0].replyToken,
+    messages: [
+      {
+        type: "flex",
+        altText: "ตารางคะแนนพรีเมียร์ลีคปัจจุบัน",
+        contents: {
+          type: "bubble",
+          hero: {
+            type: "box",
+            layout: "vertical",
+            contents: [
+              {
+                type: "image",
+                url: "https://ga.lnwfile.com/_/ga/_raw/e2/zk/v9.png",
+                size: "full",
+                aspectRatio: "15:10",
+              },
+            ],
+          },
+          body: {
+            type: "box",
+            layout: "vertical",
+            contents: [
+              {
+                type: "box",
+                layout: "vertical",
+                margin: "lg",
+                spacing: "sm",
+                contents: newDataScore,
+              },
+            ],
+          },
+
+          footer: {
+            type: "box",
+            layout: "vertical",
+            contents: [
+              {
+                type: "button",
+                action: {
+                  type: "uri",
+                  label: "ตารางคะแนนลีคอื่นๆ",
+                  uri: "https://footballline.000webhostapp.com/point.html",
+                },
+                color: "#6600FF",
+                gravity: "center",
+                style: "primary",
+              },
+            ],
+          },
+        },
+      },
+    ],
+  });
+  return dataString;
+}
 
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);
 });
-
-// else if (
-//   req.body.events[0].message.type === "text" &&
-//   req.body.events[0].message.text === "ตารางคะแนน"
-// ) {
-//   try {
-//     var listData = await axios.get(
-//       "https://gg-limit-austin-blowing.trycloudflare.com"
-//     );
-//   } catch (error) {
-//     console.log("axios error: ", error);
-//   }
-//   console.log(listData.data.data);
-
-//   const newDataScore = [
-//     {
-//       type: "box",
-//       layout: "baseline",
-//       contents: [
-//         { type: "text", text: "Pos.", size: "xxs", weight: "bold", flex: 2 },
-//         { type: "text", text: "L", flex: 1, size: "xxs", weight: "bold" },
-//         {
-//           type: "text",
-//           text: "Team",
-//           flex: 3,
-//           size: "xxs",
-//           weight: "bold",
-//           margin: "md",
-//         },
-//         {
-//           type: "text",
-//           text: "P",
-//           flex: 2,
-//           size: "xxs",
-//           weight: "bold",
-//           align: "center",
-//         },
-//         { type: "text", text: "W", flex: 1, size: "xxs", weight: "bold" },
-//         { type: "text", text: "D", flex: 1, size: "xxs", weight: "bold" },
-//         { type: "text", text: "L", flex: 1, size: "xxs", weight: "bold" },
-//         { type: "text", text: "+/-", size: "xxs", weight: "bold", flex: 2 },
-//         { type: "text", text: "Pt", size: "xxs", weight: "bold", flex: 1 },
-//       ],
-//     },
-//   ];
-//   const data = listData.data.data;
-//   for (let i = 0; i < data.length; i++) {
-//     let number = i + 1;
-//     let dataScore = {
-//       type: "box",
-//       layout: "baseline",
-//       spacing: "sm",
-//       contents: [
-//         {
-//           type: "text",
-//           text: `${number}`,
-//           color: "#000000",
-//           size: "xxs",
-//           flex: 2,
-//         },
-//         {
-//           type: "icon",
-//           url: data[i].icon,
-//           size: "xxs",
-//         },
-//         {
-//           type: "text",
-//           text: data[i].team,
-//           wrap: true,
-//           color: "#666666",
-//           size: "xxs",
-//           flex: 3,
-//         },
-//         {
-//           type: "text",
-//           text: data[i].pi,
-//           flex: 2,
-//           size: "xxs",
-//           margin: "xl",
-//           align: "center",
-//         },
-//         {
-//           type: "text",
-//           text: data[i].w,
-//           flex: 1,
-//           size: "xxs",
-//           color: "#01B54C",
-//         },
-//         {
-//           type: "text",
-//           text: data[i].d,
-//           flex: 1,
-//           size: "xxs",
-//           color: "#929684",
-//           margin: "none",
-//         },
-//         {
-//           type: "text",
-//           text: data[i].l,
-//           flex: 1,
-//           size: "xxs",
-//           color: "#FA1001",
-//           margin: "none",
-//         },
-//         {
-//           type: "text",
-//           text: data[i].gd,
-//           flex: 2,
-//           size: "xxs",
-//           color: "#000000",
-//         },
-//         {
-//           type: "text",
-//           text: data[i].pts,
-//           flex: 1,
-//           size: "xxs",
-//           color: "#000000",
-//         },
-//       ],
-//     };
-
-//     newDataScore.push(dataScore);
-//   }
-//   // Message data, must be stringified
-//   const dataString = JSON.stringify({
-//     replyToken: req.body.events[0].replyToken,
-//     messages: [
-//       {
-//         type: "flex",
-//         altText: "ตารางคะแนนพรีเมียร์ลีคปัจจุบัน",
-//         contents: {
-//           type: "bubble",
-//           hero: {
-//             type: "box",
-//             layout: "vertical",
-//             contents: [
-//               {
-//                 type: "image",
-//                 url: "https://ga.lnwfile.com/_/ga/_raw/e2/zk/v9.png",
-//                 size: "full",
-//                 aspectRatio: "15:10",
-//               },
-//             ],
-//           },
-//           body: {
-//             type: "box",
-//             layout: "vertical",
-//             contents: [
-//               {
-//                 type: "box",
-//                 layout: "vertical",
-//                 margin: "lg",
-//                 spacing: "sm",
-//                 contents: newDataScore,
-//               },
-//             ],
-//           },
-
-//           footer: {
-//             type: "box",
-//             layout: "vertical",
-//             contents: [
-//               {
-//                 type: "button",
-//                 action: {
-//                   type: "uri",
-//                   label: "ตารางคะแนนลีคอื่นๆ",
-//                   uri: "https://footballline.000webhostapp.com/point.html",
-//                 },
-//                 color: "#6600FF",
-//                 gravity: "center",
-//                 style: "primary",
-//               },
-//             ],
-//           },
-//         },
-//       },
-//     ],
-//   });
-//   console.log("show data_string: ", dataString);
-//   authoriZation(dataString);
-// }
