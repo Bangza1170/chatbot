@@ -55,11 +55,18 @@ app.post("/test", async (req, res) => {
 app.post("/webhook", async function (req, res) {
   const message = req.body.events[0].message.text;
 
+
+  
+  
+  
+  
   var dataString = {};
   let response = await translateString(res, message);
-
+  const objA = {};
+  const objB = { response };
+  objA.circularReference = objB;
   console.log("response:output" + response);
-  const jsonString = JSON.stringify(response);
+  const jsonString = JSON.stringify(objA); 
 
   console.log("jsonString:output : " + jsonString);
   // const responseText = response.translations[0].text;
