@@ -8,6 +8,7 @@ const TOKEN = process.env.LINE_ACCESS_TOKEN;
 const TOKENBARD = process.env.GENERAT_KEY_BARD;
 const translate = require("google-translate-api");
 const wordcut = require("wordcut");
+const ThaiCutSlim = require("thai-cut-slim");
 
 app.use(express.json());
 app.use(
@@ -21,28 +22,38 @@ app.get("/", (req, res) => {
 });
 
 app.post("/webhook", async function (req, res) {
-  res.send("HTTP POST request sent to the webhook URL!");
-  const message = req.body.events[0].message.text;
-  const thaiText = 'สวัสดี';
-  const segmentedText = wordcut.cut(thaiText);
-  console.log("Error ThaiText" + segmentedText);
-  var dataString = {};
-  if (thaiText) {
-    translate(message, { from: "th", to: "en" })
-      .then(function (translated) {
-        console.log("Error translated.then" + translated);
-        const translatedMessage = translated.text;
+  try {
+    res.send("HTTP POST request sent to the webhook URL!");
+    const message = req.body.events[0].message.text;
+    const thaiText = "สวัสดี";
+    // const cutter = new ThaiCutSlim();
+    const isThaiText = message.match(/[ก-๙]/);
+    // const segmentedText = wordcut.cut(thaiText);
+    console.log("Error ThaiText" + isThaiText);
+    var dataString = {};
+    if (isThaiText) {
+      translate(message, { from: "th", to: "en" })
+        .then(function (translated) {
+          console.log("Error translated.then" + translated);
+          const translatedMessage = translated.text;
 
-        console.log("Error message" + translatedMessage);
+          console.log("Error message" + translatedMessage);
 
-         if (translatedMessage.toLowerCase().includes(/[ก-๙]/)) {
-          console.log("Error translatedMessage.toLowerCase().then" + translatedMessage.toLowerCase());
-           handelHowToMessage(req, res, translatedMessage, dataString);
-         }
-      })
-      .catch((error) => {
-        console.log("Error translate message" + error);
-      });
+          if (translatedMessage.toLowerCase().includes(/[ก-๙]/)) {
+            console.log(
+              "Error translatedMessage.toLowerCase().then" +
+                translatedMessage.toLowerCase()
+            );
+            handelHowToMessage(req, res, translatedMessage, dataString);
+          }
+        })
+        .catch((error) => {
+          console.log("Error translate message" + error);
+        });
+    }
+  } catch (error) {
+    console.log("Error in webhook processing: " + error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
@@ -80,7 +91,7 @@ async function handelHowToMessage(req, res, message, dataString) {
         authoriZation(dataString);
       })
       .catch((error) => {
-        console.log("Error authoriZation"+error);
+        console.log("Error authoriZation" + error);
       });
   } catch (error) {
     console.log("axios error: ", error);
@@ -213,7 +224,7 @@ app.listen(PORT, () => {
 // ) {
 //   try {
 //     var listData = await axios.get(
-//       "https://rally-finances-proceeds-recreational.trycloudflare.com"
+//       "https://gg-limit-austin-blowing.trycloudflare.com"
 //     );
 //   } catch (error) {
 //     console.log("axios error: ", error);
