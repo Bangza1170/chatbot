@@ -59,9 +59,9 @@ app.post("/webhook", async function (req, res) {
   let response = await translateString(res, message);
 
   console.log("response:output" + response);
-  const jsonString = JSON.stringify(response.data);
+  const jsonString = JSON.stringify(response.data[0]);
 
-  console.log("jsonString:output" + jsonString);
+  console.log("jsonString:output : " + jsonString);
   // const responseText = response.translations[0].text;
   // let responseText =response[0].translations[0].text;
   // if (response.includes("ตำถาม")) {
