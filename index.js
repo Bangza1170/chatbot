@@ -122,14 +122,14 @@ async function handelHowToMessage(req, res, message, dataString) {
       .request(config)
       .then(async function (response) {
         console.log('response line : ' +response.data.candidates[0].output);
-        // const message = response.data.candidates[0].output;
-        // let response = await translateString(res, message);
+        const message = response.data.candidates[0].output;
+        const response = await translateString(res, message);
         dataString = JSON.stringify({
           replyToken: req.body.events[0].replyToken,
           messages: [
             {
               type: "text",
-              text: response.data.candidates[0].output,
+              text: response,
             },
           ],
         });
