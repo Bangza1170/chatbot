@@ -53,16 +53,10 @@ app.post("/test", async (req, res) => {
 });
 
 app.post("/webhook", async function (req, res) {
-  // res.send("HTTP POST request sent to the webhook URL!");
   const message = req.body.events[0].message.text;
-  // const message = "คำถาม";
-  // console.log("message" + message);
-  // const textmessage = "คำถาม: อยากรู้ว่ากะเพราทำยังไง";
 
   var dataString = {};
-  // const response = await translateString(res, message);
 
-  // console.log("response:output" + response);
   const options = {
     method: "POST",
     url: "https://microsoft-translator-text.p.rapidapi.com/translate",
@@ -83,12 +77,9 @@ app.post("/webhook", async function (req, res) {
 
   const response = await axios.request(options);
   console.log("response.data: " + response.data[0].translations[0].text);
-  // var responseText = res.status(200).send(response.data[0].translations[0].text);
 
-  // const responseText = response.translations[0].text;
-  if (response.includes("ตำถาม")) {
-
-    await handelHowToMessage(req, res, response, dataString);
+  if (response.data[0].translations[0].text.includes("ตำถาม")) {
+    handelHowToMessage(req, res, response, dataString);
   }
 
   // else if (
