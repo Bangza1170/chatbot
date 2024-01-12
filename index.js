@@ -61,11 +61,11 @@ app.post("/webhook", async function (req, res) {
 
   var dataString = {};
   const response = await translateString(res, message);
-  console.log("response:output" + response.translations[0].text);
-  const responseText = response.translations[0].text;
-  if (responseText.includes("ตำถาม")) {
+  console.log("response:output" + response);
+  // const responseText = response.translations[0].text;
+  if (response.includes("ตำถาม")) {
 
-    await handelHowToMessage(req, res, responseText, dataString);
+    await handelHowToMessage(req, res, response, dataString);
   }
 
   // else if (
@@ -193,7 +193,7 @@ async function translateString(res, message) {
 
     const response = await axios.request(options);
     console.log("response.data: " + response.data[0].translations[0].text);
-    return res.status(200).send(response.data[0]);
+    return res.status(200).send(response.data[0].translations[0].text);
   } catch (e) {
     console.log(e);
   }
