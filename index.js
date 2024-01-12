@@ -53,33 +53,19 @@ app.post("/test", async (req, res) => {
 });
 
 app.post("/webhook", async function (req, res) {
+  // res.send("HTTP POST request sent to the webhook URL!");
   const message = req.body.events[0].message.text;
+  // const message = "คำถาม";
+  // console.log("message" + message);
+  // const textmessage = "คำถาม: อยากรู้ว่ากะเพราทำยังไง";
 
   var dataString = {};
+  const response = await translateString(res, message);
+  console.log("response:output" + response);
+  // const responseText = response.translations[0].text;
+  if (response.includes("ตำถาม")) {
 
-  const options = {
-    method: "POST",
-    url: "https://microsoft-translator-text.p.rapidapi.com/translate",
-    params: {
-      "to[0]": "en",
-      "api-version": "3.0",
-      from: "th",
-      profanityAction: "NoAction",
-      textType: "plain",
-    },
-    headers: {
-      "content-type": "application/json",
-      "X-RapidAPI-Key": "e0a38da895msh20013849f02baacp165b04jsnd2f7724b6a3f",
-      "X-RapidAPI-Host": "microsoft-translator-text.p.rapidapi.com",
-    },
-    data: [{ Text: message }],
-  };
-
-  const response = await axios.request(options);
-  console.log("response.data: " + response.data[0].translations[0].text);
-
-  if (response.data[0].translations[0].text.includes("ตำถาม")) {
-    handelHowToMessage(req, res, response, dataString);
+     handelHowToMessage(req, res, response, dataString);
   }
 
   // else if (
