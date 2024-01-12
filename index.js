@@ -121,14 +121,15 @@ async function handelHowToMessage(req, res, message, dataString) {
     axios
       .request(config)
       .then(async function (response) {
-        const message = response.data.candidates[0].output;
-        let response = await translateString(res, message);
+        console.log('response line : ' +response.data.candidates[0].output);
+        // const message = response.data.candidates[0].output;
+        // let response = await translateString(res, message);
         dataString = JSON.stringify({
           replyToken: req.body.events[0].replyToken,
           messages: [
             {
               type: "text",
-              text: response,
+              text: response.data.candidates[0].output,
             },
           ],
         });
