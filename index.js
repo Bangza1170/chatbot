@@ -56,11 +56,13 @@ app.post("/webhook", async function (req, res) {
   res.send("HTTP POST request sent to the webhook URL!");
   const message = req.body.events[0].message.text;
   // const textmessage = "คำถาม: อยากรู้ว่ากะเพราทำยังไง";
+  
   var dataString = {};
-  // const response = await translateString(res, message);
+  const response = await translateString(res, message);
+  const responseText = response.data.translations[0].text;
 
-  if (message.includes("how to")) {
-  await  handelHowToMessage(req, res, message, dataString);
+  if (responseText.includes("how to")) {
+  await  handelHowToMessage(req, res, responseText, dataString);
   } 
   
   // else if (
