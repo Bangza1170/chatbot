@@ -69,8 +69,8 @@ app.post("/webhook", async function (req, res) {
   // const responseText = response.translations[0].text;
   // let responseText =response[0].translations[0].text;
   if (response.includes("ตำถาม")) {
-console.log("เข้า if มาแล้ว"+response);
-     handelHowToMessage(req, res, response, dataString);
+    console.log("เข้า if มาแล้ว" + response);
+    handelHowToMessage(req, res, response, dataString);
   }
 
   // else if (
