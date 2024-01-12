@@ -59,9 +59,10 @@ app.post("/webhook", async function (req, res) {
   
   var dataString = {};
   const response = await translateString(res, message);
-  const responseText = response.data.translations[0].text;
+  const responseText = response.translations[0].text;
+  console.log('responseText'+responseText);
 
-  if (responseText.includes("ตำถาม ")) {
+  if (responseText.includes("ตำถาม")) {
   await  handelHowToMessage(req, res, responseText, dataString);
   } 
   
