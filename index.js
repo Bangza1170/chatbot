@@ -53,17 +53,13 @@ app.post("/test", async (req, res) => {
 });
 
 app.post("/webhook", async function (req, res) {
-  // res.send("HTTP POST request sent to the webhook URL!");
   const message = req.body.events[0].message.text;
-  // const message = "คำถาม";
-  // console.log("message" + message);
-  // const textmessage = "คำถาม: อยากรู้ว่ากะเพราทำยังไง";
 
   var dataString = {};
   let response = await translateString(res, message);
 
   console.log("response:output" + response);
-  const jsonString = JSON.stringify(response);
+  const jsonString = JSON.stringify(response.data);
 
   console.log("jsonString:output" + jsonString);
   // const responseText = response.translations[0].text;
@@ -72,7 +68,6 @@ app.post("/webhook", async function (req, res) {
   //   console.log("เข้า if มาแล้ว" + response);
   //   handelHowToMessage(req, res, response, dataString);
   // }
-
   // else if (
   //   req.body.events[0].message.type === "text" &&
   //   req.body.events[0].message.text === "ตารางคะแนน"
@@ -198,8 +193,8 @@ async function translateString(res, message) {
 
     const response = await axios.request(options);
     console.log("response.data: " + response.data[0].translations[0].text);
-    
-    return res.status(200).send(response.data[0].translations[0].text);;
+
+    return res.status(200).send(response.data[0].translations[0].text);
   } catch (e) {
     console.log(e);
   }
