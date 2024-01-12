@@ -53,28 +53,26 @@ app.post("/test", async (req, res) => {
 });
 
 app.post("/webhook", async function (req, res) {
-  const message = req.body.events[0].message.text;
+  // const message = req.body.events[0].message.text;
 
 
-  
+  const message = "คำถาม: อยากรู้ว่ากะเพราทำยังไง";
   
   
   
   var dataString = {};
   let response = await translateString(res, message);
-  const objA = {};
-  const objB = { response };
-  objA.circularReference = objB;
-  console.log("response:output" + response);
-  const jsonString = JSON.stringify(objA); 
 
-  console.log("jsonString:output : " + jsonString);
+  console.log("response:output " + response);
+  // const jsonString = JSON.stringify(objA); 
+
+  // console.log("jsonString:output : " + jsonString);
   // const responseText = response.translations[0].text;
   // let responseText =response[0].translations[0].text;
-  // if (response.includes("ตำถาม")) {
-  //   console.log("เข้า if มาแล้ว" + response);
-  //   handelHowToMessage(req, res, response, dataString);
-  // }
+  if (response.includes("Question")) {
+    console.log("เข้า if มาแล้ว" + response);
+    handelHowToMessage(req, res, response, dataString);
+  }
   // else if (
   //   req.body.events[0].message.type === "text" &&
   //   req.body.events[0].message.text === "ตารางคะแนน"
@@ -200,8 +198,8 @@ async function translateString(res, message) {
 
     const response = await axios.request(options);
     console.log("response.data: " + response.data[0].translations[0].text);
-
-    return res.status(200).send(response.data[0].translations[0].text);
+    res.status(200).send(response.data);
+    return response.data[0].translations[0].text;
   } catch (e) {
     console.log(e);
   }
