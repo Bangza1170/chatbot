@@ -65,7 +65,9 @@ app.post("/webhook", async function (req, res) {
   const enToTh = await tranSlate.translateString(thToEn, "en", "th");
   if (enToTh.includes("คำถาม")) {
     howToMessage.handelHowToMessage(req, res, enToTh, dataString);
-  } else if (
+    return res.status(200).send(enToTh);
+  } 
+  else if (
     req.body.events[0].message.type === "text" &&
     req.body.events[0].message.text === "ตารางคะแนน"
   ) {
@@ -90,7 +92,7 @@ app.post("/webhook", async function (req, res) {
     console.log("show data_string: ", dataString);
     await bardAuthori.authoriZation(dataString);
   }
-  return res.status(200).send(enToTh);
+  
 });
 
 
