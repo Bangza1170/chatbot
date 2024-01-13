@@ -53,30 +53,33 @@ app.post("/test", async (req, res) => {
 });
 
 app.post("/webhook", async function (req, res) {
-  const message = req.body.events[0].message.text;
+  // const message = req.body.events[0].message.text;
 
-  // const message = "คำถาม: รถอะไรแรงที่สุดในโลก";
+  const message = "คำถาม: รถอะไรแรงที่สุดในโลก";
 
   var dataString = {};
-  let response = await translateString(res, message);
-
-  console.log("response:output " + response);
+  await translateString(res, message).then(async function (response) {
+   
+    console.log("response:output " +  response.toString());
+  });
+  // [object Object]
+  
   // const jsonString = JSON.stringify(objA);
 
   // console.log("jsonString:output : " + jsonString);
   // const responseText = response.translations[0].text;
   // let responseText =response[0].translations[0].text;
-  if (response.includes("Question")) {
-    console.log("เข้า if มาแล้ว" + response);
-    handelHowToMessage(req, res, response, dataString);
-  }
+  // if (response.includes("คำถาม")) {
+  //   console.log("เข้า if มาแล้ว" + response);
+  //   handelHowToMessage(req, res, response, dataString);
+  // }
   // else if (
   //   req.body.events[0].message.type === "text" &&
   //   req.body.events[0].message.text === "ตารางคะแนน"
   // ) {
   //   try {
   //     var listData = await axios.get(
-  //       "https://rally-finances-proceeds-recreational.trycloudflare.com"
+  //       "https://acquisition-inn-sorted-truly.trycloudflare.com"
   //     );
   //   } catch (error) {
   //     console.log("axios error: ", error);
@@ -118,16 +121,16 @@ async function handelHowToMessage(req, res, message, dataString) {
     axios
       .request(config)
       .then(async function (response) {
-        console.log("response line : " + response.data.candidates[0].output);
-        const message = response.data.candidates[0].output;
-        let responseText = await translateString(res, message);
+        // console.log("response line : " + response.data.candidates[0].output);
+        // const message = response.data.candidates[0].output;
+        // let responseText = await translateString(res, message);
 
         dataString = JSON.stringify({
           replyToken: req.body.events[0].replyToken,
           messages: [
             {
               type: "text",
-              text: responseText,
+              text: response,
             },
           ],
         });
@@ -199,8 +202,8 @@ async function translateString(res, message) {
 
     const response = await axios.request(options);
     console.log("response.data: " + response.data[0].translations[0].text);
-    res.status(200).send(response.data);
-    return response.data[0].translations[0].text;
+
+    return res.status(200).send(response.data);
   } catch (e) {
     console.log(e);
   }
