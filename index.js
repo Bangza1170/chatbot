@@ -57,41 +57,11 @@ app.post("/test", async (req, res) => {
   // }
 });
 
-    // const message = "คำถาม: รถอะไรแรงที่สุดในโลก";
-
-  // else if (
-  //   req.body.events[0].message.type === "text" &&
-  //   req.body.events[0].message.text === "ตารางคะแนน"
-  // ) {
-  //   try {
-  //     var listData = await axios.get(
-  //       "https://rally-finances-proceeds-recreational.trycloudflare.com"
-  //     );
-  //   } catch (error) {
-  //     console.log("axios error: ", error);
-  //   }
-  //   console.log(listData.data.data);
-
-  //   const newDataScore = mockDatas.createNewDataScore();
-  //   const data = listData.data.data;
-  //   for (let i = 0; i < data.length; i++) {
-  //     const number = i + 1;
-  //     const dataScoreItem = mockDatas.createDataScoreItem(number, data[i]);
-  //     newDataScore.push(dataScoreItem);
-  //   }
-  //   const dataString = mockDatas.newDataString(newDataScore);
-
-  //   console.log("show data_string: ", dataString);
-  //   await bardAuthori.authoriZation(dataString);
-  // }
-  // const thToEn = await tranSlate.translateString(message, "th", "en");
-  // const enToTh = await tranSlate.translateString(thToEn, "en", "th");
-    // return res.status(200).send(enToTh);
 app.post("/webhook", async function (req, res) {
   const message = req.body.events[0].message.text;
   var dataString = {};
   
-  if (enToTh.includes("how to")) {
+  if (message.includes("how to")) {
    await handelHowToMessage(req, res, message, dataString);   
   } 
   
