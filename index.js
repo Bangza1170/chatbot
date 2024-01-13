@@ -99,7 +99,7 @@ async function handelHowToMessage(req, message, dataString) {
     console.log("config : " ,config);
     axios
       .request(config)
-      .then(async (response) => {
+      .then( (response) => {
         dataString = JSON.stringify({
           replyToken: req.body.events[0].replyToken,
           messages: [
@@ -110,7 +110,7 @@ async function handelHowToMessage(req, message, dataString) {
           ],
         });
 
-       await  authoriZation(dataString);
+         authoriZation(dataString);
       })
       .catch((error) => {
         console.log("Error authoriZation" + error);
