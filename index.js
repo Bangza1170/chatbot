@@ -67,31 +67,31 @@ app.post("/webhook", async function (req, res) {
     howToMessage.handelHowToMessage(req, res, enToTh, dataString);
     return res.status(200).send(enToTh);
   } 
-  else if (
-    req.body.events[0].message.type === "text" &&
-    req.body.events[0].message.text === "ตารางคะแนน"
-  ) {
-    try {
-      var listData = await axios.get(
-        "https://rally-finances-proceeds-recreational.trycloudflare.com"
-      );
-    } catch (error) {
-      console.log("axios error: ", error);
-    }
-    console.log(listData.data.data);
+  // else if (
+  //   req.body.events[0].message.type === "text" &&
+  //   req.body.events[0].message.text === "ตารางคะแนน"
+  // ) {
+  //   try {
+  //     var listData = await axios.get(
+  //       "https://rally-finances-proceeds-recreational.trycloudflare.com"
+  //     );
+  //   } catch (error) {
+  //     console.log("axios error: ", error);
+  //   }
+  //   console.log(listData.data.data);
 
-    const newDataScore = mockDatas.createNewDataScore();
-    const data = listData.data.data;
-    for (let i = 0; i < data.length; i++) {
-      const number = i + 1;
-      const dataScoreItem = mockDatas.createDataScoreItem(number, data[i]);
-      newDataScore.push(dataScoreItem);
-    }
-    const dataString = mockDatas.newDataString(newDataScore);
+  //   const newDataScore = mockDatas.createNewDataScore();
+  //   const data = listData.data.data;
+  //   for (let i = 0; i < data.length; i++) {
+  //     const number = i + 1;
+  //     const dataScoreItem = mockDatas.createDataScoreItem(number, data[i]);
+  //     newDataScore.push(dataScoreItem);
+  //   }
+  //   const dataString = mockDatas.newDataString(newDataScore);
 
-    console.log("show data_string: ", dataString);
-    await bardAuthori.authoriZation(dataString);
-  }
+  //   console.log("show data_string: ", dataString);
+  //   await bardAuthori.authoriZation(dataString);
+  // }
   
 });
 
