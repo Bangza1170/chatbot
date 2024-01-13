@@ -127,7 +127,7 @@ async function handelHowToMessage(req, message, dataString) {
           messages: [
             {
               type: "text",
-              text: response,
+              text:  response.data.candidates[0].output,
             },
           ],
         });
