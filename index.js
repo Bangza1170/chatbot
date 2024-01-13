@@ -110,7 +110,7 @@ async function handelHowToMessage(req, message, dataString) {
           ],
         });
 
-         authoriZation(dataString);
+       await  authoriZation(dataString);
       })
       .catch((error) => {
         console.log("Error authoriZation" + error);
