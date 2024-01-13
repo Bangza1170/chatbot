@@ -84,6 +84,7 @@ async function handelHowToMessage(req, message, dataString) {
         text: message,
       },
     });
+    console.log("data : " ,data);
     
 
     let config = {
@@ -95,7 +96,7 @@ async function handelHowToMessage(req, message, dataString) {
       },
       data: data,
     };
-
+    console.log("config : " ,config);
     axios
       .request(config)
       .then(async (response) => {
