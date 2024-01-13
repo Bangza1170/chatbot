@@ -1,3 +1,8 @@
+const bardAuthori = require("./Services/bardAuthori");
+const tranSlate = require("./Services/translateApi");
+const mockDatas = require("./Constants/mockData");
+const howToMessage = require("./Services/Function/howToMessage");
+
 const https = require("https");
 const express = require("express");
 const { log } = require("console");
@@ -53,51 +58,38 @@ app.post("/test", async (req, res) => {
 });
 
 app.post("/webhook", async function (req, res) {
-  // const message = req.body.events[0].message.text;
-
   const message = "คำถาม: รถอะไรแรงที่สุดในโลก";
-
   var dataString = {};
-  await translateString(res, message).then(async function (response) {
-   
-    console.log("response:output " +  response.toString());
-  });
-  // [object Object]
-  
-  // const jsonString = JSON.stringify(objA);
+  const thToEn = await tranSlate.translateString(message, "th", "en");
+  const enToTh = await tranSlate.translateString(thToEn, "en", "th");
+  if (enToTh.includes("คำถาม")) {
+    howToMessage.handelHowToMessage(req, res, enToTh, dataString);
+  } else if (
+    req.body.events[0].message.type === "text" &&
+    req.body.events[0].message.text === "ตารางคะแนน"
+  ) {
+    try {
+      var listData = await axios.get(
+        "https://rally-finances-proceeds-recreational.trycloudflare.com"
+      );
+    } catch (error) {
+      console.log("axios error: ", error);
+    }
+    console.log(listData.data.data);
 
-  // console.log("jsonString:output : " + jsonString);
-  // const responseText = response.translations[0].text;
-  // let responseText =response[0].translations[0].text;
-  // if (response.includes("คำถาม")) {
-  //   console.log("เข้า if มาแล้ว" + response);
-  //   handelHowToMessage(req, res, response, dataString);
-  // }
-  // else if (
-  //   req.body.events[0].message.type === "text" &&
-  //   req.body.events[0].message.text === "ตารางคะแนน"
-  // ) {
-  //   try {
-  //     var listData = await axios.get(
-  //       "https://acquisition-inn-sorted-truly.trycloudflare.com"
-  //     );
-  //   } catch (error) {
-  //     console.log("axios error: ", error);
-  //   }
-  //   console.log(listData.data.data);
+    const newDataScore = mockDatas.createNewDataScore();
+    const data = listData.data.data;
+    for (let i = 0; i < data.length; i++) {
+      const number = i + 1;
+      const dataScoreItem = mockDatas.createDataScoreItem(number, data[i]);
+      newDataScore.push(dataScoreItem);
+    }
+    const dataString = mockDatas.newDataString(newDataScore);
 
-  //   const newDataScore = createNewDataScore();
-  //   const data = listData.data.data;
-  //   for (let i = 0; i < data.length; i++) {
-  //     const number = i + 1;
-  //     const dataScoreItem = createDataScoreItem(number, data[i]);
-  //     newDataScore.push(dataScoreItem);
-  //   }
-  //   const newDataStrings = await newDataString(newDataScore);
-
-  //   console.log("show data_string: ", newDataStrings);
-  //   authoriZation(dataString);
-  // }
+    console.log("show data_string: ", dataString);
+    await bardAuthori.authoriZation(dataString);
+  }
+  return res.status(200).send(enToTh);
 });
 
 async function handelHowToMessage(req, res, message, dataString) {
