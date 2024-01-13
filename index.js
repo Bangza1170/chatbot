@@ -120,7 +120,7 @@ async function handelHowToMessage(req, message, dataString) {
 
 
 async function authoriZation(dataString) {
-  try {
+
     const headers = {
       "Content-Type": "application/json",
       Authorization:
@@ -151,9 +151,7 @@ async function authoriZation(dataString) {
     // Send data
     request.write(dataString);
     request.end();
-  } catch (error) {
-    console.log("error reply: ", error);
-  }
+
 }
 module.exports = {
   authoriZation,
