@@ -93,7 +93,7 @@ app.post("/webhook", async function (req, res) {
    await handelHowToMessage(req, res, enToTh, dataString);   
   } 
   
-  return res.status(200).send(enToTh);
+  // return res.status(200).send(enToTh);
 });
 
 
@@ -112,7 +112,7 @@ async function handelHowToMessage(req, message, dataString) {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=AIzaSyC2pHjqBIZHbfqjAEVB4uhgWqcTWUvd3_A",
+      url: `https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=${TOKENBARD}`,
       headers: {
         "Content-Type": "application/json",
       },
