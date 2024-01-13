@@ -58,8 +58,8 @@ app.post("/test", async (req, res) => {
 });
 
 app.post("/webhook", async function (req, res) {
-  const message = "คำถาม: รถอะไรแรงที่สุดในโลก";
-  // const message = req.body.events[0].message.text;
+  // const message = "คำถาม: รถอะไรแรงที่สุดในโลก";
+  const message = req.body.events[0].message.text;
   var dataString = {};
   const thToEn = await tranSlate.translateString(message, "th", "en");
   const enToTh = await tranSlate.translateString(thToEn, "en", "th");
