@@ -93,7 +93,7 @@ app.post("/webhook", async function (req, res) {
   //   console.log("show data_string: ", dataString);
   //   await bardAuthori.authoriZation(dataString);
   // }
-  // return res.status(200).send(enToTh);
+  return res.status(200).send(enToTh);
 });
 
 
