@@ -57,8 +57,12 @@ app.post("/test", async (req, res) => {
   // }
 });
 
+// const message = "คำถาม: อยากรู้ว่ากะเพราทำยังไง";
+
 app.post("/webhook", async function (req, res) {
+  
   const message = req.body.events[0].message.text;
+ 
   var dataString = {};
   
   if (message.includes("how to")) {
@@ -74,7 +78,7 @@ app.listen(PORT, () => {
 });
 
 async function handelHowToMessage(req, message, dataString) {
-  try {
+
     let data = JSON.stringify({
       prompt: {
         text: message,
@@ -110,9 +114,7 @@ async function handelHowToMessage(req, message, dataString) {
       .catch((error) => {
         console.log("Error authoriZation" + error);
       });
-  } catch (error) {
-    console.log("axios error: ", error);
-  }
+  
 }
 
 
