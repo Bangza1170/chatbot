@@ -58,13 +58,14 @@ app.post("/test", async (req, res) => {
 });
 
 app.post("/webhook", async function (req, res) {
-  // const message = "คำถาม: รถอะไรแรงที่สุดในโลก";
-  const message = req.body.events[0].message.text;
+  const message = "คำถาม: รถอะไรแรงที่สุดในโลก";
+  // const message = req.body.events[0].message.text;
   var dataString = {};
   const thToEn = await tranSlate.translateString(message, "th", "en");
   const enToTh = await tranSlate.translateString(thToEn, "en", "th");
   if (enToTh.includes("คำถาม")) {
-    handelHowToMessage(req, res, enToTh, dataString);
+   await handelHowToMessage(req, res, enToTh, dataString);
+   
    
   } 
   // else if (
@@ -92,7 +93,7 @@ app.post("/webhook", async function (req, res) {
   //   console.log("show data_string: ", dataString);
   //   await bardAuthori.authoriZation(dataString);
   // }
-  return res.status(200).send(enToTh);
+  // return res.status(200).send(enToTh);
 });
 
 
