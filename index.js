@@ -84,16 +84,18 @@ app.post("/test", async (req, res) => {
   //   console.log("show data_string: ", dataString);
   //   await bardAuthori.authoriZation(dataString);
   // }
+  // const thToEn = await tranSlate.translateString(message, "th", "en");
+  // const enToTh = await tranSlate.translateString(thToEn, "en", "th");
+    // return res.status(200).send(enToTh);
 app.post("/webhook", async function (req, res) {
   const message = req.body.events[0].message.text;
   var dataString = {};
-  const thToEn = await tranSlate.translateString(message, "th", "en");
-  const enToTh = await tranSlate.translateString(thToEn, "en", "th");
-  if (enToTh.includes("คำถาม")) {
-   await handelHowToMessage(req, res, enToTh, dataString);   
+  
+  if (enToTh.includes("how to")) {
+   await handelHowToMessage(req, res, message, dataString);   
   } 
   
-  // return res.status(200).send(enToTh);
+
 });
 
 
