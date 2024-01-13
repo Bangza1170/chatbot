@@ -58,7 +58,7 @@ app.post("/test", async (req, res) => {
 });
 
 app.post("/webhook", async function (req, res) {
-  const message = "คำถาม: อยากรู้ว่ากะเพราทำยังไง";
+  const message = req.body.events[0].message.text;
   var dataString = {};
   
   if (message.includes("how to")) {
