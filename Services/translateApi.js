@@ -1,3 +1,13 @@
+
+
+
+
+
+
+
+const { default: axios } = require("axios");
+
+
 async function translateString(message, from, to) {
     try {
       const options = {
