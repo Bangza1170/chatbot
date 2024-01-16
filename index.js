@@ -21,7 +21,6 @@ app.post("/webhook", async function (req, res) {
   const message = req.body.events[0].message.text;
   const dataString = {};
   if (message.includes("How To")) {
-   
     try {
       const axios = require("axios");
       let data = JSON.stringify({
@@ -40,10 +39,10 @@ app.post("/webhook", async function (req, res) {
         data: data,
       };
 
-      console.log('config Data : ',config);
+      console.log("config Data : ", config);
 
       axios.request(config).then((response) => {
-        console.log("replyToken console log : ",req.body);
+        console.log("replyToken console log : ", req.body);
         dataString = JSON.stringify({
           replyToken: req.body.events[0].replyToken,
           messages: [
@@ -95,8 +94,7 @@ app.post("/webhook", async function (req, res) {
     } catch (error) {
       console.log("axios error: ", error);
     }
-  }
-  else if (
+  } else if (
     req.body.events[0].message.type === "text" &&
     req.body.events[0].message.text === "ตารางคะแนน"
   ) {
@@ -107,7 +105,7 @@ app.post("/webhook", async function (req, res) {
     } catch (error) {
       console.log("axios error: ", error);
     }
-    console.log(listData.data.data);
+    // console.log(listData.data.data);
     const newDataScore = [
       {
         type: "box",
@@ -181,7 +179,7 @@ app.post("/webhook", async function (req, res) {
         ],
       },
     ];
-    // const data = listData.data.data;
+    const data = listData.data.data;
 
     for (let i = 0; i < data.length; i++) {
       number = i + 1;
