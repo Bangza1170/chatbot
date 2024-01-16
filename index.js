@@ -351,10 +351,12 @@ app.post("/webhook", async function (req, res) {
     request.write(dataString);
     request.end();
   }
+  return res.status(200).send(enToTh);
 });
 
 async function translateString(message, from, to) {
   try {
+
     const options = {
       method: "POST",
       url: "https://microsoft-translator-text.p.rapidapi.com/translate",
