@@ -20,6 +20,7 @@ app.post("/webhook", async function (req, res) {
   // res.send("HTTP POST request sent to the webhook URL!");
   const message = req.body.events[0].message.text;
   var dataString = {};
+
   // const thToEn = await translateString(message, "th", "en");
   // console.log('thToEn Data : ' +thToEn);
   const enToTh = await translateString(message, "en", "th");
@@ -29,7 +30,7 @@ app.post("/webhook", async function (req, res) {
       const axios = require("axios");
       let data = JSON.stringify({
         prompt: {
-          text: message,
+          text: enToTh,
         },
       });
 
