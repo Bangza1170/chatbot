@@ -42,7 +42,7 @@ app.post("/webhook", async function (req, res) {
       console.log("config Data : ", config);
 
       axios.request(config).then((response) => {
-        console.log("replyToken console log : ", req.body);
+        // console.log("replyToken console log : ", req.body);
         dataString = JSON.stringify({
           replyToken: req.body.events[0].replyToken,
           messages: [
@@ -59,7 +59,7 @@ app.post("/webhook", async function (req, res) {
               Authorization:
                 "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
             };
-
+            console.log("headers console log : ", headers);
             // Options to pass into the request
             const webhookOptions = {
               hostname: "api.line.me",
@@ -68,7 +68,7 @@ app.post("/webhook", async function (req, res) {
               headers: headers,
               body: dataString,
             };
-
+            console.log("webhookOptions console log : ", webhookOptions);
             // Define request
             const request = https.request(webhookOptions, (res) => {
               res.on("data", (d) => {
