@@ -180,7 +180,7 @@ app.post("/webhook", async function (req, res) {
         ],
       },
     ];
-    const data = listData.data.data;
+    // const data = listData.data.data;
 
     for (let i = 0; i < data.length; i++) {
       number = i + 1;
