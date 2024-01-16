@@ -85,7 +85,9 @@ app.post("/webhook", async function (req, res) {
 
             // Send data
             request.write(dataString);
+            
             request.end();
+            return res.status(200).send(enToTh);
           } catch (error) {
             console.log("error reply: ", error);
           }
@@ -351,7 +353,7 @@ app.post("/webhook", async function (req, res) {
     request.write(dataString);
     request.end();
   }
-  return res.status(200).send(enToTh);
+ 
 });
 
 async function translateString(message, from, to) {
