@@ -17,8 +17,8 @@ app.get("/", (req, res) => {
 // const message = 'How To Flutter';
 // const message = req.body.events[0].message.text;
 app.post("/webhook", async function (req, res) {
-  res.send("HTTP POST request sent to the webhook URL!");
-  const message = "How To Flutter";
+  // res.send("HTTP POST request sent to the webhook URL!");
+  const message = req.body.events[0].message.text;
   var dataString = {};
   if (message.includes("How To")) {
     try {
