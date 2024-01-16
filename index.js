@@ -23,7 +23,7 @@ app.post("/webhook", async function (req, res) {
   const thToEn = await translateString(message, "th", "en");
   console.log('thToEn Data : ' +thToEn);
   const enToTh = await translateString(thToEn, "en", "th");
-  console.log('enToTh Data : ' +thToEn);
+  console.log('enToTh Data : ' +enToTh);
   if (enToTh.includes("คำถาม")) {
     try {
       const axios = require("axios");
