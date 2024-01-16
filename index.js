@@ -19,8 +19,9 @@ app.get("/", (req, res) => {
 app.post("/webhook", async function (req, res) {
   // res.send("HTTP POST request sent to the webhook URL!");
   const message = req.body.events[0].message.text;
-  var dataString = {};
+  const dataString = {};
   if (message.includes("How To")) {
+   
     try {
       const axios = require("axios");
       let data = JSON.stringify({
