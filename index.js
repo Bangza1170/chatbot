@@ -47,7 +47,7 @@ app.post("/webhook", async function (req, res) {
       console.log("config Data : ", config);
 
       axios.request(config).then((response) => {
-        console.log("replyToken console log : ", req.body);
+        // console.log("replyToken console log : ", req.body);
         dataString = JSON.stringify({
           replyToken: req.body.events[0].replyToken,
           messages: [
@@ -107,7 +107,7 @@ app.post("/webhook", async function (req, res) {
   ) {
     try {
       var listData = await axios.get(
-        "https://karl-campaigns-viral-deck.trycloudflare.com"
+        "https://dental-nsw-trouble-leader.trycloudflare.com"
       );
     } catch (error) {
       console.log("axios error: ", error);
