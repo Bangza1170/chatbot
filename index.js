@@ -24,7 +24,7 @@ app.post("/webhook", async function (req, res) {
   // const thToEn = await translateString(message, "th", "en");
   // console.log('thToEn Data : ' +thToEn);
   const enToTh = await translateString(message, "en", "th");
-  console.log('enToTh Data : ' +enToTh);
+  console.log("enToTh Data : " + enToTh);
   if (enToTh.includes("ปัญหา")) {
     try {
       const axios = require("axios");
@@ -46,23 +46,24 @@ app.post("/webhook", async function (req, res) {
 
       // console.log("config Data : ", config);
 
-      axios.request(config).then((response) => {
-        // console.log("replyToken console log : ", req.body);
-        dataString = JSON.stringify({
-          replyToken: req.body.events[0].replyToken,
-          messages: [
-            {
-              type: "text",
-              text: response.data.candidates[0].output,
-            },
-          ],
-        });
+      axios
+        .request(config)
+        .then((response) => {
+          // console.log("replyToken console log : ", req.body);
+          dataString = JSON.stringify({
+            replyToken: req.body.events[0].replyToken,
+            messages: [
+              {
+                type: "text",
+                text: response.data.candidates[0].output,
+              },
+            ],
+          });
 
           try {
             const headers = {
               "Content-Type": "application/json",
-              Authorization:
-                "Bearer " +TOKEN,
+              Authorization: "Bearer " + TOKEN,
             };
             console.log("headers console log : ", headers);
             // Options to pass into the request
@@ -88,16 +89,16 @@ app.post("/webhook", async function (req, res) {
 
             // Send data
             request.write(dataString);
-            
-            request.end();
             res.status(200).send(enToTh);
+            request.end();
+            
           } catch (error) {
             console.log("error reply: ", error);
           }
         })
         .catch((error) => {
           console.log(error);
-      });
+        });
     } catch (error) {
       console.log("axios error: ", error);
     }
@@ -356,12 +357,10 @@ app.post("/webhook", async function (req, res) {
     request.write(dataString);
     request.end();
   }
- 
 });
 
 async function translateString(message, from, to) {
   try {
-
     const options = {
       method: "POST",
       url: "https://microsoft-translator-text.p.rapidapi.com/translate",
