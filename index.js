@@ -49,7 +49,7 @@ app.post("/webhook", async function (req, res) {
       axios
         .request(config)
         .then(async function (response) {
-          // console.log("replyToken console log : ", req.body);
+          console.log("response.data : ", response.data);
           const enToTh = await translateString(response.data.candidates[0].output, "en", "th");
           dataString = JSON.stringify({
             replyToken: req.body.events[0].replyToken,
