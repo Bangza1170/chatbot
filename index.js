@@ -90,7 +90,7 @@ app.post("/webhook", async function (req, res) {
 
             // Send data
             request.write(dataString);
-            res.status(200).send(enToTh);
+           
             request.end();
 
           } catch (error) {
