@@ -108,6 +108,93 @@ app.get("/guitar", (req, res) => {
                   ],
                 },
               },
+              {
+                type: "bubble",
+                body: {
+                  type: "box",
+                  layout: "horizontal",
+                  contents: [
+                    {
+                      type: "text",
+                      text: "Hello, World!",
+                      wrap: true,
+                    },
+                  ],
+                },
+                footer: {
+                  type: "box",
+                  layout: "horizontal",
+                  contents: [
+                    {
+                      type: "button",
+                      style: "primary",
+                      action: {
+                        type: "uri",
+                        label: "Go",
+                        uri: "https://example.com",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                type: "bubble",
+                body: {
+                  type: "box",
+                  layout: "horizontal",
+                  contents: [
+                    {
+                      type: "text",
+                      text: "Hello, World!",
+                      wrap: true,
+                    },
+                  ],
+                },
+                footer: {
+                  type: "box",
+                  layout: "horizontal",
+                  contents: [
+                    {
+                      type: "button",
+                      style: "primary",
+                      action: {
+                        type: "uri",
+                        label: "Go",
+                        uri: "https://example.com",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                type: "bubble",
+                body: {
+                  type: "box",
+                  layout: "horizontal",
+                  contents: [
+                    {
+                      type: "text",
+                      text: "Hello, World!",
+                      wrap: true,
+                    },
+                  ],
+                },
+                footer: {
+                  type: "box",
+                  layout: "horizontal",
+                  contents: [
+                    {
+                      type: "button",
+                      style: "primary",
+                      action: {
+                        type: "uri",
+                        label: "Go",
+                        uri: "https://example.com",
+                      },
+                    },
+                  ],
+                },
+              },
             ],
           },
         ],
