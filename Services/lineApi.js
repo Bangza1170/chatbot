@@ -3,6 +3,7 @@ const https = require("https");
 
 async function lineApi(dataString) {
   try {
+     // Request header
     const headers = {
       "Content-Type": "application/json",
       Authorization: "Bearer " + TOKEN,

@@ -10,7 +10,7 @@ const translate = require("./Services/translateApi");
 
 const bardApi = require("./Services/bardAuthor");
 const mockData = require("./Constants/mockData");
-
+const line = require("./lineApi");
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
@@ -414,36 +414,8 @@ app.post("/webhook", async function (req, res) {
       replyToken: req.body.events[0].replyToken,
       messages: mockData.newDataString(newDataScore),
     });
+    line.lineApi(dataString);
 
-    // Request header
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + TOKEN,
-    };
-    // Options to pass into the request
-    const webhookOptions = {
-      hostname: "api.line.me",
-      path: "/v2/bot/message/reply",
-      method: "POST",
-      headers: headers,
-      body: dataString,
-    };
-
-    // Define request
-    const request = https.request(webhookOptions, (res) => {
-      res.on("data", (d) => {
-        process.stdout.write(d);
-      });
-    });
-
-    // Handle error
-    request.on("error", (err) => {
-      console.error(err);
-    });
-
-    // Send data
-    request.write(dataString);
-    request.end();
   }
 });
 
