@@ -18,8 +18,8 @@ async function bardAuthor(dataString,thToEn) {
       method: "post",
       maxBodyLength: Infinity,
       url:
-        "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=" +
-        TOKENBARD,
+        "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=AIzaSyCuh1IvOrWdg7EteFw6AmhiPgBoDvViOGQ"
+        ,
       headers: {
         "Content-Type": "application/json",
       },
