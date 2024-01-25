@@ -161,7 +161,7 @@ app.post("/webhook", async function (req, res) {
   const thToEn = await translate.translateString(message, "th", "en");
 
   if (message.includes("คำถาม")) {
-    bardApi.bardAuthor(dataString,thToEn);
+    bardApi.bardAuthor(dataString,thToEn,req);
   } else if (message == "ข่าว") {
     const dataString = JSON.stringify({
       replyToken: req.body.events[0].replyToken,

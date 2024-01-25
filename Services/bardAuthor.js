@@ -6,7 +6,7 @@ const translate = require("./translateApi");
 
 
 
-async function bardAuthor(dataString,thToEn) {
+async function bardAuthor(dataString,thToEn,req) {
   try {
     const axios = require("axios");
     let data = JSON.stringify({
