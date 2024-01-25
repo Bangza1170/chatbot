@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
 const TOKENBARD = process.env.GENERAT_KEY_BARD;
 const translate = require("./Services/translateApi");
-const line = require("./Services/lineApi");
+
 const bardApi = require("./Services/bardAuthor");
 
 app.use(express.json());
