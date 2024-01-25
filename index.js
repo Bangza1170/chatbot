@@ -42,6 +42,104 @@ app.get("/guitar", (req, res) => {
   axios
     .request(config)
     .then((response) => {
+      const dataString = JSON.stringify({
+        replyToken: req.body.events[0].replyToken,
+        messages: [
+          {
+            type: "carousel",
+            contents: [
+              {
+                type: "bubble",
+                body: {
+                  type: "box",
+                  layout: "horizontal",
+                  contents: [
+                    {
+                      type: "text",
+                      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                      wrap: true,
+                    },
+                  ],
+                },
+                footer: {
+                  type: "box",
+                  layout: "horizontal",
+                  contents: [
+                    {
+                      type: "button",
+                      style: "primary",
+                      action: {
+                        type: "uri",
+                        label: "Go",
+                        uri: "https://example.com",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                type: "bubble",
+                body: {
+                  type: "box",
+                  layout: "horizontal",
+                  contents: [
+                    {
+                      type: "text",
+                      text: "Hello, World!",
+                      wrap: true,
+                    },
+                  ],
+                },
+                footer: {
+                  type: "box",
+                  layout: "horizontal",
+                  contents: [
+                    {
+                      type: "button",
+                      style: "primary",
+                      action: {
+                        type: "uri",
+                        label: "Go",
+                        uri: "https://example.com",
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      });
+
+      // Request header
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + TOKEN,
+      };
+      // Options to pass into the request
+      const webhookOptions = {
+        hostname: "api.line.me",
+        path: "/v2/bot/message/reply",
+        method: "POST",
+        headers: headers,
+        body: dataString,
+      };
+
+      // Define request
+      const request = https.request(webhookOptions, (res) => {
+        res.on("data", (d) => {
+          process.stdout.write(d);
+        });
+      });
+
+      // Handle error
+      request.on("error", (err) => {
+        console.error(err);
+      });
+
+      // Send data
+      request.write(dataString);
+      request.end();
       res.status(200).json(response.data);
     })
     .catch((error) => {
@@ -141,105 +239,109 @@ app.post("/webhook", async function (req, res) {
     } catch (error) {
       console.log("axios error: ", error);
     }
-  } else if (message == "ข่าว") {
+  }else if (message == "ข่าว"){
     const dataString = JSON.stringify({
-      replyToken: req.body.events[0].replyToken,
-      messages: [
-        {
-          type: "carousel",
-          contents: [
-            {
-              type: "bubble",
-              body: {
-                type: "box",
-                layout: "horizontal",
-                contents: [
-                  {
-                    type: "text",
-                    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    wrap: true,
+        replyToken: req.body.events[0].replyToken,
+        messages: [
+          {
+            type: "flex",
+            altText: "ตารางคะแนนพรีเมียร์ลีคปัจจุบัน",
+            contents: {
+              "type": "carousel",
+              "contents": [
+                {
+                  "type": "bubble",
+                  "body": {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                        "wrap": true
+                      }
+                    ]
                   },
-                ],
-              },
-              footer: {
-                type: "box",
-                layout: "horizontal",
-                contents: [
-                  {
-                    type: "button",
-                    style: "primary",
-                    action: {
-                      type: "uri",
-                      label: "Go",
-                      uri: "https://example.com",
-                    },
+                  "footer": {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
+                      {
+                        "type": "button",
+                        "style": "primary",
+                        "action": {
+                          "type": "uri",
+                          "label": "Go",
+                          "uri": "https://example.com"
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "bubble",
+                  "body": {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "Hello, World!",
+                        "wrap": true
+                      }
+                    ]
                   },
-                ],
-              },
+                  "footer": {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
+                      {
+                        "type": "button",
+                        "style": "primary",
+                        "action": {
+                          "type": "uri",
+                          "label": "Go",
+                          "uri": "https://example.com"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
             },
-            {
-              type: "bubble",
-              body: {
-                type: "box",
-                layout: "horizontal",
-                contents: [
-                  {
-                    type: "text",
-                    text: "Hello, World!",
-                    wrap: true,
-                  },
-                ],
-              },
-              footer: {
-                type: "box",
-                layout: "horizontal",
-                contents: [
-                  {
-                    type: "button",
-                    style: "primary",
-                    action: {
-                      type: "uri",
-                      label: "Go",
-                      uri: "https://example.com",
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-      ],
-    });
-
-    // Request header
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + TOKEN,
-    };
-    // Options to pass into the request
-    const webhookOptions = {
-      hostname: "api.line.me",
-      path: "/v2/bot/message/reply",
-      method: "POST",
-      headers: headers,
-      body: dataString,
-    };
-
-    // Define request
-    const request = https.request(webhookOptions, (res) => {
-      res.on("data", (d) => {
-        process.stdout.write(d);
+          },
+        ],
       });
-    });
 
-    // Handle error
-    request.on("error", (err) => {
-      console.error(err);
-    });
+      // Request header
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + TOKEN,
+      };
+      // Options to pass into the request
+      const webhookOptions = {
+        hostname: "api.line.me",
+        path: "/v2/bot/message/reply",
+        method: "POST",
+        headers: headers,
+        body: dataString,
+      };
 
-    // Send data
-    request.write(dataString);
-    request.end();
+      // Define request
+      const request = https.request(webhookOptions, (res) => {
+        res.on("data", (d) => {
+          process.stdout.write(d);
+        });
+      });
+
+      // Handle error
+      request.on("error", (err) => {
+        console.error(err);
+      });
+
+      // Send data
+      request.write(dataString);
+      request.end();
   }
   // else if(    req.body.events[0].message.type === "text" &&
   // req.body.events[0].message.text === "ข่าว") {
