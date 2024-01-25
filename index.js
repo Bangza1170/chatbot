@@ -6,8 +6,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
 const TOKENBARD = process.env.GENERAT_KEY_BARD;
-const fs = require('fs');
-const xml2js = require('xml2js');
+// const fs = require('fs');
+// const xml2js = require('xml2js');
 
 app.use(express.json());
 
@@ -106,128 +106,128 @@ app.post("/webhook", async function (req, res) {
       console.log("axios error: ", error);
     }
   }
-  else if(    req.body.events[0].message.type === "text" &&
-  req.body.events[0].message.text === "ข่าว") {
-    const xmlData = fs.readFileSync('path/to/your/xml/file.xml', 'utf-8');
-    xml2js.parseString(xmlData, (err, result) => {
-      if (err) {
-        console.error(err);
-      } else {
-        // ทำอะไรกับข้อมูล JSON ที่ได้ที่นี่
-        const data = result.data;
+  // else if(    req.body.events[0].message.type === "text" &&
+  // req.body.events[0].message.text === "ข่าว") {
+  //   const xmlData = fs.readFileSync('path/to/your/xml/file.xml', 'utf-8');
+  //   xml2js.parseString(xmlData, (err, result) => {
+  //     if (err) {
+  //       console.error(err);
+  //     } else {
+  //       // ทำอะไรกับข้อมูล JSON ที่ได้ที่นี่
+  //       const data = result.data;
     
-        // เข้าถึงข้อมูลต่าง ๆ
-        const approval = data.$.approval;
-        const baseUrl = data.$.base_url;
-        const gotoEmbed = data.gotoEmbed[0];
-        const rssDIY = data.rssDIY[0];
-        const widgetIndex = data.widgetIndex[0];
+  //       // เข้าถึงข้อมูลต่าง ๆ
+  //       const approval = data.$.approval;
+  //       const baseUrl = data.$.base_url;
+  //       const gotoEmbed = data.gotoEmbed[0];
+  //       const rssDIY = data.rssDIY[0];
+  //       const widgetIndex = data.widgetIndex[0];
     
-        // ตัวอย่างการเข้าถึงข้อมูลใน setting
-        const sizeX = data.setting[0].sizeX[0];
-        const sizeY = data.setting[0].sizeY[0];
-        const displayType = data.setting[0].displayType[0];
-        const theme = data.setting[0].theme[0];
-        const topic = data.setting[0].topic[0];
-        const totalTopic = data.setting[0].totalTopic[0];
+  //       // ตัวอย่างการเข้าถึงข้อมูลใน setting
+  //       const sizeX = data.setting[0].sizeX[0];
+  //       const sizeY = data.setting[0].sizeY[0];
+  //       const displayType = data.setting[0].displayType[0];
+  //       const theme = data.setting[0].theme[0];
+  //       const topic = data.setting[0].topic[0];
+  //       const totalTopic = data.setting[0].totalTopic[0];
     
-        // ตัวอย่างการเข้าถึงข้อมูลใน feedsUrl
-        const items = data.setting[0].feedsUrl[0].item;
+  //       // ตัวอย่างการเข้าถึงข้อมูลใน feedsUrl
+  //       const items = data.setting[0].feedsUrl[0].item;
     
-        console.log('Approval:', approval);
-        console.log('Base URL:', baseUrl);
-        console.log('Goto Embed:', gotoEmbed);
-        console.log('RSS DIY:', rssDIY);
-        console.log('Widget Index:', widgetIndex);
+  //       console.log('Approval:', approval);
+  //       console.log('Base URL:', baseUrl);
+  //       console.log('Goto Embed:', gotoEmbed);
+  //       console.log('RSS DIY:', rssDIY);
+  //       console.log('Widget Index:', widgetIndex);
         
-        console.log('Size X:', sizeX);
-        console.log('Size Y:', sizeY);
-        console.log('Display Type:', displayType);
-        console.log('Theme:', theme);
-        console.log('Topic:', topic);
-        console.log('Total Topic:', totalTopic);
+  //       console.log('Size X:', sizeX);
+  //       console.log('Size Y:', sizeY);
+  //       console.log('Display Type:', displayType);
+  //       console.log('Theme:', theme);
+  //       console.log('Topic:', topic);
+  //       console.log('Total Topic:', totalTopic);
     
-        // ตัวอย่างการวนลูปเข้าถึงข้อมูลใน feedsUrl
-        items.forEach((item, index) => {
-          console.log(`\nItem ${index + 1}:`);
-          console.log('Title:', item.title[0]);
-          console.log('Link:', item.link[0]);
-          console.log('Description:', item.description[0]);
-          console.log('PubDate:', item.pubDate[0]);
-          console.log('Header:', item.header[0]);
-        });
-      }
-    });
-    const flexMessage = {
-      "type": "flex",
-      "altText": "This is a Flex Message",
-      "contents": {
-        "type": "bubble",
-        "header": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "text",
-              "text": "Header Text",
-              "weight": "bold",
-              "size": "xl"
-            }
-          ]
-        },
-        "body": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "text",
-              "text": "Body Text 1",
-              "margin": "md"
-            },
-            {
-              "type": "text",
-              "text": "Body Text 2"
-            }
-          ]
-        },
-        "footer": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "text",
-              "text": "Footer Text",
-              "align": "center"
-            }
-          ]
-        }
-      }
-    };
+  //       // ตัวอย่างการวนลูปเข้าถึงข้อมูลใน feedsUrl
+  //       items.forEach((item, index) => {
+  //         console.log(`\nItem ${index + 1}:`);
+  //         console.log('Title:', item.title[0]);
+  //         console.log('Link:', item.link[0]);
+  //         console.log('Description:', item.description[0]);
+  //         console.log('PubDate:', item.pubDate[0]);
+  //         console.log('Header:', item.header[0]);
+  //       });
+  //     }
+  //   });
+  //   const flexMessage = {
+  //     "type": "flex",
+  //     "altText": "This is a Flex Message",
+  //     "contents": {
+  //       "type": "bubble",
+  //       "header": {
+  //         "type": "box",
+  //         "layout": "vertical",
+  //         "contents": [
+  //           {
+  //             "type": "text",
+  //             "text": "Header Text",
+  //             "weight": "bold",
+  //             "size": "xl"
+  //           }
+  //         ]
+  //       },
+  //       "body": {
+  //         "type": "box",
+  //         "layout": "vertical",
+  //         "contents": [
+  //           {
+  //             "type": "text",
+  //             "text": "Body Text 1",
+  //             "margin": "md"
+  //           },
+  //           {
+  //             "type": "text",
+  //             "text": "Body Text 2"
+  //           }
+  //         ]
+  //       },
+  //       "footer": {
+  //         "type": "box",
+  //         "layout": "vertical",
+  //         "contents": [
+  //           {
+  //             "type": "text",
+  //             "text": "Footer Text",
+  //             "align": "center"
+  //           }
+  //         ]
+  //       }
+  //     }
+  //   };
     
-    // ตัวอย่างการใช้ Flex Message ในการส่งไปยัง Line
-    const lineMessage = {
-      type: 'flex',
-      altText: 'This is a Flex Message',
-      contents: flexMessage.contents,
-    };
+  //   // ตัวอย่างการใช้ Flex Message ในการส่งไปยัง Line
+  //   const lineMessage = {
+  //     type: 'flex',
+  //     altText: 'This is a Flex Message',
+  //     contents: flexMessage.contents,
+  //   };
     
-    // ส่ง Flex Message ไปยัง Line
-    axios.post('https://api.line.me/v2/bot/message/push', {
-      to: 'userId', // แทนที่ด้วย userId ที่คุณต้องการส่ง
-      messages: [lineMessage],
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=', // แทนที่ด้วย Channel Access Token ของคุณ
-      },
-    })
-      .then(response => {
-        console.log('Flex Message sent successfully:', response.data);
-      })
-      .catch(error => {
-        console.error('Error sending Flex Message:', error.response.data);
-      });
-  } 
+  //   // ส่ง Flex Message ไปยัง Line
+  //   axios.post('https://api.line.me/v2/bot/message/push', {
+  //     to: 'userId', // แทนที่ด้วย userId ที่คุณต้องการส่ง
+  //     messages: [lineMessage],
+  //   }, {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=', // แทนที่ด้วย Channel Access Token ของคุณ
+  //     },
+  //   })
+  //     .then(response => {
+  //       console.log('Flex Message sent successfully:', response.data);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error sending Flex Message:', error.response.data);
+  //     });
+  // } 
   
   else if (
     req.body.events[0].message.type === "text" &&
@@ -235,7 +235,7 @@ app.post("/webhook", async function (req, res) {
     {
     try {
       var listData = await axios.get(
-        "https://dental-nsw-trouble-leader.trycloudflare.com"
+        "https://levels-gender-affect-owned.trycloudflare.com"
       );
     } catch (error) {
       console.log("axios error: ", error);
