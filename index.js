@@ -10,7 +10,7 @@ const translate = require("./Services/translateApi");
 
 const bardApi = require("./Services/bardAuthor");
 const mockData = require("./Constants/mockData");
-const line = require("./lineApi");
+const line = require("./Services/lineApi");
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
