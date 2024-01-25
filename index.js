@@ -6,8 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
 const TOKENBARD = process.env.GENERAT_KEY_BARD;
-// const fs = require('fs');
-// const xml2js = require('xml2js');
+const translate = require("./Services/translateApi");
 
 app.use(express.json());
 
@@ -157,8 +156,7 @@ app.post("/webhook", async function (req, res) {
   const message = req.body.events[0].message.text;
   var dataString = {};
 
-  const thToEn = await translateString(message, "th", "en");
-  // console.log('thToEn Data : ' +thToEn);
+  const thToEn = await translate.translateString(message, "th", "en");
 
   if (message.includes("คำถาม")) {
     try {
@@ -183,7 +181,7 @@ app.post("/webhook", async function (req, res) {
         .request(config)
         .then(async function (response) {
           console.log("response.data : ", response.data);
-          const enToTh = await translateString(
+          const enToTh = await translate.translateString(
             response.data.candidates[0].output,
             "en",
             "th"
@@ -239,109 +237,109 @@ app.post("/webhook", async function (req, res) {
     } catch (error) {
       console.log("axios error: ", error);
     }
-  }else if (message == "ข่าว"){
+  } else if (message == "ข่าว") {
     const dataString = JSON.stringify({
-        replyToken: req.body.events[0].replyToken,
-        messages: [
-          {
-            type: "flex",
-            altText: "ตารางคะแนนพรีเมียร์ลีคปัจจุบัน",
-            contents: {
-              "type": "carousel",
-              "contents": [
-                {
-                  "type": "bubble",
-                  "body": {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                        "wrap": true
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "style": "primary",
-                        "action": {
-                          "type": "uri",
-                          "label": "Go",
-                          "uri": "https://example.com"
-                        }
-                      }
-                    ]
-                  }
+      replyToken: req.body.events[0].replyToken,
+      messages: [
+        {
+          type: "flex",
+          altText: "ตารางคะแนนพรีเมียร์ลีคปัจจุบัน",
+          contents: {
+            type: "carousel",
+            contents: [
+              {
+                type: "bubble",
+                body: {
+                  type: "box",
+                  layout: "horizontal",
+                  contents: [
+                    {
+                      type: "text",
+                      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                      wrap: true,
+                    },
+                  ],
                 },
-                {
-                  "type": "bubble",
-                  "body": {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [
-                      {
-                        "type": "text",
-                        "text": "Hello, World!",
-                        "wrap": true
-                      }
-                    ]
-                  },
-                  "footer": {
-                    "type": "box",
-                    "layout": "horizontal",
-                    "contents": [
-                      {
-                        "type": "button",
-                        "style": "primary",
-                        "action": {
-                          "type": "uri",
-                          "label": "Go",
-                          "uri": "https://example.com"
-                        }
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
+                footer: {
+                  type: "box",
+                  layout: "horizontal",
+                  contents: [
+                    {
+                      type: "button",
+                      style: "primary",
+                      action: {
+                        type: "uri",
+                        label: "Go",
+                        uri: "https://example.com",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                type: "bubble",
+                body: {
+                  type: "box",
+                  layout: "horizontal",
+                  contents: [
+                    {
+                      type: "text",
+                      text: "Hello, World!",
+                      wrap: true,
+                    },
+                  ],
+                },
+                footer: {
+                  type: "box",
+                  layout: "horizontal",
+                  contents: [
+                    {
+                      type: "button",
+                      style: "primary",
+                      action: {
+                        type: "uri",
+                        label: "Go",
+                        uri: "https://example.com",
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
           },
-        ],
+        },
+      ],
+    });
+
+    // Request header
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + TOKEN,
+    };
+    // Options to pass into the request
+    const webhookOptions = {
+      hostname: "api.line.me",
+      path: "/v2/bot/message/reply",
+      method: "POST",
+      headers: headers,
+      body: dataString,
+    };
+
+    // Define request
+    const request = https.request(webhookOptions, (res) => {
+      res.on("data", (d) => {
+        process.stdout.write(d);
       });
+    });
 
-      // Request header
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + TOKEN,
-      };
-      // Options to pass into the request
-      const webhookOptions = {
-        hostname: "api.line.me",
-        path: "/v2/bot/message/reply",
-        method: "POST",
-        headers: headers,
-        body: dataString,
-      };
+    // Handle error
+    request.on("error", (err) => {
+      console.error(err);
+    });
 
-      // Define request
-      const request = https.request(webhookOptions, (res) => {
-        res.on("data", (d) => {
-          process.stdout.write(d);
-        });
-      });
-
-      // Handle error
-      request.on("error", (err) => {
-        console.error(err);
-      });
-
-      // Send data
-      request.write(dataString);
-      request.end();
+    // Send data
+    request.write(dataString);
+    request.end();
   }
   // else if(    req.body.events[0].message.type === "text" &&
   // req.body.events[0].message.text === "ข่าว") {
@@ -719,31 +717,6 @@ app.post("/webhook", async function (req, res) {
   }
 });
 
-async function translateString(message, from, to) {
-  try {
-    const options = {
-      method: "POST",
-      url: "https://microsoft-translator-text.p.rapidapi.com/translate",
-      params: {
-        "to[0]": to,
-        "api-version": "3.0",
-        from: from,
-        profanityAction: "NoAction",
-        textType: "plain",
-      },
-      headers: {
-        "content-type": "application/json",
-        "X-RapidAPI-Key": "e0a38da895msh20013849f02baacp165b04jsnd2f7724b6a3f",
-        "X-RapidAPI-Host": "microsoft-translator-text.p.rapidapi.com",
-      },
-      data: [{ Text: message }],
-    };
-    const response = await axios.request(options);
-    return response.data[0].translations[0].text;
-  } catch (e) {
-    console.log(e);
-  }
-}
 
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);
