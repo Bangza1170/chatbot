@@ -7,6 +7,8 @@ const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
 const TOKENBARD = process.env.GENERAT_KEY_BARD;
 const translate = require("./Services/translateApi");
+const line = require("./Services/lineApi");
+const bardApi = require("./Services/bardAuthor");
 
 app.use(express.json());
 
@@ -159,84 +161,7 @@ app.post("/webhook", async function (req, res) {
   const thToEn = await translate.translateString(message, "th", "en");
 
   if (message.includes("คำถาม")) {
-    try {
-      const axios = require("axios");
-      let data = JSON.stringify({
-        prompt: {
-          text: thToEn,
-        },
-      });
-
-      let config = {
-        method: "post",
-        maxBodyLength: Infinity,
-        url: "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=AIzaSyCuh1IvOrWdg7EteFw6AmhiPgBoDvViOGQ",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: data,
-      };
-
-      axios
-        .request(config)
-        .then(async function (response) {
-          console.log("response.data : ", response.data);
-          const enToTh = await translate.translateString(
-            response.data.candidates[0].output,
-            "en",
-            "th"
-          );
-          dataString = JSON.stringify({
-            replyToken: req.body.events[0].replyToken,
-            messages: [
-              {
-                type: "text",
-                text: enToTh,
-              },
-            ],
-          });
-
-          try {
-            const headers = {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + TOKEN,
-            };
-            console.log("headers console log : ", headers);
-            // Options to pass into the request
-            const webhookOptions = {
-              hostname: "api.line.me",
-              path: "/v2/bot/message/reply",
-              method: "POST",
-              headers: headers,
-              body: dataString,
-            };
-            console.log("webhookOptions console log : ", webhookOptions);
-            // Define request
-            const request = https.request(webhookOptions, (res) => {
-              res.on("data", (d) => {
-                process.stdout.write(d);
-              });
-            });
-
-            // Handle error
-            request.on("error", (err) => {
-              console.error(err);
-            });
-
-            // Send data
-            request.write(dataString);
-
-            request.end();
-          } catch (error) {
-            console.log("error reply: ", error);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error) {
-      console.log("axios error: ", error);
-    }
+    bardApi.bardAuthor(dataString,thToEn);
   } else if (message == "ข่าว") {
     const dataString = JSON.stringify({
       replyToken: req.body.events[0].replyToken,
@@ -716,7 +641,6 @@ app.post("/webhook", async function (req, res) {
     request.end();
   }
 });
-
 
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);

@@ -1,14 +1,11 @@
-
-
+const TOKEN = process.env.LINE_ACCESS_TOKEN;
 const https = require("https");
-const express = require("express");
 
-async function authoriZation(dataString) {
+async function lineApi(dataString) {
   try {
     const headers = {
       "Content-Type": "application/json",
-      Authorization:
-        "Bearer gpW6aqfrVCoBAyhSvPjIZoYYnOYfqYC/JhOSAXMVdYNpAtMOwf+o53maASzmQr0a8wQQTb8SEw3odehXybm7Cw2AfYzcBOqoHFWwJhKhKTzmTxSR0OOZbkA6t2gfnzaQS5w1GPjIG1pmLXRpw199agdB04t89/1O/w1cDnyilFU=",
+      Authorization: "Bearer " + TOKEN,
     };
 
     // Options to pass into the request
@@ -19,7 +16,6 @@ async function authoriZation(dataString) {
       headers: headers,
       body: dataString,
     };
-
     // Define request
     const request = https.request(webhookOptions, (res) => {
       res.on("data", (d) => {
@@ -34,11 +30,14 @@ async function authoriZation(dataString) {
 
     // Send data
     request.write(dataString);
+
     request.end();
   } catch (error) {
     console.log("error reply: ", error);
   }
 }
+
 module.exports = {
-  authoriZation,
-};
+    lineApi,
+  };
+  

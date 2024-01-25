@@ -1,0 +1,58 @@
+const https = require("https");
+const express = require("express");
+const { default: axios } = require("axios");
+const line = require("./Services/lineApi");
+
+
+
+async function bardAuthor(dataString,thToEn) {
+  try {
+    const axios = require("axios");
+    let data = JSON.stringify({
+      prompt: {
+        text: thToEn,
+      },
+    });
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url:
+        "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=" +
+        TOKENBARD,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then(async function (response) {
+        console.log("response.data : ", response.data);
+        const enToTh = await translate.translateString(
+          response.data.candidates[0].output,
+          "en",
+          "th"
+        );
+        dataString = JSON.stringify({
+          replyToken: req.body.events[0].replyToken,
+          messages: [
+            {
+              type: "text",
+              text: enToTh,
+            },
+          ],
+        });
+        line.lineApi(dataString);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } catch (error) {
+    console.log("axios error: ", error);
+  }
+}
+module.exports = {
+  bardAuthor,
+};
