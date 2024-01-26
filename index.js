@@ -256,7 +256,7 @@ app.post("/webhook", async function (req, res) {
       messages: [
         {
           type: "flex",
-          altText: "ตารางคะแนนพรีเมียร์ลีคปัจจุบัน",
+          altText: "ข่าวสารฟุตบอลล่าสุด",
           contents: {
             type: "carousel",
             contents: [
