@@ -352,7 +352,7 @@ app.post("/webhook", async function (req, res) {
                   size: "full",
                   aspectRatio: "20:13",
                   aspectMode: "cover",
-                  url: "https://s.isanook.com/sp/0/ud/303/151604https://s.isanook.com/sp/0/ud/303/1515632/ss.jpg?ip/crop/w728h431/q80/webp8/aa.jpg?ip/crop/w728h431/q80/webp",
+                  url: "https://s.isanook.com/sp/0/ud/303/1515632/ss.jpg?ip/crop/w728h431/q80/webp",
                 },
                 body: {
                   type: "box",
@@ -392,7 +392,7 @@ app.post("/webhook", async function (req, res) {
                   size: "full",
                   aspectRatio: "20:13",
                   aspectMode: "cover",
-                  url: "https://s.isanook.com/sp/0/ud/303/1516https://s.isanook.com/sp/0/ud/303/1515629/ff.jpg?ip/crop/w728h431/q80/webp048/aa.jpg?ip/crop/w728h431/q80/webp",
+                  url: "https://s.isanook.com/sp/0/ud/303/1515629/ff.jpg?ip/crop/w728h431/q80/webp",
                 },
                 body: {
                   type: "box",
@@ -432,7 +432,7 @@ app.post("/webhook", async function (req, res) {
                   size: "full",
                   aspectRatio: "20:13",
                   aspectMode: "cover",
-                  url: "https://s.isanook.com/sp/0/ud/3https://s.isanook.com/sp/0/ud/303/1515388/tt.jpg?ip/crop/w728h431/q80/webp03/1516048/aa.jpg?ip/crop/w728h431/q80/webp",
+                  url: "https://s.isanook.com/sp/0/ud/303/1515388/tt.jpg?ip/crop/w728h431/q80/webp",
                 },
                 body: {
                   type: "box",
