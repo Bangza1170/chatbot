@@ -262,28 +262,44 @@ app.post("/webhook", async function (req, res) {
             contents: [
               {
                 type: "bubble",
+                hero: {
+                  type: "image",
+                  size: "full",
+                  aspectRatio: "20:13",
+                  aspectMode: "cover",
+                  url: "https://s.isanook.com/sp/0/ud/303/1516418/xs(1).jpg?ip/crop/w728h431/q80/webp",
+                },
                 body: {
                   type: "box",
-                  layout: "horizontal",
+                  layout: "vertical",
+                  spacing: "sm",
                   contents: [
                     {
                       type: "text",
-                      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                      text: 'พี่ก็เว่อร์ไป๊! "โรนัลโด้" เล่นมุกหลังถูกถามถึงแผนแขวนสตั๊ดในอนาคต',
                       wrap: true,
+                      weight: "bold",
+                      size: "lg",
+                    },
+                    {
+                      type: "box",
+                      layout: "baseline",
+                      contents: [],
                     },
                   ],
                 },
                 footer: {
                   type: "box",
-                  layout: "horizontal",
+                  layout: "vertical",
+                  spacing: "sm",
                   contents: [
                     {
                       type: "button",
                       style: "primary",
                       action: {
                         type: "uri",
-                        label: "Go",
-                        uri: "https://example.com",
+                        label: "อ่านเพิ่มเติม",
+                        uri: "https://linecorp.com",
                       },
                     },
                   ],
@@ -291,28 +307,39 @@ app.post("/webhook", async function (req, res) {
               },
               {
                 type: "bubble",
+                hero: {
+                  type: "image",
+                  size: "full",
+                  aspectRatio: "20:13",
+                  aspectMode: "cover",
+                  url: "https://s.isanook.com/sp/0/ud/303/1516048/aa.jpg?ip/crop/w728h431/q80/webp",
+                },
                 body: {
                   type: "box",
-                  layout: "horizontal",
+                  layout: "vertical",
+                  spacing: "sm",
                   contents: [
                     {
                       type: "text",
-                      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                      text: 'ผียังเอาอยู่มั้ย? เปแอสเช เปลี่ยนใจจ้องโละทิ้ง "หอกฝอยทอง"',
                       wrap: true,
+                      weight: "bold",
+                      size: "lg",
                     },
                   ],
                 },
                 footer: {
                   type: "box",
-                  layout: "horizontal",
+                  layout: "vertical",
+                  spacing: "sm",
                   contents: [
                     {
                       type: "button",
                       style: "primary",
                       action: {
                         type: "uri",
-                        label: "Go",
-                        uri: "https://example.com",
+                        label: "อ่านเพิ่มเติม",
+                        uri: "https://linecorp.com",
                       },
                     },
                   ],
@@ -320,28 +347,39 @@ app.post("/webhook", async function (req, res) {
               },
               {
                 type: "bubble",
+                hero: {
+                  type: "image",
+                  size: "full",
+                  aspectRatio: "20:13",
+                  aspectMode: "cover",
+                  url: "https://s.isanook.com/sp/0/ud/303/151604https://s.isanook.com/sp/0/ud/303/1515632/ss.jpg?ip/crop/w728h431/q80/webp8/aa.jpg?ip/crop/w728h431/q80/webp",
+                },
                 body: {
                   type: "box",
-                  layout: "horizontal",
+                  layout: "vertical",
+                  spacing: "sm",
                   contents: [
                     {
                       type: "text",
-                      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                      text: "วีกเอนด์นี้ พีพีทีวี ยิงสด! ศึกเอเชียน คัพ นัดสอง, ควบ 2 คู่เดือดบุนเดสลีกา",
                       wrap: true,
+                      weight: "bold",
+                      size: "lg",
                     },
                   ],
                 },
                 footer: {
                   type: "box",
-                  layout: "horizontal",
+                  layout: "vertical",
+                  spacing: "sm",
                   contents: [
                     {
                       type: "button",
                       style: "primary",
                       action: {
                         type: "uri",
-                        label: "Go",
-                        uri: "https://example.com",
+                        label: "อ่านเพิ่มเติม",
+                        uri: "https://linecorp.com",
                       },
                     },
                   ],
@@ -349,28 +387,39 @@ app.post("/webhook", async function (req, res) {
               },
               {
                 type: "bubble",
+                hero: {
+                  type: "image",
+                  size: "full",
+                  aspectRatio: "20:13",
+                  aspectMode: "cover",
+                  url: "https://s.isanook.com/sp/0/ud/303/1516https://s.isanook.com/sp/0/ud/303/1515629/ff.jpg?ip/crop/w728h431/q80/webp048/aa.jpg?ip/crop/w728h431/q80/webp",
+                },
                 body: {
                   type: "box",
-                  layout: "horizontal",
+                  layout: "vertical",
+                  spacing: "sm",
                   contents: [
                     {
                       type: "text",
-                      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                      text: "สบายทั้งชาติ! เผยตัวเลขค่าชดเชย 'มูรินโญ' ฟันยับตลอดอาชีพการเป็นกุนซือ",
                       wrap: true,
+                      weight: "bold",
+                      size: "lg",
                     },
                   ],
                 },
                 footer: {
                   type: "box",
-                  layout: "horizontal",
+                  layout: "vertical",
+                  spacing: "sm",
                   contents: [
                     {
                       type: "button",
                       style: "primary",
                       action: {
                         type: "uri",
-                        label: "Go",
-                        uri: "https://example.com",
+                        label: "อ่านเพิ่มเติม",
+                        uri: "https://linecorp.com",
                       },
                     },
                   ],
@@ -378,28 +427,39 @@ app.post("/webhook", async function (req, res) {
               },
               {
                 type: "bubble",
+                hero: {
+                  type: "image",
+                  size: "full",
+                  aspectRatio: "20:13",
+                  aspectMode: "cover",
+                  url: "https://s.isanook.com/sp/0/ud/3https://s.isanook.com/sp/0/ud/303/1515388/tt.jpg?ip/crop/w728h431/q80/webp03/1516048/aa.jpg?ip/crop/w728h431/q80/webp",
+                },
                 body: {
                   type: "box",
-                  layout: "horizontal",
+                  layout: "vertical",
+                  spacing: "sm",
                   contents: [
                     {
                       type: "text",
-                      text: "Hello, World!",
+                      text: "เหมือนได้กลับบ้าน! 'ซานโช' ซบเสือเหลืองยืมตัว 6 เดือนเรียบร้อย",
                       wrap: true,
+                      weight: "bold",
+                      size: "lg",
                     },
                   ],
                 },
                 footer: {
                   type: "box",
-                  layout: "horizontal",
+                  layout: "vertical",
+                  spacing: "sm",
                   contents: [
                     {
                       type: "button",
                       style: "primary",
                       action: {
                         type: "uri",
-                        label: "Go",
-                        uri: "https://example.com",
+                        label: "อ่านเพิ่มเติม",
+                        uri: "https://linecorp.com",
                       },
                     },
                   ],
@@ -589,7 +649,6 @@ app.post("/webhook", async function (req, res) {
       messages: mockData.newDataString(newDataScore),
     });
     line.lineApi(dataString);
-
   }
 });
 
