@@ -104,6 +104,7 @@ app.post("/webhook", async function (req, res) {
       .request(config)
       .then((response) => {
         const res = response.data;
+        console.log(res);
         res.data.entries.edges.forEach((item) => {
           const thumbnail = item.node.thumbnail.split("//s.isanook.com/")[0];
           const readMore = item.node.id;
