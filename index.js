@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/guitar", (req, res) => {
+app.get("/guitar", (_, res) => {
   const axios = require("axios");
 
   let config = {
@@ -44,17 +44,64 @@ app.get("/guitar", (req, res) => {
   axios
     .request(config)
     .then((response) => {
-      // prefix = https://s.isanook.com/
-      // //s.isanook.com/
-      // sp/0/ud/303/1517815/ew(1).jpg
+      const result = response.data;
+      let arrCard = [];
 
-      // https://www.sanook.com/sport/
-      // 1517815/
-      // https://www.sanook.com/sport/1517815
-      return res.status(200).json(response.data);
+      result.data.entries.edges.forEach((item) => {
+        const thumbnail = item.node.thumbnail.split("//s.isanook.com/")[1];
+        const readMore = item.node.id;
+
+        arrCard.push({
+          type: "bubble",
+          hero: {
+            type: "image",
+            size: "full",
+            aspectRatio: "20:13",
+            aspectMode: "cover",
+            url: `https://s.isanook.com/${thumbnail}`,
+          },
+          body: {
+            type: "box",
+            layout: "vertical",
+            spacing: "sm",
+            contents: [
+              {
+                type: "text",
+                text: item.node.title,
+                wrap: true,
+                weight: "bold",
+                size: "lg",
+              },
+              {
+                type: "box",
+                layout: "baseline",
+                contents: [],
+              },
+            ],
+          },
+          footer: {
+            type: "box",
+            layout: "vertical",
+            spacing: "sm",
+            contents: [
+              {
+                type: "button",
+                style: "primary",
+                action: {
+                  type: "uri",
+                  label: "อ่านเพิ่มเติม",
+                  uri: `https://www.sanook.com/sport/${readMore}`,
+                },
+              },
+            ],
+          },
+        });
+      });
+
+      res.status(200).json(arrCard);
     })
     .catch((error) => {
-      return res.status(400).json(error);
+      res.status(400).json(error);
     });
 });
 
@@ -73,7 +120,6 @@ app.post("/webhook", async function (req, res) {
   if (message.includes("คำถาม")) {
     bardApi.bardAuthor(dataString, thToEn, req);
   } else if (message == "ข่าว") {
-    
     const axios = require("axios");
 
     let config = {
@@ -102,12 +148,12 @@ app.post("/webhook", async function (req, res) {
     axios
       .request(config)
       .then((response) => {
-        const res = response.data;
+        const result = response.data;
         let arrCard = [];
-        res.data.entries.edges.forEach((item) => {
-          const thumbnail = item.node.thumbnail.split("//s.isanook.com/")[0];
+        result.data.entries.edges.forEach((item) => {
+          const thumbnail = item.node.thumbnail.split("//s.isanook.com/")[1];
           const readMore = item.node.id;
-
+  
           arrCard.push({
             type: "bubble",
             hero: {
@@ -154,7 +200,7 @@ app.post("/webhook", async function (req, res) {
             },
           });
         });
-        
+
         console.log(arrCard);
 
         const dataString = JSON.stringify({
@@ -170,7 +216,7 @@ app.post("/webhook", async function (req, res) {
             },
           ],
         });
-    
+
         // Request header
         const headers = {
           "Content-Type": "application/json",
@@ -184,19 +230,19 @@ app.post("/webhook", async function (req, res) {
           headers: headers,
           body: dataString,
         };
-    
+
         // Define request
         const request = https.request(webhookOptions, (res) => {
           res.on("data", (d) => {
             process.stdout.write(d);
           });
         });
-    
+
         // Handle error
         request.on("error", (err) => {
           console.error(err);
         });
-    
+
         // Send data
         request.write(dataString);
         request.end();
