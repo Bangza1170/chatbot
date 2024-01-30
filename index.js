@@ -47,7 +47,9 @@ app.get("/guitar", (_, res) => {
       const result = response.data;
       let arrCard = [];
 
-      result.data.entries.edges.forEach((item) => {
+      for (let index = 0; index < 5; index++) {
+        const item = result.data.entries.edges[index];
+        console.log(item);
         const thumbnail = item.node.thumbnail.split("//s.isanook.com/")[1];
         const readMore = item.node.id;
 
@@ -96,7 +98,7 @@ app.get("/guitar", (_, res) => {
             ],
           },
         });
-      });
+      };
 
       res.status(200).json(arrCard);
     })
@@ -152,7 +154,8 @@ app.post("/webhook", async function (req, res) {
         let arrCard = [];
         
         for (let index = 0; index < 5; index++) {
-          const item = result.data.entries.edges.length[index];
+          const item = result.data.entries.edges[index];
+          console.log(item);
           const thumbnail = item.node.thumbnail.split("//s.isanook.com/")[1];
           const readMore = item.node.id;
   
