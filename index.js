@@ -150,6 +150,7 @@ app.post("/webhook", async function (req, res) {
       .then((response) => {
         const result = response.data;
         let arrCard = [];
+        
         result.data.entries.edges.forEach((item) => {
           const thumbnail = item.node.thumbnail.split("//s.isanook.com/")[1];
           const readMore = item.node.id;
