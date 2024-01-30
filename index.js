@@ -73,8 +73,7 @@ app.post("/webhook", async function (req, res) {
   if (message.includes("คำถาม")) {
     bardApi.bardAuthor(dataString, thToEn, req);
   } else if (message == "ข่าว") {
-    let arrCard = [];
-
+    
     const axios = require("axios");
 
     let config = {
@@ -104,7 +103,7 @@ app.post("/webhook", async function (req, res) {
       .request(config)
       .then((response) => {
         const res = response.data;
-        console.log(res);
+        let arrCard = [];
         res.data.entries.edges.forEach((item) => {
           const thumbnail = item.node.thumbnail.split("//s.isanook.com/")[0];
           const readMore = item.node.id;
@@ -155,6 +154,52 @@ app.post("/webhook", async function (req, res) {
             },
           });
         });
+        
+        console.log(arrCard);
+
+        const dataString = JSON.stringify({
+          replyToken: req.body.events[0].replyToken,
+          messages: [
+            {
+              type: "flex",
+              altText: "ข่าวสารฟุตบอลล่าสุด",
+              contents: {
+                type: "carousel",
+                contents: arrCard,
+              },
+            },
+          ],
+        });
+    
+        // Request header
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + TOKEN,
+        };
+        // Options to pass into the request
+        const webhookOptions = {
+          hostname: "api.line.me",
+          path: "/v2/bot/message/reply",
+          method: "POST",
+          headers: headers,
+          body: dataString,
+        };
+    
+        // Define request
+        const request = https.request(webhookOptions, (res) => {
+          res.on("data", (d) => {
+            process.stdout.write(d);
+          });
+        });
+    
+        // Handle error
+        request.on("error", (err) => {
+          console.error(err);
+        });
+    
+        // Send data
+        request.write(dataString);
+        request.end();
         // prefix = https://s.isanook.com/
         // //s.isanook.com/
         // sp/0/ud/303/1517815/ew(1).jpg
@@ -166,50 +211,6 @@ app.post("/webhook", async function (req, res) {
       .catch((error) => {
         console.log(error);
       });
-
-    const dataString = JSON.stringify({
-      replyToken: req.body.events[0].replyToken,
-      messages: [
-        {
-          type: "flex",
-          altText: "ข่าวสารฟุตบอลล่าสุด",
-          contents: {
-            type: "carousel",
-            contents: arrCard,
-          },
-        },
-      ],
-    });
-
-    // Request header
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + TOKEN,
-    };
-    // Options to pass into the request
-    const webhookOptions = {
-      hostname: "api.line.me",
-      path: "/v2/bot/message/reply",
-      method: "POST",
-      headers: headers,
-      body: dataString,
-    };
-
-    // Define request
-    const request = https.request(webhookOptions, (res) => {
-      res.on("data", (d) => {
-        process.stdout.write(d);
-      });
-    });
-
-    // Handle error
-    request.on("error", (err) => {
-      console.error(err);
-    });
-
-    // Send data
-    request.write(dataString);
-    request.end();
   }
   // else if(    req.body.events[0].message.type === "text" &&
   // req.body.events[0].message.text === "ข่าว") {
