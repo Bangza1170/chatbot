@@ -151,7 +151,8 @@ app.post("/webhook", async function (req, res) {
         const result = response.data;
         let arrCard = [];
         
-        result.data.entries.edges.forEach((item) => {
+        for (let index = 0; index < 5; index++) {
+          const item = result.data.entries.edges.length[index];
           const thumbnail = item.node.thumbnail.split("//s.isanook.com/")[1];
           const readMore = item.node.id;
   
@@ -200,7 +201,7 @@ app.post("/webhook", async function (req, res) {
               ],
             },
           });
-        });
+        };
 
         console.log(arrCard);
 
