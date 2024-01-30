@@ -44,195 +44,17 @@ app.get("/guitar", (req, res) => {
   axios
     .request(config)
     .then((response) => {
-      const dataString = JSON.stringify({
-        replyToken: req.body.events[0].replyToken,
-        messages: [
-          {
-            type: "carousel",
-            contents: [
-              {
-                type: "bubble",
-                body: {
-                  type: "box",
-                  layout: "horizontal",
-                  contents: [
-                    {
-                      type: "text",
-                      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                      wrap: true,
-                    },
-                  ],
-                },
-                footer: {
-                  type: "box",
-                  layout: "horizontal",
-                  contents: [
-                    {
-                      type: "button",
-                      style: "primary",
-                      action: {
-                        type: "uri",
-                        label: "Go",
-                        uri: "https://example.com",
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                type: "bubble",
-                body: {
-                  type: "box",
-                  layout: "horizontal",
-                  contents: [
-                    {
-                      type: "text",
-                      text: "Hello, World!",
-                      wrap: true,
-                    },
-                  ],
-                },
-                footer: {
-                  type: "box",
-                  layout: "horizontal",
-                  contents: [
-                    {
-                      type: "button",
-                      style: "primary",
-                      action: {
-                        type: "uri",
-                        label: "Go",
-                        uri: "https://example.com",
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                type: "bubble",
-                body: {
-                  type: "box",
-                  layout: "horizontal",
-                  contents: [
-                    {
-                      type: "text",
-                      text: "Hello, World!",
-                      wrap: true,
-                    },
-                  ],
-                },
-                footer: {
-                  type: "box",
-                  layout: "horizontal",
-                  contents: [
-                    {
-                      type: "button",
-                      style: "primary",
-                      action: {
-                        type: "uri",
-                        label: "Go",
-                        uri: "https://example.com",
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                type: "bubble",
-                body: {
-                  type: "box",
-                  layout: "horizontal",
-                  contents: [
-                    {
-                      type: "text",
-                      text: "Hello, World!",
-                      wrap: true,
-                    },
-                  ],
-                },
-                footer: {
-                  type: "box",
-                  layout: "horizontal",
-                  contents: [
-                    {
-                      type: "button",
-                      style: "primary",
-                      action: {
-                        type: "uri",
-                        label: "Go",
-                        uri: "https://example.com",
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                type: "bubble",
-                body: {
-                  type: "box",
-                  layout: "horizontal",
-                  contents: [
-                    {
-                      type: "text",
-                      text: "Hello, World!",
-                      wrap: true,
-                    },
-                  ],
-                },
-                footer: {
-                  type: "box",
-                  layout: "horizontal",
-                  contents: [
-                    {
-                      type: "button",
-                      style: "primary",
-                      action: {
-                        type: "uri",
-                        label: "Go",
-                        uri: "https://example.com",
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
-      });
+      // prefix = https://s.isanook.com/
+      // //s.isanook.com/
+      // sp/0/ud/303/1517815/ew(1).jpg
 
-      // Request header
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + TOKEN,
-      };
-      // Options to pass into the request
-      const webhookOptions = {
-        hostname: "api.line.me",
-        path: "/v2/bot/message/reply",
-        method: "POST",
-        headers: headers,
-        body: dataString,
-      };
-
-      // Define request
-      const request = https.request(webhookOptions, (res) => {
-        res.on("data", (d) => {
-          process.stdout.write(d);
-        });
-      });
-
-      // Handle error
-      request.on("error", (err) => {
-        console.error(err);
-      });
-
-      // Send data
-      request.write(dataString);
-      request.end();
-      res.status(200).json(response.data);
+      // https://www.sanook.com/sport/
+      // 1517815/
+      // https://www.sanook.com/sport/1517815
+      return res.status(200).json(response.data);
     })
     .catch((error) => {
-      res.status(400).json(error);
+      return res.status(400).json(error);
     });
 });
 
@@ -251,6 +73,99 @@ app.post("/webhook", async function (req, res) {
   if (message.includes("คำถาม")) {
     bardApi.bardAuthor(dataString, thToEn, req);
   } else if (message == "ข่าว") {
+    let arrCard = [];
+
+    const axios = require("axios");
+
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: "https://graph.sanook.com/?variables=%7B%22oppaChannel%22%3A%22sport%22%2C%22oppaCategorySlugs%22%3A%5B%5D%2C%22channels%22%3A%5B%22sport%22%5D%2C%22notInCategoryIds%22%3A%5B%5D%2C%22orderBy%22%3A%7B%22field%22%3A%22CREATED_AT%22%2C%22direction%22%3A%22DESC%22%7D%2C%22first%22%3A20%2C%22keyword%22%3A%22%E0%B8%9F%E0%B8%B8%E0%B8%95%E0%B8%9A%E0%B8%AD%E0%B8%A5%22%7D&extensions=%7B%22persistedQuery%22%3A%7B%22version%22%3A1%2C%22sha256Hash%22%3A%2298d212b4c53a3670ec293293f18296dc5472b97ab7cbbd7b429b9aa225b284d8%22%7D%7D",
+      headers: {
+        "Accept-Language": "en-US,en;q=0.9",
+        Connection: "keep-alive",
+        Origin: "https://www.sanook.com",
+        Referer: "https://www.sanook.com/",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-site",
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 OPR/106.0.0.0",
+        accept: "*/*",
+        "content-type": "application/json",
+        "sec-ch-ua":
+          '"Not_A Brand";v="8", "Chromium";v="120", "Opera GX";v="106"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"Windows"',
+      },
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        const res = response.data;
+        res.data.entries.edges.forEach((item) => {
+          const thumbnail = item.node.thumbnail.split("//s.isanook.com/")[0];
+          const readMore = item.node.id;
+
+          arrCard.push({
+            type: "bubble",
+            hero: {
+              type: "image",
+              size: "full",
+              aspectRatio: "20:13",
+              aspectMode: "cover",
+              url: `https://s.isanook.com/${thumbnail}`,
+            },
+            body: {
+              type: "box",
+              layout: "vertical",
+              spacing: "sm",
+              contents: [
+                {
+                  type: "text",
+                  text: item.node.title,
+                  wrap: true,
+                  weight: "bold",
+                  size: "lg",
+                },
+                {
+                  type: "box",
+                  layout: "baseline",
+                  contents: [],
+                },
+              ],
+            },
+            footer: {
+              type: "box",
+              layout: "vertical",
+              spacing: "sm",
+              contents: [
+                {
+                  type: "button",
+                  style: "primary",
+                  action: {
+                    type: "uri",
+                    label: "อ่านเพิ่มเติม",
+                    uri: `https://www.sanook.com/sport/${readMore}`,
+                  },
+                },
+              ],
+            },
+          });
+        });
+        // prefix = https://s.isanook.com/
+        // //s.isanook.com/
+        // sp/0/ud/303/1517815/ew(1).jpg
+
+        // https://www.sanook.com/sport/
+        // 1517815/
+        // https://www.sanook.com/sport/1517815
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     const dataString = JSON.stringify({
       replyToken: req.body.events[0].replyToken,
       messages: [
@@ -259,213 +174,7 @@ app.post("/webhook", async function (req, res) {
           altText: "ข่าวสารฟุตบอลล่าสุด",
           contents: {
             type: "carousel",
-            contents: [
-              {
-                type: "bubble",
-                hero: {
-                  type: "image",
-                  size: "full",
-                  aspectRatio: "20:13",
-                  aspectMode: "cover",
-                  url: "https://s.isanook.com/sp/0/ud/303/1516418/xs(1).jpg?ip/crop/w728h431/q80/webp",
-                },
-                body: {
-                  type: "box",
-                  layout: "vertical",
-                  spacing: "sm",
-                  contents: [
-                    {
-                      type: "text",
-                      text: 'พี่ก็เว่อร์ไป๊! "โรนัลโด้" เล่นมุกหลังถูกถามถึงแผนแขวนสตั๊ดในอนาคต',
-                      wrap: true,
-                      weight: "bold",
-                      size: "lg",
-                    },
-                    {
-                      type: "box",
-                      layout: "baseline",
-                      contents: [],
-                    },
-                  ],
-                },
-                footer: {
-                  type: "box",
-                  layout: "vertical",
-                  spacing: "sm",
-                  contents: [
-                    {
-                      type: "button",
-                      style: "primary",
-                      action: {
-                        type: "uri",
-                        label: "อ่านเพิ่มเติม",
-                        uri: "https://linecorp.com",
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                type: "bubble",
-                hero: {
-                  type: "image",
-                  size: "full",
-                  aspectRatio: "20:13",
-                  aspectMode: "cover",
-                  url: "https://s.isanook.com/sp/0/ud/303/1516048/aa.jpg?ip/crop/w728h431/q80/webp",
-                },
-                body: {
-                  type: "box",
-                  layout: "vertical",
-                  spacing: "sm",
-                  contents: [
-                    {
-                      type: "text",
-                      text: 'ผียังเอาอยู่มั้ย? เปแอสเช เปลี่ยนใจจ้องโละทิ้ง "หอกฝอยทอง"',
-                      wrap: true,
-                      weight: "bold",
-                      size: "lg",
-                    },
-                  ],
-                },
-                footer: {
-                  type: "box",
-                  layout: "vertical",
-                  spacing: "sm",
-                  contents: [
-                    {
-                      type: "button",
-                      style: "primary",
-                      action: {
-                        type: "uri",
-                        label: "อ่านเพิ่มเติม",
-                        uri: "https://linecorp.com",
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                type: "bubble",
-                hero: {
-                  type: "image",
-                  size: "full",
-                  aspectRatio: "20:13",
-                  aspectMode: "cover",
-                  url: "https://s.isanook.com/sp/0/ud/303/1515632/ss.jpg?ip/crop/w728h431/q80/webp",
-                },
-                body: {
-                  type: "box",
-                  layout: "vertical",
-                  spacing: "sm",
-                  contents: [
-                    {
-                      type: "text",
-                      text: "วีกเอนด์นี้ พีพีทีวี ยิงสด! ศึกเอเชียน คัพ นัดสอง, ควบ 2 คู่เดือดบุนเดสลีกา",
-                      wrap: true,
-                      weight: "bold",
-                      size: "lg",
-                    },
-                  ],
-                },
-                footer: {
-                  type: "box",
-                  layout: "vertical",
-                  spacing: "sm",
-                  contents: [
-                    {
-                      type: "button",
-                      style: "primary",
-                      action: {
-                        type: "uri",
-                        label: "อ่านเพิ่มเติม",
-                        uri: "https://linecorp.com",
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                type: "bubble",
-                hero: {
-                  type: "image",
-                  size: "full",
-                  aspectRatio: "20:13",
-                  aspectMode: "cover",
-                  url: "https://s.isanook.com/sp/0/ud/303/1515629/ff.jpg?ip/crop/w728h431/q80/webp",
-                },
-                body: {
-                  type: "box",
-                  layout: "vertical",
-                  spacing: "sm",
-                  contents: [
-                    {
-                      type: "text",
-                      text: "สบายทั้งชาติ! เผยตัวเลขค่าชดเชย 'มูรินโญ' ฟันยับตลอดอาชีพการเป็นกุนซือ",
-                      wrap: true,
-                      weight: "bold",
-                      size: "lg",
-                    },
-                  ],
-                },
-                footer: {
-                  type: "box",
-                  layout: "vertical",
-                  spacing: "sm",
-                  contents: [
-                    {
-                      type: "button",
-                      style: "primary",
-                      action: {
-                        type: "uri",
-                        label: "อ่านเพิ่มเติม",
-                        uri: "https://linecorp.com",
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                type: "bubble",
-                hero: {
-                  type: "image",
-                  size: "full",
-                  aspectRatio: "20:13",
-                  aspectMode: "cover",
-                  url: "https://s.isanook.com/sp/0/ud/303/1515388/tt.jpg?ip/crop/w728h431/q80/webp",
-                },
-                body: {
-                  type: "box",
-                  layout: "vertical",
-                  spacing: "sm",
-                  contents: [
-                    {
-                      type: "text",
-                      text: "เหมือนได้กลับบ้าน! 'ซานโช' ซบเสือเหลืองยืมตัว 6 เดือนเรียบร้อย",
-                      wrap: true,
-                      weight: "bold",
-                      size: "lg",
-                    },
-                  ],
-                },
-                footer: {
-                  type: "box",
-                  layout: "vertical",
-                  spacing: "sm",
-                  contents: [
-                    {
-                      type: "button",
-                      style: "primary",
-                      action: {
-                        type: "uri",
-                        label: "อ่านเพิ่มเติม",
-                        uri: "https://linecorp.com",
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
+            contents: arrCard,
           },
         },
       ],
