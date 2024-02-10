@@ -269,7 +269,7 @@ app.post("/webhook", async function (req, res) {
   ) {
     try {
       var listData = await axios.get(
-        "https://inquiries-ash-ph-cathedral.trycloudflare.com"
+        "https://groundwater-bicycle-blocks-void.trycloudflare.com"
       );
     } catch (error) {
       console.log("axios error: ", error);
