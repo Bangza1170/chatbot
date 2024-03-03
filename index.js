@@ -18,10 +18,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/guitar", (_, res) => {
   const axios = require("axios");
-  //return config ออกมาเรียกใช้ ประกาศตัวแปร data เพื่อรับค่าจากฟังก์ชันเว็บที่ return
+  //return config
   var data = sanook.sanook();
-  // axios.request คือการยิง api จากนั้นเราก็มา .then เพื่อทำงานต่อ จากนั้นเราจะได้ค่ามาอยู่ใน response
-  // แล้วก็เอา response.data ส่งข้อมูลไป ใน cardData
   axios
     .request(data)
     .then(async (response) => {
@@ -49,11 +47,7 @@ app.post("/webhook", async function (req, res) {
   } else if (message == "ข่าว") {
     const axios = require("axios");
 
-
-    //return config ออกมาเรียกใช้ ประกาศตัวแปร data เพื่อรับค่าจากฟังก์ชันเว็บที่ return
-  var data = sanook.sanook();
-  // axios.request คือการยิง api จากนั้นเราก็มา .then เพื่อทำงานต่อ จากนั้นเราจะได้ค่ามาอยู่ใน response
-  // แล้วก็เอา response.data ส่งข้อมูลไป ใน cardData
+    var data = sanook.sanook();
     axios
       .request(data)
       .then(async (response) => {
@@ -106,7 +100,6 @@ app.post("/webhook", async function (req, res) {
         // Send data
         request.write(dataString);
         request.end();
-     
       })
       .catch((error) => {
         console.log(error);
