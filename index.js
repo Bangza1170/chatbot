@@ -207,6 +207,7 @@ app.post("/webhook", async function (req, res) {
 
     for (let i = 0; i < data.length; i++) {
       number = i + 1;
+      
       let dataScore = mockData.createDataScoreItem(number, data, i);
       newDataScore.push(dataScore);
     }

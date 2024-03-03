@@ -1,7 +1,7 @@
 const { default: axios } = require("axios");
 
 
-// เป็นฟังชั่น แปลภาษา 
+// เป็นฟังชั่น แปลภาษา เป็นการทำงาน โดยการส่งภาษาที่เราจะแปลเข้่าไป แล้วจากนั้น จะคืนค่ามา เป็นภาษที่เราได้กำหนดไว้
 async function translateString(message, from, to) {
   try {
     const options = {
