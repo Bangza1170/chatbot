@@ -5,7 +5,7 @@ const line = require("./lineApi");
 const translate = require("./translateApi");
 
 
-
+// เป็นฟังชั่น ดึง api google bard 
 async function bardAuthor(dataString,thToEn,req) {
   try {
     const axios = require("axios");

@@ -1,5 +1,7 @@
 const { default: axios } = require("axios");
 
+
+// เป็นฟังชั่น แปลภาษา 
 async function translateString(message, from, to) {
   try {
     const options = {

@@ -1,6 +1,8 @@
 const TOKEN = process.env.LINE_ACCESS_TOKEN;
 const https = require("https");
 
+
+// เป็นฟังชั่น ดึง api line 
 async function lineApi(dataString) {
   try {
      // Request header

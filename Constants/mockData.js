@@ -162,9 +162,65 @@ const newDataString = (newDataScore) => {
   ];
 };
 
+async function cardData(arrCard,result) {
+  for (let index = 0; index < 5; index++) {
+    const item = result.data.entries.edges[index];
+    console.log(item);
+    const thumbnail = item.node.thumbnail.split("//s.isanook.com/")[1];
+    const readMore = item.node.id;
+    arrCard.push({
+      type: "bubble",
+      hero: {
+        type: "image",
+        size: "full",
+        aspectRatio: "20:13",
+        aspectMode: "cover",
+        url: `https://s.isanook.com/${thumbnail}`,
+      },
+      body: {
+        type: "box",
+        layout: "vertical",
+        spacing: "sm",
+        contents: [
+          {
+            type: "text",
+            text: item.node.title,
+            wrap: true,
+            weight: "bold",
+            size: "lg",
+          },
+          {
+            type: "box",
+            layout: "baseline",
+            contents: [],
+          },
+        ],
+      },
+      footer: {
+        type: "box",
+        layout: "vertical",
+        spacing: "sm",
+        contents: [
+          {
+            type: "button",
+            style: "primary",
+            action: {
+              type: "uri",
+              label: "อ่านเพิ่มเติม",
+              uri: `https://www.sanook.com/sport/${readMore}`,
+            },
+          },
+        ],
+      },
+    });
+  };
+
+}
+
+
 module.exports = {
   createNewDataScore,
   createDataScoreItem,
   newDataString,
-  
+  cardData,
 };
