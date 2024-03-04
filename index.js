@@ -110,7 +110,7 @@ app.post("/webhook", async function (req, res) {
   ) {
     try {
       var listData = await axios.get(
-        "https://sharon-canyon-clock-temperature.trycloudflare.com"
+        "https://billion-store-opening-travels.trycloudflare.com"
       );
     } catch (error) {
       console.log("axios error: ", error);
