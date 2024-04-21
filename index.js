@@ -110,7 +110,7 @@ app.post("/webhook", async function (req, res) {
   ) {
     try {
       var listData = await axios.get(
-        "https://candidate-triumph-craig-networks.trycloudflare.com"
+        "https://less-ice-challenges-sunshine.trycloudflare.com"
       );
     } catch (error) {
       console.log("axios error: ", error);
