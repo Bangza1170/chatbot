@@ -110,7 +110,7 @@ app.post("/webhook", async function (req, res) {
   ) {
     try {
       var listData = await axios.get(
-        "https://train-operator-savings-polish.trycloudflare.com"
+        "https://specifications-significant-details-kai.trycloudflare.com"
       );
     } catch (error) {
       console.log("axios error: ", error);
